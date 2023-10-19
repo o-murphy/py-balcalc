@@ -12,7 +12,7 @@ class ProfilesTable(QWidget, Ui_profilesTable):
 
     def setupUi(self, profilesTable):
         super().setupUi(profilesTable)
-        # self.tableWidget.verticalHeader().setHidden(True)
+        self.tableWidget.verticalHeader().setHidden(True)
 
     def select(self):
         """Returns current cellWidget"""

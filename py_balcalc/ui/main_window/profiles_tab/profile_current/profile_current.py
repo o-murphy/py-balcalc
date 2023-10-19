@@ -7,6 +7,7 @@ from .ui import Ui_profileCurrent
 from .profile_weapon import ProfileWeapon
 from .profile_cartridge import ProfileCartridge
 from .profile_bullet import ProfileBullet
+from .profile_conditions import ProfileConditions
 # from ..bc_table import BCTable
 
 
@@ -20,7 +21,7 @@ class ProfileCurrent(QtWidgets.QWidget, Ui_profileCurrent):
         self.weapon = ProfileWeapon(self)
         self.cartridge = ProfileCartridge(self)
         self.bullet = ProfileBullet(self)
-        # self.conditions = Conditions(self)
+        self.conditions = ProfileConditions(self)
 
         self.munition_tab.layout().setAlignment(QtCore.Qt.AlignTop)
         self.conditions_tab.layout().setAlignment(QtCore.Qt.AlignTop)
@@ -28,7 +29,7 @@ class ProfileCurrent(QtWidgets.QWidget, Ui_profileCurrent):
         self.munition_tab.layout().addWidget(self.weapon, 0, 0, 1, 1)
         self.munition_tab.layout().addWidget(self.cartridge, 1, 0, 1, 1)
         self.munition_tab.layout().addWidget(self.bullet, 2, 0, 1, 1)
-        # self.conditions_tab.layout().addWidget(self.conditions, 0, 0, 1, 1)
+        self.conditions_tab.layout().addWidget(self.conditions, 0, 0, 1, 1)
 
     def set_current(self, profile):
         """

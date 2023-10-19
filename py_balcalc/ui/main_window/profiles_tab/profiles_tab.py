@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
 
 # from modules.env_update import USER_RECENT
 from .add_button import AddButton
-# from .profile_item import ProfileItem
+from .profile_item import ProfileItem
 from .ui import Ui_profilesTab
 from .profiles_table import ProfilesTable
 from .profiles_tools import ProfilesTools
@@ -37,6 +37,8 @@ class ProfilesTab(QWidget, Ui_profilesTab):
         #
         # # self.profile_current.set_current(None)
 
+        self.setupConnects()
+
     def setupUi(self, profiles_tab: 'ProfilesTab'):
         """Sets default widget positions in a gridLayout"""
         super(ProfilesTab, self).setupUi(profiles_tab)
@@ -47,20 +49,20 @@ class ProfilesTab(QWidget, Ui_profilesTab):
 
     def setupConnects(self):
         """connects functions to its controllers in the inner widgets"""
-        # self.profiles_tools.newProfileButton.clicked.connect(self.add_profile)
-        # self.add_btn.add.clicked.connect(self.add_profile)
+        self.profiles_tools.newProfileButton.clicked.connect(self.open_wizard)
+        self.add_button.add.clicked.connect(self.open_wizard)
         # self.profiles_tools.removeProfileButton.clicked.connect(self.remove_profile)
         # self.profiles_tools.downProfile.clicked.connect(self.move_profile_down)
         # self.profiles_tools.upProfile.clicked.connect(self.move_profile_up)
         #
         # self.profiles_tools.saveAsButton.clicked.connect(self.save_as_file_dialog)
         # self.profiles_tools.saveButton.clicked.connect(self.save_file_dialog)
-        # self.profiles_tools.openFile.clicked.connect(self.open_file_dialog)
+        self.profiles_tools.openFile.clicked.connect(self.open_file_dialog)
         # self.profiles_tools.closeFile.clicked.connect(self.close_file)
         # self.profiles_table.currentCellChanged.connect(self.current_cell_changed)
         #
         # self.profiles_tools.loadBookMark.clicked.connect(self.load_bookmark)
-        ...
+
 
     def current_cell_changed(self, row, col, prow, pcol):
         """sets selected ballistic profile data to profileCurrent widget"""
@@ -73,26 +75,29 @@ class ProfilesTab(QWidget, Ui_profilesTab):
         self.profiles_table.insertRow(last_row)
         self.profiles_table.setCellWidget(last_row, 0, self.add_button)
 
+    def open_wizard(self):
+        ...
+
     def add_profile(self, data=None):
         """
         creates new Profile widget, and fill it with input data
         updates profilesTable data
         """
-        # if self.profiles_table.rowCount() < 21:
-        #     new_item = ProfileItem(self)
-        #
-        #     new_item.set(data)
-        #     self.profiles_table_widget.add_row(new_item)
-        #
+        if self.profiles_table.rowCount() < 21:
+            new_item = ProfileItem(self)
+
+            # new_item.set(data)
+            self.profiles_table_widget.add_row(new_item)
+
         #     self.set_is_saved(False)
-        #
-        #     row_count = self.profiles_table_widget.tableWidget.rowCount()
-        #     self.profiles_table_widget.tableWidget.setCurrentCell(row_count - 1, 0)
-        #
-        #     last_row = self.profiles_table.rowCount()
-        #     self.insert_add_btn(last_row)
-        #     self.profiles_table.removeRow(last_row - 2)
-        ...
+
+            row_count = self.profiles_table_widget.tableWidget.rowCount()
+            self.profiles_table_widget.tableWidget.setCurrentCell(row_count - 1, 0)
+
+            last_row = self.profiles_table.rowCount()
+
+            self.insert_add_button(last_row)
+            self.profiles_table.removeRow(last_row - 2)
 
     def add_many(self, data):
         """creates multiple profiles at least, look ProfilesTab.add_profile for more info"""
@@ -168,32 +173,36 @@ class ProfilesTab(QWidget, Ui_profilesTab):
         # self.set_is_saved(True)
         ...
 
-    def save_file_dialog(self):
-        if self.current_file != '':
-            if os.path.isfile(self.current_file):
-                self.save_profiles(self.current_file)
-            else:
-                self.save_as_file_dialog(self.current_file)
-        else:
-            self.save_as_file_dialog()
+    # def save_file_dialog(self):
+    #     if self.current_file != '':
+    #         if os.path.isfile(self.current_file):
+    #             self.save_profiles(self.current_file)
+    #         else:
+    #             self.save_as_file_dialog(self.current_file)
+    #     else:
+    #         self.save_as_file_dialog()
 
     def open_file_dialog(self):
         # self.close_file()
         # if self.is_saved:
-        #     options = QFileDialog.Options()
-        #     fileName, fileFormat = QFileDialog.getOpenFileName(
-        #         self,
-        #         "QFileDialog.getOpenFileName()",
-        #         USER_RECENT,
-        #         "PyBalCalc Profiles (*.arbcp);;JSON (*.json);;All Files (*);;Python Files (*.py)",
-        #         options=options
-        #     )
-        #     if fileName:
-        #         self.open_file(fileName)
-        ...
+            options = QFileDialog.Options()
+            file_names, file_format = QFileDialog.getOpenFileNames(
+                self,
+                "QFileDialog.getOpenFileName()",
+                # USER_RECENT,
+                filter="ArcherBC2 Profile (*.a7p)",
+                # filter="ArcherBC2 Profile (*.a7p);;JSON (*.json);;All Files (*)",
+                options=options
+            )
+            if file_names:
+                self.open_file(file_names)
 
-    def open_file(self, fileName):
+
+    def open_file(self, file_names):
         """opens ballistic profiles from a json formatted file and loads it to working list"""
+        for file_name in file_names:
+            ...
+
         # with open(fileName, 'r') as fp:
         #     import json
         #     data = json.load(fp)

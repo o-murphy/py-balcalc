@@ -3,7 +3,7 @@ from PySide6 import QtWidgets, QtGui, QtCore
 import sys
 # from modules import env_update
 from .ui import Ui_MainWindow
-# from gui import FooterWidget
+from ..footer import FooterWidget
 from .profiles_tab import ProfilesTab
 # from gui import CatalogTab
 # from gui import TemplatesTab
@@ -37,8 +37,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # self.tabWidget.addTab(self.my_tab, QtGui.QIcon(":/ballistics/templates.svg"), 'Templates')
         # self.tabWidget.addTab(self.catalog_tab, QtGui.QIcon(":/material/material/bag-check-orange.svg"), 'Catalog')
 
-        # self.footer_widget = FooterWidget(self)
-        # self.gridLayout.addWidget(self.footer_widget, 1, 0, 1, 1)
+        self.footer_widget = FooterWidget(self)
+        self.gridLayout.addWidget(self.footer_widget, 1, 0, 1, 1)
 
     # def closeEvent(self, event) -> None:
     #     self.custom_close(event)
