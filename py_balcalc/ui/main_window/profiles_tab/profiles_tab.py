@@ -5,11 +5,11 @@ from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox
 
 # from modules.env_update import USER_RECENT
 from .add_button import AddButton
-from .profile_current import ProfileCurrent
 # from .profile_item import ProfileItem
 from .ui import Ui_profilesTab
 from .profiles_table import ProfilesTable
 from .profiles_tools import ProfilesTools
+from .profile_current import ProfileCurrent
 # from ..close_dialog import CloseDialog
 
 
@@ -66,18 +66,6 @@ class ProfilesTab(QWidget, Ui_profilesTab):
         """sets selected ballistic profile data to profileCurrent widget"""
         # cur = self.profiles_table.cellWidget(row, col)
         # self.profile_current.set_current(cur)
-        ...
-
-    def set_is_saved(self, e: bool):
-        """update state of this widget if its inner data was changed"""
-        # self.is_saved = e
-        # if not e:
-        #     self.window().setWindowTitle(self.title + ' - *' + self.current_file)
-        # else:
-        #     if not self.current_file == '':
-        #         self.window().setWindowTitle(self.title + ' - ' + self.current_file)
-        #     else:
-        #         self.window().setWindowTitle(self.title)
         ...
 
     def insert_add_button(self, last_row):

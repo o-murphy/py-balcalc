@@ -4,6 +4,9 @@ from PySide6 import QtCore, QtGui, QtWidgets
 # from .add_btn import AddBtn
 # from .profile_item_contents import Bullet, Rifle, Cartridge, Conditions
 from .ui import Ui_profileCurrent
+from .profile_weapon import ProfileWeapon
+from .profile_cartridge import ProfileCartridge
+from .profile_bullet import ProfileBullet
 # from ..bc_table import BCTable
 
 
@@ -14,18 +17,18 @@ class ProfileCurrent(QtWidgets.QWidget, Ui_profileCurrent):
         # self.convert = BConverter()
         # self.bc_table = BCTable()
         #
-        # self.rifle = Rifle(self)
-        # self.cartridge = Cartridge(self)
-        # self.bullet = Bullet(self)
+        self.weapon = ProfileWeapon(self)
+        self.cartridge = ProfileCartridge(self)
+        self.bullet = ProfileBullet(self)
         # self.conditions = Conditions(self)
 
-        self.tab_6.layout().setAlignment(QtCore.Qt.AlignTop)
-        self.tab_7.layout().setAlignment(QtCore.Qt.AlignTop)
+        self.munition_tab.layout().setAlignment(QtCore.Qt.AlignTop)
+        self.conditions_tab.layout().setAlignment(QtCore.Qt.AlignTop)
 
-        # self.tab_6.layout().addWidget(self.rifle, 0, 0, 1, 1)
-        # self.tab_6.layout().addWidget(self.cartridge, 1, 0, 1, 1)
-        # self.tab_6.layout().addWidget(self.bullet, 2, 0, 1, 1)
-        # self.tab_7.layout().addWidget(self.conditions, 0, 0, 1, 1)
+        self.munition_tab.layout().addWidget(self.weapon, 0, 0, 1, 1)
+        self.munition_tab.layout().addWidget(self.cartridge, 1, 0, 1, 1)
+        self.munition_tab.layout().addWidget(self.bullet, 2, 0, 1, 1)
+        # self.conditions_tab.layout().addWidget(self.conditions, 0, 0, 1, 1)
 
     def set_current(self, profile):
         """
@@ -33,19 +36,19 @@ class ProfileCurrent(QtWidgets.QWidget, Ui_profileCurrent):
         enables/disables inner tabs if profile type is correct
         """
         # if isinstance(profile, AddBtn):
-        #     self.tab_6.setDisabled(True)
-        #     self.tab_7.setDisabled(True)
+        #     self.munition_tab.setDisabled(True)
+        #     self.conditions_tab.setDisabled(True)
         #     return
         #
         # if not profile:
-        #     self.tab_6.setDisabled(True)
-        #     self.tab_7.setDisabled(True)
+        #     self.munition_tab.setDisabled(True)
+        #     self.conditions_tab.setDisabled(True)
         #     return
         #
-        # self.tab_6.setEnabled(True)
-        # self.tab_7.setEnabled(True)
+        # self.munition_tab.setEnabled(True)
+        # self.conditions_tab.setEnabled(True)
         #
-        # self.rifle.set_current(profile)
+        # self.weapon.set_current(profile)
         # self.cartridge.set_current(profile)
         # self.bullet.set_current(profile)
         # self.conditions.set_current(profile)

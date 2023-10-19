@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py_ballisticcalc.gui"
+
+authors = [
+    { name="o-murphy", email="thehelixpg@gmail.com" },
+]
+description = "PySide6 based GUI for the py_ballisticcalc library"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["py_ballisticcalc", "ballistics", "Cython", "ballistic calculator", "python", "python3"]
+license = {file = "LICENSE"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = ["PySide6~=6.6.0", "qtawesome", "py_ballisticcalc==1.1.0"]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/o-murphy/py-ballisticcalc-gui"
+"Bug Reports" = "https://github.com/o-murphy/py-ballisticcalc-gui/issues"
+#"Funding" = "https://donate.pypi.org"
+#"Say Thanks!" = ""
+"Source" = "https://github.com/o-murphy/py-ballisticcalc-gui"
+
+[tool.setuptools]
+py-modules = ["py_balcalc"]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["py_balcalc*"]  # alternatively: `exclude = ["additional*"]`
+
+[tool.setuptools.dynamic]
+version = {attr = "py_balcalc.__version__"}
+
+[project.optional-dependencies]
+exts = ['py_ballisticcalc.exts']
+
+[project.scripts]
+py_balcalc = "py_balcalc.main:main"
