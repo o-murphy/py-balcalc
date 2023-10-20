@@ -15,8 +15,8 @@ class Ui_profileItem(object):
     def setupUi(self, profileItem):
         profileItem.setObjectName("profileItem")
         profileItem.resize(380, 50)
-        profileItem.setMinimumSize(QtCore.QSize(380, 50))
-        profileItem.setMaximumSize(QtCore.QSize(380, 50))
+        # profileItem.setMinimumSize(QtCore.QSize(380, 50))
+        # profileItem.setMaximumSize(QtCore.QSize(380, 50))
         profileItem.setStyleSheet("")
         self.gridLayout = QtWidgets.QGridLayout(profileItem)
         self.gridLayout.setContentsMargins(4, 4, 4, 4)

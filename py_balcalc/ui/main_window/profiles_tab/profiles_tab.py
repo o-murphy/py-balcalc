@@ -11,6 +11,7 @@ from .profiles_table import ProfilesTable
 from .profiles_tools import ProfilesTools
 from .profile_current import ProfileCurrent
 # from ..close_dialog import CloseDialog
+from a7p import A7PFile
 
 
 # main widget of working profiles list tab
@@ -51,6 +52,7 @@ class ProfilesTab(QWidget, Ui_profilesTab):
         """connects functions to its controllers in the inner widgets"""
         self.profiles_tools.newProfileButton.clicked.connect(self.open_wizard)
         self.add_button.add.clicked.connect(self.open_wizard)
+        self.add_button.add.clicked.connect(self.add_profile)
         # self.profiles_tools.removeProfileButton.clicked.connect(self.remove_profile)
         # self.profiles_tools.downProfile.clicked.connect(self.move_profile_down)
         # self.profiles_tools.upProfile.clicked.connect(self.move_profile_up)
@@ -86,7 +88,7 @@ class ProfilesTab(QWidget, Ui_profilesTab):
         if self.profiles_table.rowCount() < 21:
             new_item = ProfileItem(self)
 
-            # new_item.set(data)
+            new_item.set(data)
             self.profiles_table_widget.add_row(new_item)
 
         #     self.set_is_saved(False)
@@ -197,11 +199,13 @@ class ProfilesTab(QWidget, Ui_profilesTab):
             if file_names:
                 self.open_file(file_names)
 
-
     def open_file(self, file_names):
         """opens ballistic profiles from a json formatted file and loads it to working list"""
         for file_name in file_names:
-            ...
+            with open(file_name, 'rb') as fp:
+                a7p_file = A7PFile.load(fp)
+                print(a7p_file)
+                self.add_profile(data=a7p_file)
 
         # with open(fileName, 'r') as fp:
         #     import json

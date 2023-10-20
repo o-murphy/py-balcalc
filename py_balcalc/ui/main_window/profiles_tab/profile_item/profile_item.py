@@ -6,6 +6,7 @@ from PySide6 import QtCore, QtWidgets, QtGui
 # from modules.flags import DatabaseRW
 from .ui import Ui_profileItem
 from py_balcalc.ui.custom_widgets import NoWheelDoubleSpinBox
+from py_ballisticcalc import Unit
 
 
 # creates, show and store ballistic profile
@@ -38,38 +39,38 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         self.gridLayout.addWidget(self.z_y, 1, 2, 1, 1)
         self.gridLayout.addWidget(self.z_d, 0, 3, 2, 1)
 
-        # self._z_d = Distance(100, DistanceMeter)  # zeroing distance
-        #
-        # self.auto_tile_mode = 0
-        #
-        # self.sh = Distance(0, DistanceMillimeter)  # sight height
-        # self.twist = Distance(0, DistanceInch)  # barrel twist
-        # self.caliberName = ''
-        # self.rightTwist = True
-        #
-        # # current atmo conditions
-        # self.z_pressure = Pressure(0, PressureMmHg)
-        # self.z_temp = Temperature(0, TemperatureCelsius)
-        # self.z_powder_temp = Temperature(0, TemperatureCelsius)
-        # self.z_angle = Angular(0, AngularDegree)
-        # self.z_azimuth = Angular(0, AngularDegree)
-        # self.z_latitude = Angular(0, AngularDegree)
-        # self.z_humidity = 0
-        #
-        # self.z_wind_angle = Angular(0, AngularDegree)
-        # self.z_wind_speed = Velocity(0, VelocityMPS)
-        #
-        # # cartridge properties
-        # self.mv = Velocity(0, VelocityMPS)
-        # self.temp = Temperature(0, TemperatureCelsius)
-        # self.ts = 1
-        #
-        # # bullet params
-        # self.bulletName = ''
-        # self.weight = Weight(0, WeightGrain)
-        # self.length = Distance(0, DistanceInch)
-        # self.diameter = Distance(0, DistanceInch)
-        #
+        self._z_d = Unit.METER(100)  # zeroing distance
+
+        self.auto_tile_mode = 0
+
+        self.sh = Unit.MILLIMETER(0)  # sight height
+        self.twist = Unit.INCH(0)  # barrel twist
+        self.caliberName = ''
+        self.rightTwist = True
+
+        # current atmo conditions
+        self.z_pressure = Unit.MM_HG(0)
+        self.z_temp = Unit.CELSIUS(0)
+        self.z_powder_temp = Unit.CELSIUS(0)
+        self.z_angle = Unit.DEGREE(0)
+        self.z_azimuth = Unit.DEGREE(0)
+        self.z_latitude = Unit.DEGREE(0)
+        self.z_humidity = 0
+
+        self.z_wind_angle = Unit.DEGREE(0)
+        self.z_wind_speed = Unit.MPS(0)
+
+        # cartridge properties
+        self.mv = Unit.MPS(0)
+        self.temp = Unit.CELSIUS(0)
+        self.ts = 1
+
+        # bullet params
+        self.bulletName = ''
+        self.weight = Unit.GRAIN(0)
+        self.length = Unit.INCH(0)
+        self.diameter = Unit.INCH(0)
+
         # self.drag_idx = 0
         # self.drags = []
         #
@@ -81,9 +82,10 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     # def z_d_changed(self, value):
     #     self._z_d = Distance(value, self.app_settings.distUnits.currentData())
     #
-    # def setUnits(self):
+    def setUnits(self):
     #     self.app_settings = self.window().app_settings
-    #     self.z_d.setValue(self._z_d.get_in(self.app_settings.distUnits.currentData()))
+        # self.z_d.setValue(self._z_d >> self.app_settings.distUnits.currentData())
+        self.z_d.setValue(self._z_d >> Unit.METER)
     #     self.z_d.setSuffix(self.app_settings.distUnits.currentText())
     #
     # def create_tile(self):
@@ -192,56 +194,55 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #     }
     #     return data
     #
-    # def set(self, input_data):
-    #     """set input data to ballistic profile instance"""
-    #
-    #     defaults = get_defaults()
-    #     if input_data:
-    #         defaults.update(input_data)
+    def set(self, input_data):
+        """set input data to ballistic profile instance"""
+
+        # defaults = get_defaults()
+        # if input_data:
+        #     defaults.update(input_data)
     #         data = defaults
     #     else:
     #         data = defaults
     #
-    #     self._z_d = Distance(data['z_d'], DistanceMeter)
-    #
-    #     self.z_x.setValue(data['z_x'])
-    #     self.z_y.setValue(data['z_y'])
-    #
-    #     self.sh = Distance(data['sh'], DistanceMillimeter)
-    #     self.twist = Distance(data['twist'], DistanceInch)
-    #     self.caliberName = data['caliberName']
-    #     self.rightTwist = data['rightTwist']
-    #     # self.caliberShort.setText(data['caliberShort'])
-    #     self.caliberShort = data['caliberShort']
-    #
-    #     self.rifleName.setText(data['rifleName'])
-    #     self.cartridgeName.setText(data['cartridgeName'])
-    #
-    #     self.z_pressure = Pressure(data['z_pressure'], PressureMmHg)
-    #     self.z_temp = Temperature(data['z_temp'], TemperatureCelsius)
-    #     self.z_powder_temp = Temperature(data['z_powder_temp'], TemperatureCelsius)
-    #     self.z_angle = Angular(data['z_angle'], AngularDegree)
-    #     self.z_azimuth = Angular(data['z_azimuth'], AngularDegree)
-    #     self.z_latitude = Angular(data['z_latitude'], AngularDegree)
-    #     self.z_humidity = data['z_humidity']
-    #
-    #     if 'z_wind_angle' in data:
-    #         self.z_wind_angle = Angular(data['z_wind_angle'], AngularDegree)
-    #     if 'z_wind_speed' in data:
-    #         self.z_wind_speed = Velocity(data['z_wind_speed'], VelocityMPS)
-    #
-    #     self.mv = Velocity(data['mv'], VelocityMPS)
-    #     self.temp = Temperature(data['temp'], TemperatureCelsius)
-    #
-    #     self.cartridgeName.setText(data['cartridgeName'])
-    #     self.ts = data['ts']
-    #
-    #     self.weight = Weight(data['weight'], WeightGrain)
-    #     self.length = Distance(data['length'], DistanceInch)
-    #     self.diameter = Distance(data['diameter'], DistanceInch)
-    #     self.bulletName = data['bulletName']
-    #
-    #     self.drag_idx = data['drag_idx']
+        prof = input_data.profile
+        self._z_d = Unit.METER(
+            prof.distances[prof.c_zero_distance_idx] / 100
+        )
+        self.z_x.setValue(prof.zero_x)
+        self.z_y.setValue(prof.zero_y)
+
+        self.sh = Unit.MILLIMETER(prof.sc_height)
+        self.twist = Unit.INCH(prof.r_twist)
+        self.caliberName = prof.caliber
+        self.rightTwist = prof.twist_dir == 0
+        self.caliberShort = prof.short_name_top
+
+        self.rifleName.setText(prof.profile_name)
+        self.cartridgeName.setText(prof.cartridge_name)
+
+        self.z_pressure = Unit.HP(prof.c_zero_air_pressure / 10)
+        self.z_temp = Unit.CELSIUS(prof.c_zero_temperature)
+        self.z_powder_temp = Unit.CELSIUS(prof.c_zero_p_temperature)
+        self.z_angle = Unit.DEGREE(prof.c_zero_w_pitch)
+        # self.z_azimuth = Unit.DEGREE(data['z_azimuth'])
+        # self.z_latitude = Angular(data['z_latitude'], AngularDegree)
+        self.z_humidity = prof.c_zero_air_humidity
+
+        # if 'z_wind_angle' in data:
+        #     self.z_wind_angle = Unit.DEGREE(data['z_wind_angle'], AngularDegree)
+        # if 'z_wind_speed' in data:
+        #     self.z_wind_speed = Velocity(data['z_wind_speed'], VelocityMPS)
+
+        self.mv = Unit.MPS(prof.c_muzzle_velocity / 100)
+        # self.temp = Temperature(data['temp'], TemperatureCelsius)
+        self.ts = prof.c_t_coeff / 1000
+
+        self.weight = Unit.GRAIN(prof.b_weight / 10)
+        self.length = Unit.INCH(prof.b_length / 1000)
+        self.diameter = Unit.INCH(prof.b_weight / 1000)
+        self.bulletName = prof.bullet_name
+
+        # self.drag_idx = data['drag_idx']
     #
     #     for drag in data['drags']:
     #         if isinstance(drag, dict):
@@ -253,4 +254,4 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #
     #     self.create_tile()
     #
-    #     self.setUnits()
+        self.setUnits()

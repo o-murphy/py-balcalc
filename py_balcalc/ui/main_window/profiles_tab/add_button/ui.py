@@ -7,13 +7,14 @@
 
 
 from PySide6 import QtCore, QtWidgets
+import qtawesome as qta
 
 
 class Ui_addButton(object):
     def setupUi(self, Ui_addButton):
         Ui_addButton.setObjectName("Ui_addButton")
-        Ui_addButton.resize(380, 28)
-        Ui_addButton.setMaximumSize(QtCore.QSize(386, 16777215))
+        # Ui_addButton.resize(380, 28)
+        # Ui_addButton.setMaximumSize(QtCore.QSize(386, 16777215))
         Ui_addButton.setStyleSheet("")
         self.gridLayout = QtWidgets.QGridLayout(Ui_addButton)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -25,11 +26,11 @@ class Ui_addButton(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.add.sizePolicy().hasHeightForWidth())
         self.add.setSizePolicy(sizePolicy)
-        self.add.setMinimumSize(QtCore.QSize(0, 0))
-        self.add.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        # self.add.setMinimumSize(QtCore.QSize(0, 0))
+        # self.add.setMaximumSize(QtCore.QSize(16777215, 16777215))
         # icon = QtGui.QIcon()
         # icon.addPixmap(QtGui.QPixmap(":/icons/res/drawable-hdpi-v4/addbtn_menu21b.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.add.setIcon(icon)
+        self.add.setIcon(qta.icon('mdi6.plus', color='grey'))
         self.add.setIconSize(QtCore.QSize(20, 20))
         self.add.setObjectName("add")
         self.gridLayout.addWidget(self.add, 0, 0, 1, 1)
