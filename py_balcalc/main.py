@@ -9,19 +9,20 @@ from py_balcalc.ui.resources import *
 
 
 def qt_message_handler(mode, context, message):
-    if mode == QtCore.QtInfoMsg:
+    if mode == QtCore.QtMsgType.QtInfoMsg:
         mode = 'INFO'
-    elif mode == QtCore.QtWarningMsg:
+    elif mode == QtCore.QtMsgType.QtWarningMsg:
         mode = 'WARNING'
-    elif mode == QtCore.QtCriticalMsg:
+    elif mode == QtCore.QtMsgType.QtCriticalMsg:
         mode = 'CRITICAL'
-    elif mode == QtCore.QtFatalMsg:
+    elif mode == QtCore.QtMsgType.QtFatalMsg:
         mode = 'FATAL'
     else:
         mode = 'DEBUG'
-    logger.error('qt_message_handler: line: %d, func: %s(), file: %s' % (
-          context.line, context.function, context.file))
-    logger.error('  %s: %s\n' % (mode, message))
+    # logger.error('qt_message_handler: line: %d, func: %s(), file: %s' % (
+    #       context.line, context.function, context.file))
+    # logger.error('  %s: %s\n' % (mode, message))
+    logger.exception(f"{mode}, {context}, {message}")
 
 
 def main():

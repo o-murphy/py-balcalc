@@ -5,6 +5,7 @@ import sys
 from .ui import Ui_MainWindow
 from ..footer import FooterWidget
 from .profiles_tab import ProfilesTab
+from ..settings import AppSettings
 # from gui import CatalogTab
 # from gui import TemplatesTab
 # from modules.env_update import CONFIG_PATH
@@ -24,6 +25,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.translator_custom = QtCore.QTranslator()
         # self.translator_qt = QtCore.QTranslator()
         # self.app_settings = self.app.settings
+
+        self.settings = AppSettings()
 
     def setupUi(self, main_window: 'MainWindow'):
         super().setupUi(main_window)

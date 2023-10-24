@@ -39,12 +39,12 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         self.gridLayout.addWidget(self.z_y, 1, 2, 1, 1)
         self.gridLayout.addWidget(self.z_d, 0, 3, 2, 1)
 
-        self._z_d = Unit.METER(100)  # zeroing distance
+        self._z_d = Unit.METER(100)  # zeroing distUnits
 
         self.auto_tile_mode = 0
 
         self.sh = Unit.MILLIMETER(0)  # sight height
-        self.twist = Unit.INCH(0)  # barrel twist
+        self.twist = Unit.INCH(0)  # barrel twistUnits
         self.caliberName = ''
         self.rightTwist = True
 
@@ -75,69 +75,72 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         # self.drags = []
         #
         # self.app_settings = None
-        # self.setUnits()
-        #
-        # self.z_d.valueChanged.connect(self.z_d_changed)
 
-    # def z_d_changed(self, value):
-    #     self._z_d = Distance(value, self.app_settings.distUnits.currentData())
-    #
+        self.setUnits()
+        self.z_d.valueChanged.connect(self.z_d_changed)
+
+    def z_d_changed(self, value):
+        self._z_d = self.window().settings.distUnits.currentData()(value)
+
     def setUnits(self):
-    #     self.app_settings = self.window().app_settings
-        # self.z_d.setValue(self._z_d >> self.app_settings.distUnits.currentData())
-        self.z_d.setValue(self._z_d >> Unit.METER)
-    #     self.z_d.setSuffix(self.app_settings.distUnits.currentText())
-    #
-    # def create_tile(self):
-    #     """creates tile of ballistic profile"""
-    #
-    #     self.weightTile = f'{int(self.weight.get_in(self.app_settings.wUnits.currentData()))}' \
-    #                       f'{self.app_settings.wUnits.currentText().strip()}'
-    #
-    #     pixmap = QPixmap(32, 32)
-    #     pixmap.fill(Qt.white)
-    #     self.tile.setPixmap(pixmap)
-    #
-    #     tile_font = QFont('Arial Narrow')
-    #     tile_font.setPixelSize(11)
-    #     tile_font.setStyleStrategy(QFont.NoAntialias)
-    #
-    #     painter = QPainter(self.tile.pixmap())
-    #     painter.setFont(tile_font)
-    #
-    #     row_size = 16
-    #     row_count = 2
-    #
-    #     rows = [self.caliberShort, self.weightTile]
-    #
-    #     for i in range(1, row_count):
-    #         painter.drawLine(0, int(row_size * i), 32, int(row_size * i))
-    #         painter.drawLine(0, int(row_size * i) + 1, 32, int(row_size * i) + 1)
-    #
-    #     for i, r in enumerate(rows):
-    #         rect = QRect(0, int(row_size * i), 32, row_size)
-    #         painter.drawText(rect, Qt.AlignCenter, r)
-    #
-    # def auto_tile(self):
-    #     """changes current auto tile creation mode"""
-    #     if self.auto_tile_mode == 1:
-    #         self.auto_tile_1()
-    #     else:
-    #         self.auto_tile_0()
-    #
-    # def auto_tile_1(self):
-    #     """ auto update caliberShort text with mode 1"""
-    #     self.caliberShort = self.caliberName.replace(' ', '').strip()[:7]
-    #     self.auto_tile_mode = 0
-    #
-    # def auto_tile_0(self):
-    #     """ auto update caliberShort text with mode 0"""
-    #     reg = search(r'\.+\d+', self.caliberName)
-    #     cal = reg.group() if reg else ''
-    #     tile = ''.join((list(filter(lambda char: char.isupper(), self.caliberName))))
-    #     # self.caliberShort.setText(f'{cal + tile}'[:7])
-    #     self.caliberShort = f'{cal + tile}'[:7]
-    #     self.auto_tile_mode = 1
+        units = self.window().settings
+        du = units.distUnits.currentData()
+        _translate = QtCore.QCoreApplication.translate
+        self.z_d.setValue(self._z_d >> du)
+        self.z_d.setSuffix(' ' + _translate("units", du.symbol))
+
+    def create_tile(self):
+        """creates tile of ballistic profile"""
+        settings = self.window().settings
+        wu = settings.wUnits.currentData()
+        self.weightTile = f'{self.weight >> wu}' \
+                          f'{wu.symbol}'
+
+        pixmap = QtGui.QPixmap(32, 32)
+        pixmap.fill(QtCore.Qt.white)
+        self.tile.setPixmap(pixmap)
+
+        tile_font = QtGui.QFont('Arial Narrow')
+        tile_font.setPixelSize(11)
+        tile_font.setStyleStrategy(QtGui.QFont.NoAntialias)
+
+        # painter = QtGui.QPainter(self.tile.pixmap())
+        # painter.setFont(tile_font)
+        #
+        # row_size = 16
+        # row_count = 2
+        #
+        # rows = [self.caliberShort, self.weightTile]
+        #
+        # for i in range(1, row_count):
+        #     painter.drawLine(0, int(row_size * i), 32, int(row_size * i))
+        #     painter.drawLine(0, int(row_size * i) + 1, 32, int(row_size * i) + 1)
+        #
+        # for i, r in enumerate(rows):
+        #     rect = QtCore.QRect(0, int(row_size * i), 32, row_size)
+        #     painter.drawText(rect, QtCore.Qt.AlignCenter, r)
+        # del painter
+
+    def auto_tile(self):
+        """changes current auto tile creation mode"""
+        if self.auto_tile_mode == 1:
+            self.auto_tile_1()
+        else:
+            self.auto_tile_0()
+
+    def auto_tile_1(self):
+        """ auto update caliberShort text with mode 1"""
+        self.caliberShort = self.caliberName.replace(' ', '').strip()[:7]
+        self.auto_tile_mode = 0
+
+    def auto_tile_0(self):
+        """ auto update caliberShort text with mode 0"""
+        reg = search(r'\.+\d+', self.caliberName)
+        cal = reg.group() if reg else ''
+        tile = ''.join((list(filter(lambda char: char.isupper(), self.caliberName))))
+        # self.caliberShort.setText(f'{cal + tile}'[:7])
+        self.caliberShort = f'{cal + tile}'[:7]
+        self.auto_tile_mode = 1
     #
     # def get(self) -> dict:
     #     """returns dict of all ballistic profile data"""
@@ -164,7 +167,7 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #         'weightTile': self.weightTile,
     #
     #         'sh': self.sh.get_in(DistanceMillimeter),
-    #         'twist': self.twist.get_in(DistanceInch),
+    #         'twistUnits': self.twistUnits.get_in(DistanceInch),
     #         'caliberName': self.caliberName,
     #         'rightTwist': self.rightTwist,
     #
@@ -184,9 +187,9 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #         'ts': self.ts,
     #
     #         'bulletName': self.bulletName,
-    #         'weight': self.weight.get_in(WeightGrain),
-    #         'length': self.length.get_in(DistanceInch),
-    #         'diameter': self.diameter.get_in(DistanceInch),
+    #         'wUnits': self.wUnits.get_in(WeightGrain),
+    #         'lnUnits': self.lnUnits.get_in(DistanceInch),
+    #         'dUnits': self.dUnits.get_in(DistanceInch),
     #
     #         'drag_idx': self.drag_idx,
     #         'drags': drags,
@@ -208,11 +211,12 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         self._z_d = Unit.METER(
             prof.distances[prof.c_zero_distance_idx] / 100
         )
+
         self.z_x.setValue(prof.zero_x)
         self.z_y.setValue(prof.zero_y)
 
         self.sh = Unit.MILLIMETER(prof.sc_height)
-        self.twist = Unit.INCH(prof.r_twist)
+        self.twist = Unit.INCH(prof.r_twist / 100)
         self.caliberName = prof.caliber
         self.rightTwist = prof.twist_dir == 0
         self.caliberShort = prof.short_name_top
@@ -234,7 +238,7 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         #     self.z_wind_speed = Velocity(data['z_wind_speed'], VelocityMPS)
 
         self.mv = Unit.MPS(prof.c_muzzle_velocity / 100)
-        # self.temp = Temperature(data['temp'], TemperatureCelsius)
+        self.temp = Unit.CELSIUS(prof.c_zero_temperature)
         self.ts = prof.c_t_coeff / 1000
 
         self.weight = Unit.GRAIN(prof.b_weight / 10)
@@ -249,9 +253,9 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #             drag = DragFunc(**drag, attrs=DatabaseRW.RW.value)
     #         self.drags.append(drag)
     #
-    #     if self.caliberShort in ['', None]:
-    #         self.auto_tile_0()
-    #
-    #     self.create_tile()
-    #
+        if not self.caliberShort:
+            self.auto_tile_0()
+
+        self.create_tile()
+
         self.setUnits()

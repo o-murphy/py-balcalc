@@ -66,7 +66,7 @@ class BCSpinBox(NoWheelDoubleSpinBox):
         self.setDecimals(3)
 
 
-# velocity spinbox
+# vUnits spinbox
 class BVSpinBox(NoWheelSpinBox):
     def __init__(self):
         super(BVSpinBox, self).__init__()
@@ -83,7 +83,7 @@ class DSpinbox(NoWheelSpinBox):
         self.setSingleStep(1)
 
 
-# shows value of a bullet drop
+# shows value of a bullet dropUnits
 class DropSpinBox(NoWheelDoubleSpinBox):
     def __init__(self):
         super(DropSpinBox, self).__init__()
@@ -92,7 +92,7 @@ class DropSpinBox(NoWheelDoubleSpinBox):
         self.setDecimals(1)
 
 
-# shows value of a bullet drop (readonly)
+# shows value of a bullet dropUnits (readonly)
 class DropRoSpinBox(DropSpinBox):
     def __init__(self):
         super(DropRoSpinBox, self).__init__()
@@ -100,7 +100,7 @@ class DropRoSpinBox(DropSpinBox):
         self.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
 
 
-# shows value of a bullet drop (readonly)
+# shows value of a bullet dropUnits (readonly)
 class DropRoSBw(QtWidgets.QWidget):
     def __init__(self):
         super(DropRoSBw, self).__init__()

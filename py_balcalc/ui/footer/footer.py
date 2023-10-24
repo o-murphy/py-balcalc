@@ -17,8 +17,8 @@ class FooterWidget(QtWidgets.QWidget, Ui_FooterWidget):
 
     def open_app_settings(self):
         """opens AppSettings dialog and updates app settings if it changed"""
-        # dlg = self.window().app_settings
-        # if dlg.exec_():
+        dlg = self.window().settings
+        if dlg.exec_():
+            ...
         #     self.window().setUnits()
         #     self.window().setLang()
-        ...
