@@ -9,6 +9,7 @@
 
 
 from PySide6 import QtCore, QtGui, QtWidgets
+import qtawesome as qta
 
 
 class Ui_FooterWidget(object):
@@ -20,17 +21,17 @@ class Ui_FooterWidget(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout(FooterWidget)
         self.horizontalLayout.setContentsMargins(9, 9, 9, 9)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.Preferences = QtWidgets.QPushButton(FooterWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Preferences.sizePolicy().hasHeightForWidth())
-        self.Preferences.setSizePolicy(sizePolicy)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/custom/res/custom/tools.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Preferences.setIcon(icon)
-        self.Preferences.setObjectName("Preferences")
-        self.horizontalLayout.addWidget(self.Preferences)
+        # self.Preferences = QtWidgets.QToolButton(FooterWidget)
+        # sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        # sizePolicy.setHorizontalStretch(0)
+        # sizePolicy.setVerticalStretch(0)
+        # sizePolicy.setHeightForWidth(self.Preferences.sizePolicy().hasHeightForWidth())
+        # self.Preferences.setSizePolicy(sizePolicy)
+        # icon = QtGui.QIcon()
+        # icon.addPixmap(QtGui.QPixmap(":/custom/res/custom/tools.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # self.Preferences.setIcon(qta.icon('mdi6.cog', color='white'))
+        # self.Preferences.setObjectName("Preferences")
+        # self.horizontalLayout.addWidget(self.Preferences)
 
         self.retranslateUi(FooterWidget)
         QtCore.QMetaObject.connectSlotsByName(FooterWidget)
@@ -38,5 +39,5 @@ class Ui_FooterWidget(object):
     def retranslateUi(self, FooterWidget):
         _translate = QtCore.QCoreApplication.translate
         FooterWidget.setWindowTitle(_translate("FooterWidget", "Form"))
-        self.Preferences.setToolTip(_translate("FooterWidget", "Preferences"))
-        self.Preferences.setText(_translate("FooterWidget", "Settings"))
+        # self.Preferences.setToolTip(_translate("FooterWidget", "Preferences"))
+        # self.Preferences.setText(_translate("FooterWidget", "Settings"))

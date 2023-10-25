@@ -23,7 +23,7 @@ class Ui_weapon(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rifleGroupBox.sizePolicy().hasHeightForWidth())
         self.rifleGroupBox.setSizePolicy(sizePolicy)
-        self.rifleGroupBox.setMinimumSize(QtCore.QSize(500, 130))
+        # self.rifleGroupBox.setMinimumSize(QtCore.QSize(500, 130))
         self.rifleGroupBox.setStyleSheet("")
         self.rifleGroupBox.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.rifleGroupBox.setCheckable(True)

@@ -3,9 +3,13 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from .ui import Ui_profilesTools
+import qtawesome as qta
 
 
 # top profiles_table toolbar
+from ...settings import AppSettings
+
+
 class ProfilesTools(QtWidgets.QWidget, Ui_profilesTools):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -23,9 +27,22 @@ class ProfilesTools(QtWidgets.QWidget, Ui_profilesTools):
 
         self.saveButton.customContextMenuRequested.connect(self.on_context_menu)
 
-        # tabw = self.window().findChild(QtWidgets.QTabWidget, 'MainTabWidget')
-        # # if not isinstance(self.parent(), QtWidgets.QMainWindow):
+        self.Preferences.clicked.connect(self.open_app_settings)
+
         # self.saveAsAction.triggered.connect(tabw.save_as_file_dialog)
+
+    def setupUi(self, profilesTools):
+        super(ProfilesTools, self).setupUi(profilesTools)
+        self.Preferences = QtWidgets.QToolButton(self)
+        self.Preferences.setMinimumSize(QtCore.QSize(30, 30))
+        self.Preferences.setIcon(qta.icon('mdi6.cog', color='white'))
+        self.Preferences.setIconSize(QtCore.QSize(24, 24))
+        self.Preferences.setObjectName("Preferences")
+        self._layout.addWidget(self.Preferences, alignment=QtCore.Qt.AlignRight)
 
     def on_context_menu(self, point):
         self.saveButtonMenu.exec_(self.saveButton.mapToGlobal(point))
+
+    def open_app_settings(self):
+        """opens AppSettings dialog and updates app settings if it changed"""
+        AppSettings().exec_()

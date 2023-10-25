@@ -41,4 +41,4 @@ class Ui_addButton(object):
     def retranslateUi(self, Ui_addButton):
         _translate = QtCore.QCoreApplication.translate
         Ui_addButton.setWindowTitle(_translate("Ui_addButton", "Form"))
-        self.add.setText(_translate("Ui_addButton", "Add Profile"))
+        self.add.setText(_translate("Ui_addButton", "Open file"))

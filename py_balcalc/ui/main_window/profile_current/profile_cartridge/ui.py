@@ -23,7 +23,7 @@ class Ui_cartridge(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cartridgeGroupBox.sizePolicy().hasHeightForWidth())
         self.cartridgeGroupBox.setSizePolicy(sizePolicy)
-        self.cartridgeGroupBox.setMinimumSize(QtCore.QSize(500, 132))
+        # self.cartridgeGroupBox.setMinimumSize(QtCore.QSize(500, 132))
         self.cartridgeGroupBox.setStyleSheet("")
         self.cartridgeGroupBox.setFlat(False)
         self.cartridgeGroupBox.setCheckable(True)

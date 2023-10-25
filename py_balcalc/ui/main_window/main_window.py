@@ -1,23 +1,13 @@
 # -*- coding: utf-8 -*-
-from PySide6 import QtWidgets, QtGui, QtCore
-import sys
-# from modules import env_update
+from PySide6 import QtWidgets, QtCore
 from .add_button import AddButton
-from .profile_tab.profile_item import ProfileItem
-from .profile_tab.profile_wizard import ProfileWizard
+from .profile_wizard import ProfileWizard
 from .ui import Ui_MainWindow
 from ..footer import FooterWidget
-from .profile_tab import ProfileTab
+from .profile_current import ProfileCurrent
 from .profiles_tools import ProfilesTools
-from ..settings import AppSettings
-# from gui import CatalogTab
-# from gui import TemplatesTab
-# from modules.env_update import CONFIG_PATH
-# from gui.app_settings import AppSettings
-# from gui.spinner import Spinner
 
-# assert Spinner
-from ...file import open_files
+from py_balcalc.file import open_files
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -34,12 +24,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setConnects()
 
     def open_wizard(self):
-        # dlg = ProfileWizard(self, profile=new_item)
-        # if dlg.exec_():
-        #     prof = dlg.profile
-        #     profile_tab = ProfileTab(prof)
-        #     self.profilesTabs.addTab(profile_tab, prof.profile.profile_name[:12])
-        # self.switch_stacked()
+    #     dlg = ProfileWizard(self, profile=new_item)
+    #     if dlg.exec_():
+    #     #     prof = dlg.profile
+    #     #     profile_tab = ProfileTab(prof)
+    #     #     self.profilesTabs.addTab(profile_tab, prof.profile.profile_name[:12])
+    #     # self.switch_stacked()
         ...
 
     def open_file_dialog(self):
@@ -57,7 +47,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if file_names:
             profiles = open_files(file_names)
             for prof in profiles:
-                profile_tab = ProfileTab(prof)
+                profile_tab = ProfileCurrent(self)
+                profile_tab.set_current(prof)
                 self.profilesTabs.addTab(profile_tab, prof.profile.profile_name[:12])
             self.switch_stacked()
 

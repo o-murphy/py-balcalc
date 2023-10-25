@@ -1,6 +1,4 @@
 from PySide6 import QtWidgets, QtCore, QtGui
-from a7p import TwistDir
-from py_ballisticcalc import Unit
 
 from py_balcalc.settings import appSettings
 from py_balcalc.signals_manager import appSignalMgr
@@ -51,11 +49,10 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
 
     def _auto_tile(self):
         self._cur_profile.auto_tile()
-        self.caliberShort = self._cur_profile.caliberShort
+        self.caliberShort.setText(self._cur_profile.caliberShort)
 
     def _set_caliber_short(self, text):
         self._cur_profile.caliberShort = text
-        self._cur_profile.create_tile()
 
     def _rifle_name_changed(self, text):
         self._cur_profile.rifleName = text

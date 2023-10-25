@@ -13,13 +13,13 @@ class FooterWidget(QtWidgets.QWidget, Ui_FooterWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.horizontalLayout.insertWidget(0, QtWidgets.QLabel(f"v{__version__}"), QtCore.Qt.AlignLeft)
-        self.horizontalLayout.setAlignment(QtCore.Qt.AlignRight)
-        self.Preferences.clicked.connect(self.open_app_settings)
+        # self.horizontalLayout.setAlignment(QtCore.Qt.AlignRight)
+        # self.Preferences.clicked.connect(self.open_app_settings)
 
-    def open_app_settings(self):
-        """opens AppSettings dialog and updates app settings if it changed"""
-        # dlg = self.window().settings
-        if AppSettings().exec_():
-            ...
+    # def open_app_settings(self):
+    #     """opens AppSettings dialog and updates app settings if it changed"""
+    #     # dlg = self.window().settings
+    #     if AppSettings().exec_():
+    #         ...
         #     self.window().setUnits()
         #     self.window().setLang()

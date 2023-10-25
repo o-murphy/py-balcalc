@@ -24,7 +24,7 @@ class Ui_bullet(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.bulletGroupBox.sizePolicy().hasHeightForWidth())
         self.bulletGroupBox.setSizePolicy(sizePolicy)
-        self.bulletGroupBox.setMinimumSize(QtCore.QSize(500, 188))
+        # self.bulletGroupBox.setMinimumSize(QtCore.QSize(500, 188))
         self.bulletGroupBox.setStyleSheet("")
         self.bulletGroupBox.setCheckable(True)
         self.bulletGroupBox.setObjectName("bulletGroupBox")
