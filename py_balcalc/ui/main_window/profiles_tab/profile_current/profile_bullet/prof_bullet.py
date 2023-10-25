@@ -9,6 +9,8 @@ from PySide6 import QtWidgets, QtGui, QtCore
 # from gui.db_widgets.edit.drag_func_settings import MBCEdit
 # from gui.drag_func_editor.drag_func_edit import DragFuncEditDialog
 # from py_ballisticcalc.bmath.unit import Weight, Distance
+from py_balcalc.settings import appSettings
+from py_balcalc.signals_manager import appSignalMgr
 from .ui import Ui_bullet
 
 
@@ -19,26 +21,37 @@ class ProfileBullet(QtWidgets.QWidget, Ui_bullet):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-        self.bulletGroupBox.layout().setAlignment(QtCore.Qt.AlignLeft)
 
         # self._ch_df_text = {}
-        # self._cur_profile = None
-        # self._cur_units = None
-        # self.setConnects()
+        self._cur_profile = None
+        self.setConnects()
+        appSignalMgr.appSettingsUpdated.connect(self.setUnits)
 
-    # def setConnects(self):
-    #     """connects functions to its controllers in the inner widgets"""
-    #     self.wUnits.valueChanged.connect(self._weight_changed)
-    #     self.lnUnits.valueChanged.connect(self._length_changed)
-    #     self.dUnits.valueChanged.connect(self._diameter_changed)
-    #     self.bulletName.textChanged.connect(self._bullet_name_changed)
-    #     self.dragType.currentIndexChanged.connect(self._df_changed)
-    #
-    #     self.wUnits.valueChanged.connect(lambda: self._cur_profile.create_tile())
-    #
-    #     self.addDrag.clicked.connect(self._add_drag)
-    #     self.dfDataEditor.clicked.connect(self._edit_drag)
-    #     self.dragEditor.clicked.connect(self._open_df_editor)
+    def setupUi(self, bullet):
+        super().setupUi(bullet)
+        self.bulletGroupBox.setCheckable(False)
+        self.bulletGroupBox.layout().setAlignment(QtCore.Qt.AlignLeft)
+
+    def setConnects(self):
+        """connects functions to its controllers in the inner widgets"""
+        self.weight.valueChanged.connect(self._weight_changed)
+        self.length.valueChanged.connect(self._length_changed)
+        self.diameter.valueChanged.connect(self._diameter_changed)
+        self.bulletName.textChanged.connect(self._bullet_name_changed)
+        # self.dragType.currentIndexChanged.connect(self._df_changed)
+
+        # self.weight.valueChanged.connect(lambda: self._cur_profile.create_tile())
+
+        # self.addDrag.clicked.connect(self._add_drag)
+        # self.dfDataEditor.clicked.connect(self._edit_drag)
+        # self.dragEditor.clicked.connect(self._open_df_editor)
+
+    def disconnect(self):
+        self.weight.valueChanged.disconnect(self._weight_changed)
+        self.length.valueChanged.disconnect(self._length_changed)
+        self.diameter.valueChanged.disconnect(self._diameter_changed)
+        self.bulletName.textChanged.disconnect(self._bullet_name_changed)
+        # self.weight.valueChanged.disconnect(lambda: self._cur_profile.create_tile())
 
     def set_current(self, profile):
         """updates inner widgets data with selected profile data"""
@@ -56,13 +69,13 @@ class ProfileBullet(QtWidgets.QWidget, Ui_bullet):
         # self.dragType.setCurrentIndex(self.dragType.findData(idx))
 
     def setUnits(self):
-        self._cur_units = self.window().settings
-
+        self.setConnects()
         if self._cur_profile:
             _translate = QtCore.QCoreApplication.translate
-            wu = self._cur_units.wUnits.currentData()
-            lnu = self._cur_units.lnUnits.currentData()
-            du = self._cur_units.dUnits.currentData()
+
+            wu = appSettings.value('unit/weight')
+            lnu = appSettings.value('unit/length')
+            du = appSettings.value('unit/diameter')
 
             self.weight.setSuffix(' ' + _translate("units", wu.symbol))
             self.length.setSuffix(' ' + _translate("units", lnu.symbol))
@@ -73,18 +86,19 @@ class ProfileBullet(QtWidgets.QWidget, Ui_bullet):
             self.diameter.setValue(self._cur_profile.diameter >> du)
 
             self.bulletName.setText(self._cur_profile.bulletName)
+        self.disconnect()
 
-    # def _bullet_name_changed(self, text):
-    #     self._cur_profile.bulletName = text
-    #
-    # def _weight_changed(self, value):
-    #     self._cur_profile.wUnits = Weight(value, self._cur_units.wUnits.currentData())
-    #
-    # def _length_changed(self, value):
-    #     self._cur_profile.lnUnits = Distance(value, self._cur_units.lnUnits.currentData())
-    #
-    # def _diameter_changed(self, value):
-    #     self._cur_profile.dUnits = Distance(value, self._cur_units.dUnits.currentData())
+    def _bullet_name_changed(self, text):
+        self._cur_profile.bulletName = text
+
+    def _weight_changed(self, value):
+        self._cur_profile.wUnits = appSettings.value('unit/weight')(value)
+
+    def _length_changed(self, value):
+        self._cur_profile.lnUnits = appSettings.value('unit/length')(value)
+
+    def _diameter_changed(self, value):
+        self._cur_profile.dUnits = appSettings.value('unit/diameter')(value)
 
     # def _df_changed(self, idx):
     #     """updates list of drag function for selected bullet"""

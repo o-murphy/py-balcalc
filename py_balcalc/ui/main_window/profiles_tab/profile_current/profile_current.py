@@ -1,8 +1,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 # from modules import BConverter
-# from .add_btn import AddBtn
-# from .profile_item_contents import Bullet, Rifle, Cartridge, Conditions
+
 from .ui import Ui_profileCurrent
 from .profile_weapon import ProfileWeapon
 from .profile_cartridge import ProfileCartridge

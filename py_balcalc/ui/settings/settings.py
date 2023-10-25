@@ -9,7 +9,8 @@ from py_ballisticcalc.unit import *
 from py_ballisticcalc import Settings as CalcSettings
 
 from .ui import Ui_AppSettings
-
+from ...settings import appSettings
+from ...signals_manager import appSignalMgr
 
 DistanceUnits = [value for key, value in Distance.__dict__.items() if isinstance(value, Unit)]
 VelocityUnits = [value for key, value in Velocity.__dict__.items() if isinstance(value, Unit)]
@@ -26,30 +27,50 @@ class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
         super(AppSettings, self).__init__()
         self.setupUi(self)
 
-        self.config = ConfigParser()
-        # self.config.read(CONFIG_PATH)
-
-        # recreate settings.ini if it's format wrong
-        try:
-            self.update_config()
-        except Exception:
-            # os.remove(CONFIG_PATH)
-            self.update_config()
-
-    def update_config(self):
-        """loads all settings to current widget"""
-        self.init_general_tab()
+        # self.config = ConfigParser()
+        # # self.config.read(CONFIG_PATH)
+        #
+        # # recreate settings.ini if it's format wrong
+        # try:
+        #     self.update_config()
+        # except Exception:
+        #     # os.remove(CONFIG_PATH)
+        #     self.update_config()
+        self.init_defaults()
         self.init_units_tab()
-
-        self.load_general_settings()
-        self.load_unit_settings()
-
-        self.init_extension_tab()
-        self.load_extension_settings()
-
         self.tabSettings.setCurrentIndex(1)
 
-        self.save_cfg()
+    def init_defaults(self):
+        appSettings.setValue("unit/sight_height", CalcSettings.Units.sight_height)
+        appSettings.setValue("unit/twist", CalcSettings.Units.twist)
+        appSettings.setValue("unit/velocity", CalcSettings.Units.velocity)
+        appSettings.setValue("unit/distance", CalcSettings.Units.distance)
+        appSettings.setValue("unit/diameter", CalcSettings.Units.diameter)
+        appSettings.setValue("unit/length", CalcSettings.Units.length)
+        appSettings.setValue("unit/temperature", CalcSettings.Units.temperature)
+        appSettings.setValue("unit/weight", CalcSettings.Units.weight)
+        appSettings.setValue("unit/energy", CalcSettings.Units.energy)
+        appSettings.setValue("unit/drop", CalcSettings.Units.drop)
+        appSettings.setValue("unit/adjustment", CalcSettings.Units.adjustment)
+        appSettings.setValue("unit/angular", CalcSettings.Units.angular)
+        appSettings.setValue("unit/pressure", CalcSettings.Units.pressure)
+        appSettings.setValue("unit/target_height", CalcSettings.Units.target_height)
+        appSettings.setValue("unit/ogw", CalcSettings.Units.ogw)
+
+    # def update_config(self):
+    #     """loads all settings to current widget"""
+    #     self.init_general_tab()
+    #     self.init_units_tab()
+    #
+    #     self.load_general_settings()
+    #     # self.load_unit_settings()
+    #
+    #     self.init_extension_tab()
+    #     self.load_extension_settings()
+    #
+    #     self.tabSettings.setCurrentIndex(1)
+    #
+    #     self.save_cfg()
 
     def save_cfg(self):
         # with open(CONFIG_PATH, 'w') as fp:
@@ -110,37 +131,33 @@ class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
         that will be used globally in the app and a ballistics calculations
         """
 
-        [self.shUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.twistUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.vUnits.addItem(i.key, userData=i) for i in VelocityUnits]
-        [self.distUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.dUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.lnUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.tempUnits.addItem(i.key, userData=i) for i in TemperatureUnits]
-        [self.wUnits.addItem(i.key, userData=i) for i in WeightUnits]
-        [self.eUnits.addItem(i.key, userData=i) for i in EnergyUnits]
-        [self.dropUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.pathUnits.addItem(i.key, userData=i) for i in AngularUnits]
-        [self.angleUnits.addItem(i.key, userData=i) for i in AngularUnits]
-        [self.pUnits.addItem(i.key, userData=i) for i in PressureUnits]
-        [self.thUnits.addItem(i.key, userData=i) for i in DistanceUnits]
-        [self.ogwUnits.addItem(i.key, userData=i) for i in WeightUnits]
+        def init_one_combo(combo_box: QtWidgets.QComboBox, items: list, default: str):
 
-        self.shUnits.setCurrentIndex(self.shUnits.findData(CalcSettings.Units.sight_height))
-        self.twistUnits.setCurrentIndex(self.twistUnits.findData(CalcSettings.Units.twist))
-        self.vUnits.setCurrentIndex(self.vUnits.findData(CalcSettings.Units.velocity))
-        self.distUnits.setCurrentIndex(self.distUnits.findData(CalcSettings.Units.distance))
-        self.dUnits.setCurrentIndex(self.dUnits.findData(CalcSettings.Units.diameter))
-        self.lnUnits.setCurrentIndex(self.lnUnits.findData(CalcSettings.Units.length))
-        self.tempUnits.setCurrentIndex(self.tempUnits.findData(CalcSettings.Units.temperature))
-        self.wUnits.setCurrentIndex(self.wUnits.findData(CalcSettings.Units.weight))
-        self.eUnits.setCurrentIndex(self.eUnits.findData(CalcSettings.Units.energy))
-        self.dropUnits.setCurrentIndex(self.dropUnits.findData(CalcSettings.Units.drop))
-        self.pathUnits.setCurrentIndex(self.pathUnits.findData(CalcSettings.Units.adjustment))
-        self.angleUnits.setCurrentIndex(self.angleUnits.findData(CalcSettings.Units.angular))
-        self.pUnits.setCurrentIndex(self.pUnits.findData(CalcSettings.Units.pressure))
-        self.thUnits.setCurrentIndex(self.thUnits.findData(CalcSettings.Units.target_height))
-        self.ogwUnits.setCurrentIndex(self.ogwUnits.findData(CalcSettings.Units.ogw))
+            def on_change():
+                appSettings.setValue(default, combo_box.currentData())
+                appSignalMgr.appSettingsUpdated.emit()
+
+            [combo_box.addItem(i.key, userData=i) for i in items]
+            combo_box.setCurrentIndex(combo_box.findData(appSettings.value(default)))
+            combo_box.currentIndexChanged.connect(on_change)
+
+        init_one_combo(self.shUnits, DistanceUnits, 'unit/sight_height')
+        init_one_combo(self.twistUnits, DistanceUnits, 'unit/twist')
+        init_one_combo(self.distUnits, DistanceUnits, 'unit/distance')
+        init_one_combo(self.dUnits, DistanceUnits, 'unit/diameter')
+        init_one_combo(self.lnUnits, DistanceUnits, 'unit/length')
+        init_one_combo(self.dropUnits, DistanceUnits, 'unit/drop')
+        init_one_combo(self.thUnits, DistanceUnits, 'unit/target_height')
+
+        init_one_combo(self.vUnits, VelocityUnits, 'unit/velocity')
+        init_one_combo(self.tempUnits, TemperatureUnits, 'unit/temperature')
+        init_one_combo(self.pUnits, PressureUnits, 'unit/pressure')
+        init_one_combo(self.wUnits, WeightUnits, 'unit/weight')
+        init_one_combo(self.ogwUnits, WeightUnits, 'unit/ogw')
+        init_one_combo(self.eUnits, EnergyUnits, 'unit/energy')
+
+        init_one_combo(self.pathUnits, AngularUnits, 'unit/adjustment')
+        init_one_combo(self.angleUnits, AngularUnits, 'unit/angular')
 
     def load_general_settings(self):
         """loads last general settings from settings.ini"""
@@ -157,17 +174,17 @@ class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
         else:
             self.save_exp_dfed()
 
-    def load_unit_settings(self):
-        """loads last unit settings from settings.ini"""
-
-        widgets = self.tabUnits.findChildren(QtWidgets.QComboBox)
-        if 'Units' in self.config:
-            for i in self.config['Units']:
-                for w in widgets:
-                    if i == w.objectName().lower():
-                        w.setCurrentIndex(w.findData(self.config['Units'][i]))
-        else:
-            self.save_units_settings()
+    # def load_unit_settings(self):
+    #     """loads last unit settings from settings.ini"""
+    #
+    #     widgets = self.tabUnits.findChildren(QtWidgets.QComboBox)
+    #     if 'Units' in self.config:
+    #         for i in self.config['Units']:
+    #             for w in widgets:
+    #                 if i == w.objectName().lower():
+    #                     w.setCurrentIndex(w.findData(self.config['Units'][i]))
+    #     else:
+    #         self.save_units_settings()
 
     def save_exp_dfed(self):
         """

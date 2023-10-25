@@ -4,6 +4,7 @@ from PySide6 import QtWidgets, QtCore
 
 from .ui import Ui_FooterWidget
 from py_balcalc import __version__
+from ..settings import AppSettings
 
 
 # footer of the main app window
@@ -17,8 +18,8 @@ class FooterWidget(QtWidgets.QWidget, Ui_FooterWidget):
 
     def open_app_settings(self):
         """opens AppSettings dialog and updates app settings if it changed"""
-        dlg = self.window().settings
-        if dlg.exec_():
+        # dlg = self.window().settings
+        if AppSettings().exec_():
             ...
         #     self.window().setUnits()
         #     self.window().setLang()

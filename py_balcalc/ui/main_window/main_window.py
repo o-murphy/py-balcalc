@@ -26,8 +26,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # self.translator_qt = QtCore.QTranslator()
         # self.app_settings = self.app.settings
 
-        self.settings = AppSettings()
-
     def setupUi(self, main_window: 'MainWindow'):
         super().setupUi(main_window)
         self.tabWidget.setObjectName('MainTabWidget')

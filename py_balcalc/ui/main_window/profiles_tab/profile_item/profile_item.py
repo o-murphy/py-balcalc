@@ -4,9 +4,11 @@ from PySide6 import QtCore, QtWidgets, QtGui
 # from dbworker import get_defaults
 # from dbworker.models import DragFunc
 # from modules.flags import DatabaseRW
+from py_balcalc.signals_manager import appSignalMgr
 from .ui import Ui_profileItem
 from py_balcalc.ui.custom_widgets import NoWheelDoubleSpinBox
 from py_ballisticcalc import Unit
+from py_balcalc.settings import appSettings
 
 
 # creates, show and store ballistic profile
@@ -73,26 +75,33 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
 
         # self.drag_idx = 0
         # self.drags = []
-        #
-        # self.app_settings = None
 
+        self.setConnects()
         self.setUnits()
+
+        appSignalMgr.appSettingsUpdated.connect(self.setUnits)
+
+    def setConnects(self):
         self.z_d.valueChanged.connect(self.z_d_changed)
 
+    def disconnect(self):
+        self.z_d.valueChanged.disconnect(self.z_d_changed)
+
     def z_d_changed(self, value):
-        self._z_d = self.window().settings.distUnits.currentData()(value)
+        self._z_d = appSettings.value('unit/distance')(value)
 
     def setUnits(self):
-        units = self.window().settings
-        du = units.distUnits.currentData()
+        self.disconnect()
+        du = appSettings.value('unit/distance')
         _translate = QtCore.QCoreApplication.translate
         self.z_d.setValue(self._z_d >> du)
         self.z_d.setSuffix(' ' + _translate("units", du.symbol))
+        self.setConnects()
 
     def create_tile(self):
         """creates tile of ballistic profile"""
-        settings = self.window().settings
-        wu = settings.wUnits.currentData()
+        # settings = self.window().settings
+        wu = appSettings.value('unit/weight')
         self.weightTile = f'{self.weight >> wu}' \
                           f'{wu.symbol}'
 
@@ -237,13 +246,14 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         # if 'z_wind_speed' in data:
         #     self.z_wind_speed = Velocity(data['z_wind_speed'], VelocityMPS)
 
-        self.mv = Unit.MPS(prof.c_muzzle_velocity / 100)
+        self.mv = Unit.MPS(prof.c_muzzle_velocity / 10)
         self.temp = Unit.CELSIUS(prof.c_zero_temperature)
         self.ts = prof.c_t_coeff / 1000
 
         self.weight = Unit.GRAIN(prof.b_weight / 10)
         self.length = Unit.INCH(prof.b_length / 1000)
-        self.diameter = Unit.INCH(prof.b_weight / 1000)
+        self.diameter = Unit.INCH(prof.b_diameter / 1000)
+
         self.bulletName = prof.bullet_name
 
         # self.drag_idx = data['drag_idx']
