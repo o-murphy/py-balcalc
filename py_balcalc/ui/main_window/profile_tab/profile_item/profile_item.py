@@ -1,4 +1,6 @@
 from re import search
+
+import a7p
 from PySide6 import QtCore, QtWidgets, QtGui
 
 # from dbworker import get_defaults
@@ -12,34 +14,40 @@ from py_balcalc.settings import appSettings
 
 
 # creates, show and store ballistic profile
-class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
+class ProfileItem(QtCore.QObject):
     def __init__(self, parent=None):
         super(ProfileItem, self).__init__(parent)
-        self.setupUi(self)
+        # self.setupUi(self)
 
-        self.tile.setHidden(True)
+        self._payload = a7p.Payload()
 
+        # self.tile.setHidden(True)
+
+        self.rifleName = ''
+        self.caliberName = ''
+        self.cartridgeName = ''
+        self.bulletName = ''
         self.weightTile = ''
         self.caliberShort = ''
-        self.tile = QtWidgets.QLabel(self.tile)
+        # self.tile = QtWidgets.QLabel(self.tile)
 
-        self.z_x = NoWheelDoubleSpinBox()
-        self.z_x = NoWheelDoubleSpinBox()
-        self.z_x.setPrefix('X: ')
-        self.z_y = NoWheelDoubleSpinBox()
-        self.z_y.setPrefix('Y: ')
-        self.z_d = NoWheelDoubleSpinBox()
-        self.z_d.setMaximum(10000)
-        self.z_x.setObjectName('z_x')
-        self.z_y.setObjectName('z_y')
-        self.z_d.setObjectName('z_d')
-        self.z_d.resize(90, 50)
-        self.z_d.setDecimals(1)
+        # self.z_x = NoWheelDoubleSpinBox()
+        # self.z_x = NoWheelDoubleSpinBox()
+        # self.z_x.setPrefix('X: ')
+        # self.z_y = NoWheelDoubleSpinBox()
+        # self.z_y.setPrefix('Y: ')
+        # self.z_d = NoWheelDoubleSpinBox()
+        # self.z_d.setMaximum(10000)
+        # self.z_x.setObjectName('z_x')
+        # self.z_y.setObjectName('z_y')
+        # self.z_d.setObjectName('z_d')
+        # self.z_d.resize(90, 50)
+        # self.z_d.setDecimals(1)
 
-        self.gridLayout.addWidget(self.tile, 0, 0, 2, 1)
-        self.gridLayout.addWidget(self.z_x, 0, 2, 1, 1)
-        self.gridLayout.addWidget(self.z_y, 1, 2, 1, 1)
-        self.gridLayout.addWidget(self.z_d, 0, 3, 2, 1)
+        # self.gridLayout.addWidget(self.tile, 0, 0, 2, 1)
+        # self.gridLayout.addWidget(self.z_x, 0, 2, 1, 1)
+        # self.gridLayout.addWidget(self.z_y, 1, 2, 1, 1)
+        # self.gridLayout.addWidget(self.z_d, 0, 3, 2, 1)
 
         self._z_d = Unit.METER(100)  # zeroing distUnits
 
@@ -82,10 +90,12 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         appSignalMgr.appSettingsUpdated.connect(self.setUnits)
 
     def setConnects(self):
-        self.z_d.valueChanged.connect(self.z_d_changed)
+        # self.z_d.valueChanged.connect(self.z_d_changed)
+        ...
 
     def disconnect(self):
-        self.z_d.valueChanged.disconnect(self.z_d_changed)
+        # self.z_d.valueChanged.disconnect(self.z_d_changed)
+        ...
 
     def z_d_changed(self, value):
         self._z_d = appSettings.value('unit/distance')(value)
@@ -94,24 +104,24 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         self.disconnect()
         du = appSettings.value('unit/distance')
         _translate = QtCore.QCoreApplication.translate
-        self.z_d.setValue(self._z_d >> du)
-        self.z_d.setSuffix(' ' + _translate("units", du.symbol))
+        # self.z_d.setValue(self._z_d >> du)
+        # self.z_d.setSuffix(' ' + _translate("units", du.symbol))
         self.setConnects()
 
     def create_tile(self):
         """creates tile of ballistic profile"""
         # settings = self.window().settings
-        wu = appSettings.value('unit/weight')
-        self.weightTile = f'{self.weight >> wu}' \
-                          f'{wu.symbol}'
+        # wu = appSettings.value('unit/weight')
+        # self.weightTile = f'{self.weight >> wu}' \
+        #                   f'{wu.symbol}'
 
-        pixmap = QtGui.QPixmap(32, 32)
-        pixmap.fill(QtCore.Qt.white)
-        self.tile.setPixmap(pixmap)
+        # pixmap = QtGui.QPixmap(32, 32)
+        # pixmap.fill(QtCore.Qt.white)
+        # self.tile.setPixmap(pixmap)
 
-        tile_font = QtGui.QFont('Arial Narrow')
-        tile_font.setPixelSize(11)
-        tile_font.setStyleStrategy(QtGui.QFont.NoAntialias)
+        # tile_font = QtGui.QFont('Arial Narrow')
+        # tile_font.setPixelSize(11)
+        # tile_font.setStyleStrategy(QtGui.QFont.NoAntialias)
 
         # painter = QtGui.QPainter(self.tile.pixmap())
         # painter.setFont(tile_font)
@@ -129,6 +139,7 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         #     rect = QtCore.QRect(0, int(row_size * i), 32, row_size)
         #     painter.drawText(rect, QtCore.Qt.AlignCenter, r)
         # del painter
+        ...
 
     def auto_tile(self):
         """changes current auto tile creation mode"""
@@ -206,7 +217,13 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #     }
     #     return data
     #
-    def set(self, input_data):
+
+    def get(self) -> a7p.Payload:
+        prof = self._payload.profile
+        # prof.c_zero_distance_idx = int(self._z_d >> Unit.METER) * 100
+        return self._payload
+
+    def set(self, payload: a7p.Payload):
         """set input data to ballistic profile instance"""
 
         # defaults = get_defaults()
@@ -216,13 +233,14 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
     #     else:
     #         data = defaults
     #
-        prof = input_data.profile
+        self._payload = payload
+        prof = self._payload.profile
         self._z_d = Unit.METER(
             prof.distances[prof.c_zero_distance_idx] / 100
         )
 
-        self.z_x.setValue(prof.zero_x)
-        self.z_y.setValue(prof.zero_y)
+        # self.z_x.setValue(prof.zero_x)
+        # self.z_y.setValue(prof.zero_y)
 
         self.sh = Unit.MILLIMETER(prof.sc_height)
         self.twist = Unit.INCH(prof.r_twist / 100)
@@ -230,8 +248,8 @@ class ProfileItem(QtWidgets.QWidget, Ui_profileItem):
         self.rightTwist = prof.twist_dir == 0
         self.caliberShort = prof.short_name_top
 
-        self.rifleName.setText(prof.profile_name)
-        self.cartridgeName.setText(prof.cartridge_name)
+        self.rifleName = prof.profile_name
+        self.cartridgeName = prof.cartridge_name
 
         self.z_pressure = Unit.HP(prof.c_zero_air_pressure / 10)
         self.z_temp = Unit.CELSIUS(prof.c_zero_temperature)

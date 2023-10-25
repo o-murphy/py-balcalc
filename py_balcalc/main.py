@@ -26,7 +26,7 @@ def qt_message_handler(mode, context, message):
 
 
 def main():
-    QtCore.qInstallMessageHandler(qt_message_handler)
+    # QtCore.qInstallMessageHandler(qt_message_handler)
 
     app = QtWidgets.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('.rsrc/Icon.ico'))

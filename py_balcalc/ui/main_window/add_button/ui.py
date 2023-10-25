@@ -30,7 +30,7 @@ class Ui_addButton(object):
         # self.add.setMaximumSize(QtCore.QSize(16777215, 16777215))
         # icon = QtGui.QIcon()
         # icon.addPixmap(QtGui.QPixmap(":/icons/res/drawable-hdpi-v4/addbtn_menu21b.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.add.setIcon(qta.icon('mdi6.plus', color='grey'))
+        self.add.setIcon(qta.icon('mdi6.file-outline', color='grey'))
         self.add.setIconSize(QtCore.QSize(20, 20))
         self.add.setObjectName("add")
         self.gridLayout.addWidget(self.add, 0, 0, 1, 1)

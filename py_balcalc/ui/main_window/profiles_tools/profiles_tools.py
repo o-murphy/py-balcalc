@@ -11,6 +11,7 @@ class ProfilesTools(QtWidgets.QWidget, Ui_profilesTools):
         super().__init__(parent)
         self.setupUi(self)
 
+        self.layout().setAlignment(QtCore.Qt.AlignLeft)
         self.saveButton.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.saveButtonMenu = QtWidgets.QMenu(self)
         icon9 = QtGui.QIcon()
@@ -21,8 +22,10 @@ class ProfilesTools(QtWidgets.QWidget, Ui_profilesTools):
         self.saveButtonMenu.addAction(self.saveAsAction)
 
         self.saveButton.customContextMenuRequested.connect(self.on_context_menu)
-        if self.parent():
-            self.saveAsAction.triggered.connect(self.parent().save_as_file_dialog)
+
+        # tabw = self.window().findChild(QtWidgets.QTabWidget, 'MainTabWidget')
+        # # if not isinstance(self.parent(), QtWidgets.QMainWindow):
+        # self.saveAsAction.triggered.connect(tabw.save_as_file_dialog)
 
     def on_context_menu(self, point):
         self.saveButtonMenu.exec_(self.saveButton.mapToGlobal(point))

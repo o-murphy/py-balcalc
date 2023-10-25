@@ -1,4 +1,6 @@
 from PySide6 import QtWidgets, QtCore, QtGui
+from a7p import TwistDir
+from py_ballisticcalc import Unit
 
 from py_balcalc.settings import appSettings
 from py_balcalc.signals_manager import appSignalMgr
@@ -13,6 +15,8 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
         self.setupUi(self)
 
         self._cur_profile = None
+
+        self.setConnects()
 
     def setupUi(self, weapon):
         super().setupUi(weapon)
@@ -47,14 +51,14 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
 
     def _auto_tile(self):
         self._cur_profile.auto_tile()
-        self.caliberShort.setText(self._cur_profile.caliberShort)
+        self.caliberShort = self._cur_profile.caliberShort
 
     def _set_caliber_short(self, text):
         self._cur_profile.caliberShort = text
         self._cur_profile.create_tile()
 
     def _rifle_name_changed(self, text):
-        self._cur_profile.rifleName.setText(text)
+        self._cur_profile.rifleName = text
 
     def _caliber_name_changed(self, text):
         self._cur_profile.caliberName = text
@@ -70,17 +74,15 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
 
     def setUnits(self):
         self.disconnect()
-        if self._cur_profile:
-            _translate = QtCore.QCoreApplication.translate
+        _translate = QtCore.QCoreApplication.translate
 
-            shu = appSettings.value('unit/sight_height')
-            tu = appSettings.value('unit/twist')
+        shu = appSettings.value('unit/sight_height')
+        tu = appSettings.value('unit/twist')
 
-            self.sh.setValue(self._cur_profile.sh >> shu)
-            self.sh.setSuffix(' ' + _translate("units", shu.symbol))
-            self.twist.setValue(self._cur_profile.twist >> tu)
-            self.twist.setSuffix(' ' + _translate("units", tu.symbol))
-            self.caliberShort.setText(self._cur_profile.caliberShort)
+        self.sh.setValue(self._cur_profile.sh >> shu)
+        self.sh.setSuffix(' ' + _translate("units", shu.symbol))
+        self.twist.setValue(self._cur_profile.twist >> tu)
+        self.twist.setSuffix(' ' + _translate("units", tu.symbol))
         self.setConnects()
 
     def set_current(self, profile):
@@ -88,8 +90,9 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
         self._cur_profile = profile
         self.setUnits()
 
-        self.rifleName.setText(self._cur_profile.rifleName.text())
+        self.rifleName.setText(self._cur_profile.rifleName)
         self.caliberName.setText(self._cur_profile.caliberName)
+        self.caliberShort.setText(self._cur_profile.caliberShort)
         self.rightTwist.setChecked(self._cur_profile.rightTwist)
 
     def retranslateUi(self, weapon):

@@ -112,7 +112,7 @@ class Ui_cartridge(object):
         sizePolicy.setHeightForWidth(self.mv.sizePolicy().hasHeightForWidth())
         self.mv.setSizePolicy(sizePolicy)
         self.mv.setStyleSheet("")
-        self.mv.setMaximum(2000)
+        self.mv.setMaximum(5000)
         self.mv.setObjectName("mv")
         self.gridLayout_2.addWidget(self.mv, 1, 1, 1, 1)
         self.gridLayout.addWidget(self.cartridgeGroupBox, 0, 0, 1, 1)

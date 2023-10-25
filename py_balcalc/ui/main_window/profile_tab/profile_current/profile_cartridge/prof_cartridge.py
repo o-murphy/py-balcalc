@@ -37,10 +37,10 @@ class ProfileCartridge(QtWidgets.QWidget, Ui_cartridge):
         self._cur_profile.ts = value
 
     def _cartridge_name_changed(self, text):
-        self._cur_profile.cartridgeName.setText(text)
+        self._cur_profile.cartridgeName = text
 
     def _temp_changed(self, value):
-        self._cur_profile._temp = appSettings.value('unit/temperature')(value)
+        self._cur_profile.temp = appSettings.value('unit/temperature')(value)
 
     def _validate_mv(self, value):
         if self.mv.value() == 0:
@@ -50,18 +50,18 @@ class ProfileCartridge(QtWidgets.QWidget, Ui_cartridge):
 
     def setUnits(self):
         self.disconnect()
+
         if self._cur_profile:
             _translate = QtCore.QCoreApplication.translate
 
             vu = appSettings.value('unit/velocity')
             tu = appSettings.value('unit/temperature')
-
             self.mv.setValue(self._cur_profile.mv >> vu)
             self.temp.setValue(self._cur_profile.temp >> tu)
             self.mv.setSuffix(' ' + _translate("units", vu.symbol))
             self.temp.setSuffix(' ' + _translate("units", tu.symbol))
 
-            self.cartridgeName.setText(self._cur_profile.cartridgeName.text())
+            self.cartridgeName.setText(self._cur_profile.cartridgeName)
             self.ts.setValue(self._cur_profile.ts)
         self.setConnects()
 

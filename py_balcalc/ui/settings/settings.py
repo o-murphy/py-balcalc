@@ -200,22 +200,24 @@ class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
     def save_language_settings(self):
         """saves language settings to settings.ini"""
 
-        locale = self.Language.currentData()
-        # config = configparser.ConfigParser()
-        # config.read(CONFIG_PATH)
-
-        if 'Locale' not in self.config:
-            self.config.add_section('Locale')
-
-        self.config.set('Locale', 'system', QtCore.QLocale.system().name().split('_')[1].lower())
-        if locale != 'en':
-            if os.path.isfile(f'translate/eng-{locale}.qm'):
-                self.config.set('Locale', 'current', locale)
-            else:
-                locale = self.config['Locale']['system']
-                self.config.set('Locale', 'current', locale)
-        else:
-            self.config.set('Locale', 'current', locale)
+        # locale = self.Language.currentData()
+        # # config = configparser.ConfigParser()
+        # # config.read(CONFIG_PATH)
+        #
+        # if 'Locale' not in self.config:
+        #     self.config.add_section('Locale')
+        #
+        # self.config.set('Locale', 'system', QtCore.QLocale.system().name().split('_')[1].lower())
+        # if locale != 'en':
+        #     if os.path.isfile(f'translate/eng-{locale}.qm'):
+        #         self.config.set('Locale', 'current', locale)
+        #     else:
+        #         locale = self.config['Locale']['system']
+        #         self.config.set('Locale', 'current', locale)
+        # else:
+        #     self.config.set('Locale', 'current', locale)
+        # appSignalMgr.appSettingsUpdated.emit()
+        ...
 
     def save_units_settings(self):
         """saves _cur_units settings to settings.ini"""
