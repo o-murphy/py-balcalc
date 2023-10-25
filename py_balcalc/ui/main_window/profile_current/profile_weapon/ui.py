@@ -116,7 +116,7 @@ class Ui_weapon(object):
         self.rifleName.setMaxLength(20)
         self.rifleName.setFrame(True)
         self.rifleName.setObjectName("rifleName")
-        self.gridLayout_2.addWidget(self.rifleName, 0, 1, 1, 2)
+        self.gridLayout_2.addWidget(self.rifleName, 0, 1, 1, 3)
         self.twist = QtWidgets.QDoubleSpinBox(self.rifleGroupBox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
