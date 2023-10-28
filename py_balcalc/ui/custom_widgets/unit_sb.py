@@ -23,7 +23,8 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         pass
 
     def valueFromText(self, text: str) -> float:
-        text = text.replace(",", ".")
+        print(text)
+        text = text.split(' ')[0].replace(",", ".")
         return float(text)
 
     def set_display_unit(self, unit: Unit):
