@@ -81,7 +81,7 @@ class Ui_cartridge(object):
         self.label_72.setObjectName("label_72")
         self.gridLayout_2.addWidget(self.label_72, 3, 0, 1, 1)
         self.cartridgeName = QtWidgets.QLineEdit(self.cartridgeGroupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cartridgeName.sizePolicy().hasHeightForWidth())

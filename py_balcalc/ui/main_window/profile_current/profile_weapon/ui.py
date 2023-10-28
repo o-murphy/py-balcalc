@@ -7,6 +7,9 @@
 
 
 from PySide6 import QtCore, QtWidgets
+from py_ballisticcalc import Unit
+
+from py_balcalc.ui.custom_widgets.unit_sb import UnitSpinBox
 
 
 class Ui_weapon(object):
@@ -126,7 +129,10 @@ class Ui_weapon(object):
         self.twist.setStyleSheet("")
         self.twist.setObjectName("twistUnits")
         self.gridLayout_2.addWidget(self.twist, 3, 1, 1, 1)
-        self.sh = QtWidgets.QDoubleSpinBox(self.rifleGroupBox)
+
+        # self.sh = QtWidgets.QDoubleSpinBox(self.rifleGroupBox)
+        self.sh = UnitSpinBox(self.rifleGroupBox, Unit.CENTIMETER(9), 'unit/sight_height')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

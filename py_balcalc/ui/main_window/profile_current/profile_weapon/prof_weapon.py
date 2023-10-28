@@ -32,7 +32,7 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
 
     def setConnects(self):
         """connects functions to its controllers in the inner widgets"""
-        self.sh.valueChanged.connect(self._sh_changed)
+        # self.sh.valueChanged.connect(self._sh_changed)
         self.twist.valueChanged.connect(self._twist_changed)
         self.rifleName.textChanged.connect(self._rifle_name_changed)
         self.caliberName.textChanged.connect(self._caliber_name_changed)
@@ -40,7 +40,7 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
         self.caliberShort.textChanged.connect(self._set_caliber_short)
 
     def disconnect(self):
-        self.sh.valueChanged.disconnect(self._sh_changed)
+        # self.sh.valueChanged.disconnect(self._sh_changed)
         self.twist.valueChanged.disconnect(self._twist_changed)
         self.rifleName.textChanged.disconnect(self._rifle_name_changed)
         self.caliberName.textChanged.disconnect(self._caliber_name_changed)
@@ -63,8 +63,8 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
     def _twist_direction_changed(self):
         self._cur_profile.rightTwist = self.rightTwist.isChecked()
 
-    def _sh_changed(self, value):
-        self._cur_profile.sh = appSettings.value('unit/sight_height')(value)
+    # def _sh_changed(self, value):
+    #     self._cur_profile.sh = appSettings.value('unit/sight_height')(value)
 
     def _twist_changed(self, value):
         self._cur_profile.twist = appSettings.value('unit/twist')(value)
@@ -76,8 +76,11 @@ class ProfileWeapon(QtWidgets.QWidget, Ui_weapon):
         shu = appSettings.value('unit/sight_height')
         tu = appSettings.value('unit/twist')
 
-        self.sh.setValue(self._cur_profile.sh >> shu)
-        self.sh.setSuffix(' ' + _translate("units", shu.symbol))
+        # self.sh.setValue(self._cur_profile.sh >> shu)
+        # self.sh.setSuffix(' ' + _translate("units", shu.symbol))
+
+        self.sh.set_raw_value(self._cur_profile.sh)
+
         self.twist.setValue(self._cur_profile.twist >> tu)
         self.twist.setSuffix(' ' + _translate("units", tu.symbol))
         self.setConnects()
