@@ -8,6 +8,9 @@
 
 import qtawesome as qta
 from PySide6 import QtCore, QtGui, QtWidgets
+from py_ballisticcalc import Unit
+
+from py_balcalc.ui.custom_widgets import UnitSpinBox
 
 
 class Ui_bullet(object):
@@ -30,7 +33,9 @@ class Ui_bullet(object):
         self.bulletGroupBox.setObjectName("bulletGroupBox")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.bulletGroupBox)
         self.gridLayout_4.setObjectName("gridLayout_4")
-        self.weight = QtWidgets.QDoubleSpinBox(self.bulletGroupBox)
+
+        self.weight = UnitSpinBox(self.bulletGroupBox, Unit.GRAIN(175), 'unit/weight')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -116,7 +121,9 @@ class Ui_bullet(object):
         self.dragEditor.setIcon(qta.icon('mdi6.tune', color='white', color_disabled='grey'))
         self.dragEditor.setObjectName("dragEditor")
         self.gridLayout_4.addWidget(self.dragEditor, 5, 4, 1, 1)
-        self.diameter = QtWidgets.QDoubleSpinBox(self.bulletGroupBox)
+
+        self.diameter = UnitSpinBox(self.bulletGroupBox, Unit.INCH(0.308), 'unit/diameter')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -135,7 +142,9 @@ class Ui_bullet(object):
         self.label_76.setSizePolicy(sizePolicy)
         self.label_76.setObjectName("label_76")
         self.gridLayout_4.addWidget(self.label_76, 2, 2, 1, 1)
-        self.length = QtWidgets.QDoubleSpinBox(self.bulletGroupBox)
+
+        self.length = UnitSpinBox(self.bulletGroupBox, Unit.INCH(1.2), 'unit/length')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

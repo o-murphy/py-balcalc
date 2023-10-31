@@ -120,7 +120,9 @@ class Ui_weapon(object):
         self.rifleName.setFrame(True)
         self.rifleName.setObjectName("rifleName")
         self.gridLayout_2.addWidget(self.rifleName, 0, 1, 1, 3)
-        self.twist = QtWidgets.QDoubleSpinBox(self.rifleGroupBox)
+
+        self.twist = UnitSpinBox(self.rifleGroupBox, Unit.INCH(10), 'unit/twist')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -130,7 +132,6 @@ class Ui_weapon(object):
         self.twist.setObjectName("twistUnits")
         self.gridLayout_2.addWidget(self.twist, 3, 1, 1, 1)
 
-        # self.sh = QtWidgets.QDoubleSpinBox(self.rifleGroupBox)
         self.sh = UnitSpinBox(self.rifleGroupBox, Unit.CENTIMETER(9), 'unit/sight_height')
 
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)

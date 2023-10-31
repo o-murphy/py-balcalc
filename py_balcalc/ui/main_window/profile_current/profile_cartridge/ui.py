@@ -7,6 +7,9 @@
 
 
 from PySide6 import QtCore, QtWidgets
+from py_ballisticcalc import Unit
+
+from py_balcalc.ui.custom_widgets import UnitSpinBox
 
 
 class Ui_cartridge(object):
@@ -96,7 +99,9 @@ class Ui_cartridge(object):
         self.cartridgeName.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.cartridgeName.setObjectName("cartridgeName")
         self.gridLayout_2.addWidget(self.cartridgeName, 0, 1, 1, 2)
-        self.temp = QtWidgets.QSpinBox(self.cartridgeGroupBox)
+
+        self.temp = UnitSpinBox(self.cartridgeGroupBox, Unit.CELSIUS(15), 'unit/temperature')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -105,7 +110,9 @@ class Ui_cartridge(object):
         self.temp.setStyleSheet("")
         self.temp.setObjectName("temp")
         self.gridLayout_2.addWidget(self.temp, 2, 1, 1, 1)
-        self.mv = QtWidgets.QSpinBox(self.cartridgeGroupBox)
+
+        self.mv = UnitSpinBox(self.cartridgeGroupBox, Unit.MPS(800), 'unit/velocity')
+
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

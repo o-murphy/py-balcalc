@@ -3,8 +3,8 @@
 from PySide6 import QtWidgets, QtGui, QtCore
 
 
-# implementation of QDoubleSpinBox with ignored wheelEvent
 class NoWheelDoubleSpinBox(QtWidgets.QDoubleSpinBox):
+    """implementation of QDoubleSpinBox with ignored wheelEvent"""
     def __init__(self):
         super(NoWheelDoubleSpinBox, self).__init__()
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
@@ -31,8 +31,8 @@ class NoWheelDoubleSpinBox(QtWidgets.QDoubleSpinBox):
             super().wheelEvent(event)
 
 
-# implementation of QSpinBox with ignored wheelEvent
 class NoWheelSpinBox(QtWidgets.QSpinBox):
+    """implementation of QSpinBox with ignored wheelEvent"""
     def __init__(self):
         super(NoWheelSpinBox, self).__init__()
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)

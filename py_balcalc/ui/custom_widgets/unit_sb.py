@@ -11,7 +11,6 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         super().__init__(parent)
 
         self._unit_settings_key = unit_settings_key
-        self._display_unit = None
         self._raw_value = default
 
         self.update_display_unit()
@@ -19,42 +18,31 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         self.valueChanged.connect(self.update_raw_value)
         appSignalMgr.appSettingsUpdated.connect(self.update_display_unit)
 
-    def wheelEvent(self, event) -> None:
-        pass
+    # def wheelEvent(self, event) -> None:
+    #     pass
+
+    def validate(self, text: str, pos: int) -> object:
+        # text = text.split(' ')[0].replace(".", ",")
+        text = text.split(' ')[0].replace(",", ".")
+        return QtWidgets.QDoubleSpinBox.validate(self, text, pos)
 
     def valueFromText(self, text: str) -> float:
-        print(text)
         text = text.split(' ')[0].replace(",", ".")
         return float(text)
 
     def set_display_unit(self, unit: Unit):
-        self._display_unit = unit
         self.setDecimals(unit.accuracy)
         self.setSingleStep(10**(-self.decimals()))
         _translate = QtCore.QCoreApplication.translate
         self.setSuffix(' ' + _translate("units", unit.symbol))
 
-        print(self._display_unit)
-        # self.setValue(self._raw_value >> unit)
-
     def update_display_unit(self):
         self.set_display_unit(appSettings.value(self._unit_settings_key))
-        self.setValue(self._raw_value >> self._display_unit)
-
-    # def _from_raw(self, value) -> float:
-    #     return self._raw_unit(value) >> self._unit
-    #
-    # def _to_raw(self, value) -> float:
-    #     return self._unit(value) >> self._raw_unit
-    #
+        self.setValue(self._raw_value >> appSettings.value(self._unit_settings_key))
 
     def update_raw_value(self, value):
-        self._raw_value = self._display_unit(value)
-        print('upd', value, self._display_unit(value))
+        self._raw_value = appSettings.value(self._unit_settings_key)(value)
 
     def set_raw_value(self, value: AbstractUnit):
         self._raw_value = value
-        self.setValue(self._raw_value >> self._display_unit)
-    #
-    # def rawValue(self):
-    #     return self._to_raw(self.value())
+        self.setValue(self._raw_value >> appSettings.value(self._unit_settings_key))
