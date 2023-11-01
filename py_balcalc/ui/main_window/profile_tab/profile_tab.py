@@ -88,7 +88,7 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
         # self.z_latitude.set_raw_value(Angular(data['z_latitude'], AngularDegree))
 
         if self._profile.bc_type == a7p.GType.G1:
-            self.bullet.drag_model_label.setText("G1")
+            self.bullet.drag_model_label.setText("Drag model: G1")
             self.bullet.drag_model.setCurrentIndex(0)
             for i, row in enumerate(self._profile.coef_rows):
                 v = self.bullet.drag_model.g1.cellWidget(i, 0)
@@ -96,7 +96,7 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
                 v.set_raw_value(Unit.MPS(row.mv / 10))
                 c.setValue(Unit.MPS(row.bc_cd / 10000))
         elif self._profile.bc_type == a7p.GType.G7:
-            self.bullet.drag_model_label.setText("G7")
+            self.bullet.drag_model_label.setText("Drag model: G7")
             self.bullet.drag_model.setCurrentIndex(1)
             for i, row in enumerate(self._profile.coef_rows):
                 v = self.bullet.drag_model.g7.cellWidget(i, 0)
