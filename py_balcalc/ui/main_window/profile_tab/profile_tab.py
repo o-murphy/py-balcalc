@@ -3,14 +3,14 @@ from PySide6 import QtCore, QtWidgets
 from py_ballisticcalc import Unit
 
 from py_balcalc.signals_manager import appSignalMgr
-from .ui import Ui_profileCurrent
+from .ui import Ui_profileTab
 from .profile_weapon import ProfileWeapon
 from .profile_cartridge import ProfileCartridge
 from .profile_bullet import ProfileBullet
 from .profile_conditions import ProfileConditions
 
 
-class ProfileTab(QtWidgets.QWidget, Ui_profileCurrent):
+class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
     def __init__(self, parent=None, payload=None):
         super().__init__(parent)
         self.weapon = ProfileWeapon(self)
@@ -22,15 +22,17 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileCurrent):
         self._profile = payload.profile
         self.__post_init__()
 
-    def setupUi(self, profileCurrent):
-        super(ProfileTab, self).setupUi(profileCurrent)
-        self.bullet.layout().setAlignment(QtCore.Qt.AlignTop)
+    def setupUi(self, profileTab):
+        super(ProfileTab, self).setupUi(profileTab)
         self.munition_tab.layout().setAlignment(QtCore.Qt.AlignTop)
         self.conditions_tab.layout().setAlignment(QtCore.Qt.AlignTop)
         self.munition_tab.layout().addWidget(self.weapon, 0, 0, 1, 1)
         self.munition_tab.layout().addWidget(self.cartridge, 1, 0, 1, 1)
         self.munition_tab.layout().addWidget(self.bullet, 0, 1, 2, 1)
         self.conditions_tab.layout().addWidget(self.conditions, 0, 0, 1, 1)
+
+        self.munition_tab.layout().setColumnStretch(0, 1)
+        self.munition_tab.layout().setColumnStretch(1, 1)
 
     def __post_init__(self):
         """

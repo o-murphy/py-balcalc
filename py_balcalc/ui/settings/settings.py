@@ -239,11 +239,11 @@ class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
             self.config.set('Extensions', ch.objectName(), str(ch.isChecked()))
 
     def accept(self) -> None:
-        self.save_language_settings()
-        self.save_exp_dfed()
-        self.save_units_settings()
-        self.save_extensions_settings()
-        self.save_cfg()
+        # self.save_language_settings()
+        # self.save_exp_dfed()
+        # self.save_units_settings()
+        # self.save_extensions_settings()
+        # self.save_cfg()
         super().accept()
 
     def retranslateUi(self, AppSettings):

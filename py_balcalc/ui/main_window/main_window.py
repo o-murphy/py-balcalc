@@ -56,7 +56,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stacked.setCurrentIndex(count > 0)
 
     def setConnects(self):
-        self.add_button.add.clicked.connect(self.open_file_dialog)
+        # self.add_button.add.clicked.connect(self.open_file_dialog)
+        self.add_button.clicked.connect(self.open_file_dialog)
         self.profile_tools.openFile.clicked.connect(self.open_file_dialog)
         self.profile_tools.newProfileButton.clicked.connect(self.open_wizard)
         self.profilesTabs.tabCloseRequested.connect(self.close_tab)

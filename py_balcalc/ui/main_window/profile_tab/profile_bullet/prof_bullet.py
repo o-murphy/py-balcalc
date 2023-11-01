@@ -1,8 +1,9 @@
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets
+
 from .ui import Ui_bullet
 
 
-class ProfileBullet(QtWidgets.QWidget, Ui_bullet):
+class ProfileBullet(QtWidgets.QGroupBox, Ui_bullet):
     """shows selected profile bullet property"""
 
     def __init__(self, parent=None):
@@ -10,11 +11,6 @@ class ProfileBullet(QtWidgets.QWidget, Ui_bullet):
         self.setupUi(self)
 
         # self._ch_df_text = {}
-
-    def setupUi(self, bullet):
-        super().setupUi(bullet)
-        self.bulletGroupBox.setCheckable(False)
-        self.bulletGroupBox.layout().setAlignment(QtCore.Qt.AlignLeft)
 
     # def _df_changed(self, idx):
     #     """updates list of drag function for selected bullet"""
