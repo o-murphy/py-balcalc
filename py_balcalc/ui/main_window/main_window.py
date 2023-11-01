@@ -4,7 +4,7 @@ from .add_button import AddButton
 from .profile_wizard import ProfileWizard
 from .ui import Ui_MainWindow
 from ..footer import FooterWidget
-from .profile_current import ProfileCurrent
+from .profile_tab import ProfileTab
 from .profiles_tools import ProfilesTools
 
 from py_balcalc.file import open_files
@@ -46,10 +46,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         if file_names:
             profiles = open_files(file_names)
-            for prof in profiles:
-                profile_tab = ProfileCurrent(self)
-                profile_tab.set_current(prof)
-                self.profilesTabs.addTab(profile_tab, prof.profile.profile_name[:12])
+            for payload in profiles:
+                profile_tab = ProfileTab(self, payload)
+                self.profilesTabs.addTab(profile_tab, payload.profile.profile_name[:12])
             self.switch_stacked()
 
     def switch_stacked(self):

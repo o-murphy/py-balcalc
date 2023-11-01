@@ -46,3 +46,4 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
     def set_raw_value(self, value: AbstractUnit):
         self._raw_value = value
         self.setValue(self._raw_value >> appSettings.value(self._unit_settings_key))
+        self.set_display_unit(appSettings.value(self._unit_settings_key))

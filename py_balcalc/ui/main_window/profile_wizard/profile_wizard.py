@@ -1,8 +1,8 @@
 from PySide6 import QtWidgets
 
-from ..profile_current.profile_weapon import ProfileWeapon
-from ..profile_current.profile_cartridge import ProfileCartridge
-from ..profile_current.profile_bullet import ProfileBullet
+from ..profile_tab.profile_weapon import ProfileWeapon
+from ..profile_tab.profile_cartridge import ProfileCartridge
+from ..profile_tab.profile_bullet import ProfileBullet
 
 
 class ProfileWizard(QtWidgets.QDialog):
