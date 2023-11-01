@@ -6,6 +6,7 @@ class TLabel(QtWidgets.QLabel):
 
     def __init__(self, *args):
         super().__init__(*args)
+        self.setAlignment(QtCore.Qt.AlignTop)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate

@@ -1,3 +1,4 @@
+import a7p
 from PySide6 import QtCore, QtWidgets
 
 from py_ballisticcalc import Unit
@@ -8,6 +9,7 @@ from .profile_weapon import ProfileWeapon
 from .profile_cartridge import ProfileCartridge
 from .profile_bullet import ProfileBullet
 from .profile_conditions import ProfileConditions
+from .profile_a7p_meta import ProfileA7PMeta
 
 
 class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
@@ -17,6 +19,7 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
         self.cartridge = ProfileCartridge(self)
         self.bullet = ProfileBullet(self)
         self.conditions = ProfileConditions(self)
+        self.a7p_meta = ProfileA7PMeta(self)
         self.setupUi(self)
 
         self._profile = payload.profile
@@ -26,10 +29,12 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
         super(ProfileTab, self).setupUi(profileTab)
         self.munition_tab.layout().setAlignment(QtCore.Qt.AlignTop)
         self.conditions_tab.layout().setAlignment(QtCore.Qt.AlignTop)
+        self.a7p_meta_tab.layout().setAlignment(QtCore.Qt.AlignTop)
         self.munition_tab.layout().addWidget(self.weapon, 0, 0, 1, 1)
         self.munition_tab.layout().addWidget(self.cartridge, 1, 0, 1, 1)
         self.munition_tab.layout().addWidget(self.bullet, 0, 1, 2, 1)
         self.conditions_tab.layout().addWidget(self.conditions, 0, 0, 1, 1)
+        self.a7p_meta_tab.layout().addWidget(self.a7p_meta, 0, 0, 1, 1)
 
         self.munition_tab.layout().setColumnStretch(0, 1)
         self.munition_tab.layout().setColumnStretch(1, 1)
@@ -44,6 +49,7 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
         self.weapon.caliberName.setText(self._profile.caliber)
         self.weapon.caliberShort.setText(self._profile.short_name_top)
         self.weapon.rightTwist.setChecked(self._profile.twist_dir == 0)
+
         self.cartridge.cartridgeName.setText(self._profile.cartridge_name)
         self.bullet.bulletName.setText(self._profile.bullet_name)
 
@@ -51,6 +57,13 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
             self.weapon.auto_tile()
 
         self._update_values()
+
+        self.a7p_meta.device_uuid.setText(
+            self._profile.device_uuid if self._profile.device_uuid else '0')
+        self.a7p_meta.user_note.setPlainText(self._profile.user_note)
+        self.a7p_meta.zero_x.setValue(self._profile.zero_x / -1000)
+        self.a7p_meta.zero_y.setValue(self._profile.zero_y / 1000)
+
         appSignalMgr.appSettingsUpdated.connect(self._update_values)
 
     def _update_values(self):
@@ -73,3 +86,31 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
 
         # self.z_azimuth.set_raw_value(Unit.DEGREE(data['z_azimuth']))
         # self.z_latitude.set_raw_value(Angular(data['z_latitude'], AngularDegree))
+
+    def export_a7p(self):
+        self._profile.profile_name = self.weapon.rifleName.text()
+        self._profile.cartridge_name = self.weapon.caliberName.text()
+        self._profile.short_name_top = self.weapon.caliberShort.text()
+        self._profile.r_twist = int((self.weapon.twist.raw_value() >> Unit.INCH) * 100)
+        self._profile.sc_height = int(self.weapon.sh.raw_value() >> Unit.MILLIMETER)
+        self._profile.twist_dir = 1 if self.weapon.rightTwist.isChecked() else 0
+
+        self._profile.cartridge_name = self.cartridge.cartridgeName.text()
+        self._profile.c_muzzle_velocity = int((self.cartridge.mv.raw_value() >> Unit.MPS) * 10)
+        self._profile.c_t_coeff = int((self.cartridge.ts.value()) * 1000)
+
+        self._profile.bullet_name = self.bullet.bulletName.text()
+        self._profile.b_weight = int((self.bullet.weight.raw_value() >> Unit.GRAIN) * 10)
+        self._profile.b_length = int((self.bullet.length.raw_value() >> Unit.INCH) * 1000)
+        self._profile.b_diameter = int((self.bullet.diameter.raw_value() >> Unit.INCH) * 1000)
+
+        self._profile.user_note = self.a7p_meta.user_note.toPlainText()
+        self._profile.zero_x = int(self.a7p_meta.zero_x.value() * -1000)
+        self._profile.zero_y = int(self.a7p_meta.zero_y.value() * 1000)
+
+        self._profile.c_zero_air_pressure = (int(self.conditions.z_pressure.raw_value() >> Unit.HP) * 10)
+        self._profile.c_zero_temperature = int(self.conditions.z_temp.raw_value() >> Unit.CELSIUS)
+        self._profile.c_zero_p_temperature = int(self.conditions.z_powder_temp.raw_value() >> Unit.CELSIUS)
+        self._profile.c_zero_w_pitch = int(self.conditions.z_angle.raw_value() >> Unit.DEGREE)
+        self._profile.c_zero_air_humidity = int(self.conditions.z_humidity.value())
+        return a7p.Payload(profile=self._profile)

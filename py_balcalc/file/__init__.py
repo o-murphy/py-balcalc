@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import QFileDialog
 from a7p import A7PFile
 
@@ -21,10 +23,15 @@ from a7p import A7PFile
 def open_files(file_names):
     """opens ballistic profiles from a json formatted file and loads it to working list"""
     profiles = []
-    for file_name in file_names:
-        with open(file_name, 'rb') as fp:
-            a7p_file = A7PFile.load(fp)
-        profiles.append(a7p_file)
+    for path in file_names:
+        print(path)
+        if Path(path).is_dir():
+            profiles.extend(open_files(Path(path).iterdir()))
+
+        if Path(path).suffix in ['.a7p', '.A7P']:
+            with open(path, 'rb') as fp:
+                a7p_file = A7PFile.load(fp)
+            profiles.append(a7p_file)
     return profiles
 
     # with open(fileName, 'r') as fp:
