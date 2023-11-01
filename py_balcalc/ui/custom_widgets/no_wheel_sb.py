@@ -5,14 +5,13 @@ from PySide6 import QtWidgets, QtGui, QtCore
 
 class NoWheelDoubleSpinBox(QtWidgets.QDoubleSpinBox):
     """implementation of QDoubleSpinBox with ignored wheelEvent"""
-    def __init__(self):
-        super(NoWheelDoubleSpinBox, self).__init__()
+    def __init__(self, parent=None):
+        super(NoWheelDoubleSpinBox, self).__init__(parent)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(sizePolicy)
-        self.setMaximumSize(QtCore.QSize(80, 16777215))
         self.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.setWrapping(False)
         self.setFrame(True)
@@ -27,8 +26,9 @@ class NoWheelDoubleSpinBox(QtWidgets.QDoubleSpinBox):
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
     def wheelEvent(self, event):
-        if self.hasFocus():
-            super().wheelEvent(event)
+        # if self.hasFocus():
+        #     super().wheelEvent(event)
+        pass
 
 
 class NoWheelSpinBox(QtWidgets.QSpinBox):

@@ -17,8 +17,9 @@ class Ui_bullet:
         self.gridLayout.addWidget(TLabel('Weight:'), 1, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Length:'), 2, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Diameter:'), 3, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('Drag function:'), 4, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('DF info:'), 4, 0, 1, 1)
+        self.gridLayout.addWidget(TLabel('Drag model:'), 5, 0, 1, 1)
+        self.drag_model_label = TLabel('None')
+        self.gridLayout.addWidget(self.drag_model_label, 5, 1, 1, 1)
 
         self.bulletName = QtWidgets.QLineEdit(bullet)
         self.weight = UnitSpinBox(bullet, Unit.GRAIN(175), 'unit/weight')
@@ -34,6 +35,9 @@ class Ui_bullet:
         self.gridLayout.addWidget(self.weight, 1, 1, 1, 1)
         self.gridLayout.addWidget(self.diameter, 2, 1, 1, 1)
         self.gridLayout.addWidget(self.length, 3, 1, 1, 1)
+
+        self.change_drag_model = QtWidgets.QPushButton("Change drag model")
+        self.gridLayout.addWidget(self.change_drag_model, 5, 2, 1, 1)
 
         self.weight.setMaximum(1000.0)
         self.bulletName.setMaxLength(20)

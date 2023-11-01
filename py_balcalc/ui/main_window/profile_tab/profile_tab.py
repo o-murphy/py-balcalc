@@ -87,6 +87,24 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
         # self.z_azimuth.set_raw_value(Unit.DEGREE(data['z_azimuth']))
         # self.z_latitude.set_raw_value(Angular(data['z_latitude'], AngularDegree))
 
+        if self._profile.bc_type == a7p.GType.G1:
+            self.bullet.drag_model_label.setText("G1")
+            self.bullet.drag_model.setCurrentIndex(0)
+            for i, row in enumerate(self._profile.coef_rows):
+                v = self.bullet.drag_model.g1.cellWidget(i, 0)
+                c = self.bullet.drag_model.g1.cellWidget(i, 1)
+                v.set_raw_value(Unit.MPS(row.mv / 10))
+                c.setValue(Unit.MPS(row.bc_cd / 10000))
+        elif self._profile.bc_type == a7p.GType.G7:
+            self.bullet.drag_model_label.setText("G7")
+            self.bullet.drag_model.setCurrentIndex(1)
+            for i, row in enumerate(self._profile.coef_rows):
+                v = self.bullet.drag_model.g7.cellWidget(i, 0)
+                c = self.bullet.drag_model.g7.cellWidget(i, 1)
+                v.set_raw_value(Unit.MPS(row.mv / 10))
+                c.setValue(Unit.MPS(row.bc_cd / 10000))
+        # TODO: add CDM
+
     def export_a7p(self):
         self._profile.profile_name = self.weapon.rifleName.text()
         self._profile.cartridge_name = self.weapon.caliberName.text()
@@ -113,4 +131,27 @@ class ProfileTab(QtWidgets.QWidget, Ui_profileTab):
         self._profile.c_zero_p_temperature = int(self.conditions.z_powder_temp.raw_value() >> Unit.CELSIUS)
         self._profile.c_zero_w_pitch = int(self.conditions.z_angle.raw_value() >> Unit.DEGREE)
         self._profile.c_zero_air_humidity = int(self.conditions.z_humidity.value())
+
+        coef_rows = []
+        if self.bullet.drag_model.currentIndex() == 0:
+            self._profile.bc_type = a7p.GType.G1
+            for i in range(self.bullet.drag_model.g1.rowCount()):
+                v = self.bullet.drag_model.g1.cellWidget(i, 0).raw_value() >> Unit.MPS
+                c = self.bullet.drag_model.g1.cellWidget(i, 1).value()
+                if v > 0 and c > 0:
+                    coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
+
+        elif self.bullet.drag_model.currentIndex() == 1:
+            self._profile.bc_type = a7p.GType.G7
+            for i in range(self.bullet.drag_model.g7.rowCount()):
+                v = self.bullet.drag_model.g7.cellWidget(i, 0).raw_value() >> Unit.MPS
+                c = self.bullet.drag_model.g7.cellWidget(i, 1).value()
+                if v > 0 and c > 0:
+                    coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
+
+        # TODO: add CDM
+
+        del self._profile.coef_rows[:]
+        self._profile.coef_rows.extend(coef_rows)
+
         return a7p.Payload(profile=self._profile)

@@ -18,8 +18,8 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         self.valueChanged.connect(self.update_raw_value)
         appSignalMgr.appSettingsUpdated.connect(self.update_display_unit)
 
-    # def wheelEvent(self, event) -> None:
-    #     pass
+    def wheelEvent(self, event) -> None:
+        pass
 
     def validate(self, text: str, pos: int) -> object:
         # text = text.split(' ')[0].replace(".", ",")

@@ -112,7 +112,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if file_name:
             with open(file_name, 'wb') as fp:
                 fp.write(data)
-            self.open_files(file_name)
 
     def close_tab(self, index):
         self.profilesTabs.removeTab(index)

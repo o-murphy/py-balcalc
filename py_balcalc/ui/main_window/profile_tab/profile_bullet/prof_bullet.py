@@ -1,6 +1,7 @@
 from PySide6 import QtWidgets
 
 from .ui import Ui_bullet
+from ..prof_drag_model import ProfileDragModel
 
 
 class ProfileBullet(QtWidgets.QGroupBox, Ui_bullet):
@@ -11,6 +12,11 @@ class ProfileBullet(QtWidgets.QGroupBox, Ui_bullet):
         self.setupUi(self)
 
         # self._ch_df_text = {}
+
+    def setupUi(self, bullet):
+        super().setupUi(bullet)
+        self.drag_model = ProfileDragModel()
+        self.gridLayout.addWidget(self.drag_model, self.gridLayout.rowCount(), 0, 1, 2)
 
     # def _df_changed(self, idx):
     #     """updates list of drag function for selected bullet"""
