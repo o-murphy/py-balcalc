@@ -11,8 +11,8 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_AppSettings(object):
-    def setupUi(self, AppSettings):
+class UiAppSettings(object):
+    def setup_ui(self, AppSettings):
         AppSettings.setObjectName("AppSettings")
         AppSettings.resize(328, 424)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -177,13 +177,13 @@ class Ui_AppSettings(object):
         self.tabSettings.addTab(self.tabExtensions, "")
         self.gridLayout.addWidget(self.tabSettings, 0, 0, 1, 1, QtCore.Qt.AlignTop)
 
-        self.retranslateUi(AppSettings)
+        self.retranslate_ui(AppSettings)
         self.tabSettings.setCurrentIndex(2)
         self.buttonBox.accepted.connect(AppSettings.accept) # type: ignore
         self.buttonBox.rejected.connect(AppSettings.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(AppSettings)
 
-    def retranslateUi(self, AppSettings):
+    def retranslate_ui(self, AppSettings):
         _translate = QtCore.QCoreApplication.translate
         AppSettings.setWindowTitle(_translate("AppSettings", "Settings"))
         self.Language.setItemText(0, _translate("AppSettings", "English"))

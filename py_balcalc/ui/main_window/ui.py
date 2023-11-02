@@ -9,8 +9,8 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, main_window):
+class UiMainWindow(object):
+    def setup_ui(self, main_window):
         main_window.setObjectName("main_window")
         main_window.setEnabled(True)
         main_window.resize(1024, 640)
@@ -121,10 +121,10 @@ class Ui_MainWindow(object):
         self.vlayout.addWidget(self.profilesTabs, 0)
         main_window.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(main_window)
+        self.retranslate_ui(main_window)
         self.profilesTabs.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
-    def retranslateUi(self, MainWindow):
+    def retranslate_ui(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("main_window", "PyBalCalc"))

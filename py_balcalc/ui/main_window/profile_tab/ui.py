@@ -1,8 +1,8 @@
 from PySide6 import QtCore, QtWidgets
 
 
-class Ui_profileTab:
-    def setupUi(self, profileTab):
+class UiProfileTab:
+    def setup_ui(self, profileTab):
         profileTab.setObjectName("profileTab")
 
         self.gridLayout = QtWidgets.QGridLayout(profileTab)
@@ -37,10 +37,10 @@ class Ui_profileTab:
 
         self.gridLayout.addWidget(self.content_tabs, 0, 0, 1, 1)
 
-        self.retranslateUi(profileTab)
+        self.retranslate_ui(profileTab)
         self.content_tabs.setCurrentIndex(0)
 
-    def retranslateUi(self, profileTab):
+    def retranslate_ui(self, profileTab):
         _translate = QtCore.QCoreApplication.translate
         self.content_tabs.setTabText(self.content_tabs.indexOf(self.munition_tab),
                                      _translate("profileTab", "Current profile"))

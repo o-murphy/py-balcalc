@@ -9,9 +9,9 @@ class ProfileCartridge(QtWidgets.QGroupBox):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
-    def setupUi(self, cartridge):
+    def setup_ui(self, cartridge):
         cartridge.setObjectName("cartridge")
         cartridge.setCheckable(False)
 
@@ -39,10 +39,11 @@ class ProfileCartridge(QtWidgets.QGroupBox):
 
         self.mv.setMaximum(5000)
         self.ts.setMaximum(100.0)
+        self.ts.setDecimals(3)
 
-        self.retranslateUi(cartridge)
+        self.retranslate_ui(cartridge)
 
-    def retranslateUi(self, cartridge):
+    def retranslate_ui(self, cartridge):
         _translate = QtCore.QCoreApplication.translate
         cartridge.setTitle(_translate("cartridge", "Cartridge"))
         self.ts.setSuffix(_translate("cartridge", " %"))

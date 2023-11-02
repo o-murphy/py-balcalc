@@ -1,8 +1,13 @@
 from PySide6 import QtWidgets
-from py_ballisticcalc import AbstractUnit, Unit
+from py_ballisticcalc import AbstractUnit, Unit, UnitPropsDict
+from py_ballisticcalc.unit import UnitProps
 from qtpy import QtCore
 from py_balcalc.settings import appSettings
 from py_balcalc.signals_manager import appSignalMgr
+
+
+# Fix of Unit.INCH accuracy
+UnitPropsDict[Unit.INCH] = UnitProps("inch", 3, "inch")
 
 
 class UnitSpinBox(QtWidgets.QDoubleSpinBox):

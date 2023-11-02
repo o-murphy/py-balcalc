@@ -2,7 +2,7 @@
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from .ui import Ui_profilesTools
+from .ui import UiProfilesTools
 import qtawesome as qta
 
 
@@ -10,10 +10,10 @@ import qtawesome as qta
 from ...settings import AppSettings
 
 
-class ProfilesTools(QtWidgets.QWidget, Ui_profilesTools):
+class ProfilesTools(QtWidgets.QWidget, UiProfilesTools):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
         self.layout().setAlignment(QtCore.Qt.AlignLeft)
         self.saveButton.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -31,8 +31,8 @@ class ProfilesTools(QtWidgets.QWidget, Ui_profilesTools):
 
         # self.saveAsAction.triggered.connect(tabw.save_as_file_dialog)
 
-    def setupUi(self, profilesTools):
-        super(ProfilesTools, self).setupUi(profilesTools)
+    def setup_ui(self, profilesTools):
+        super(ProfilesTools, self).setup_ui(profilesTools)
         self.Preferences = QtWidgets.QToolButton(self)
         self.Preferences.setMinimumSize(QtCore.QSize(30, 30))
         self.Preferences.setIcon(qta.icon('mdi6.cog', color='white'))

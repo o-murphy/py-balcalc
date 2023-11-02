@@ -13,7 +13,11 @@ class ModelG(QtWidgets.QTableWidget):
 
         for i in range(5):
             u = UnitSpinBox(self, Unit.MPS(0), 'unit/velocity')
+            u.setMaximum(3000)
             d = NoWheelDoubleSpinBox(self)
+            d.setMaximum(2)
+            d.setDecimals(3)
+            d.setSingleStep(0.001)
             self.setCellWidget(i, 0, u)
             self.setCellWidget(i, 1, d)
 

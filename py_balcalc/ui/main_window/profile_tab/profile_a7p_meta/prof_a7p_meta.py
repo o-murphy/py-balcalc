@@ -8,9 +8,9 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
-    def setupUi(self, a7p_meta):
+    def setup_ui(self, a7p_meta):
         a7p_meta.setObjectName("a7p_meta")
         a7p_meta.setCheckable(False)
 
@@ -35,8 +35,8 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.distances, 3, 1)
         self.gridLayout.addWidget(self.user_note, 4, 1)
 
-        self.retranslateUi(a7p_meta)
+        self.retranslate_ui(a7p_meta)
 
-    def retranslateUi(self, a7p_meta):
+    def retranslate_ui(self, a7p_meta):
         _translate = QtCore.QCoreApplication.translate
         a7p_meta.setTitle(_translate("a7p_meta", "A7P Meta"))

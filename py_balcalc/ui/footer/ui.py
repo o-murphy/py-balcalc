@@ -13,7 +13,7 @@ import qtawesome as qta
 
 
 class Ui_FooterWidget(object):
-    def setupUi(self, FooterWidget):
+    def setup_ui(self, FooterWidget):
         FooterWidget.setObjectName("FooterWidget")
         FooterWidget.resize(675, 42)
         FooterWidget.setMaximumSize(QtCore.QSize(16777215, 42))
@@ -33,10 +33,10 @@ class Ui_FooterWidget(object):
         # self.Preferences.setObjectName("Preferences")
         # self.horizontalLayout.addWidget(self.Preferences)
 
-        self.retranslateUi(FooterWidget)
+        self.retranslate_ui(FooterWidget)
         QtCore.QMetaObject.connectSlotsByName(FooterWidget)
 
-    def retranslateUi(self, FooterWidget):
+    def retranslate_ui(self, FooterWidget):
         _translate = QtCore.QCoreApplication.translate
         FooterWidget.setWindowTitle(_translate("FooterWidget", "Form"))
         # self.Preferences.setToolTip(_translate("FooterWidget", "Preferences"))

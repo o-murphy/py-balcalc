@@ -20,13 +20,18 @@ from a7p import A7PFile
 #         open_file(file_names)
 
 
-def open_files(file_names):
+def save_file(file_name, payload):
+    with open(file_name, 'wb') as fp:
+        A7PFile.dump(payload, fp)
+
+
+def open_files(*file_names):
     """opens ballistic profiles from a json formatted file and loads it to working list"""
     profiles = []
     for path in file_names:
         print(path)
         if Path(path).is_dir():
-            profiles.extend(open_files(Path(path).iterdir()))
+            profiles.extend(open_files(*(Path(path).iterdir())))
 
         if Path(path).suffix in ['.a7p', '.A7P']:
             with open(path, 'rb') as fp:

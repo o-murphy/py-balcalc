@@ -14,28 +14,36 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         super().__init__(parent)
         self.auto_tile_mode = 0
 
-        self.setupUi(self)
+        self.setup_ui(self)
+        self.__post_init__()
+        
+    def __post_init__(self):
         self.auto_tile_act.triggered.connect(self.auto_tile)
+        self.tile_help.triggered.connect(self.show_tile_help)
 
-    def retranslateUi(self, weapon):
+    def retranslate_ui(self, weapon):
         _translate = QtCore.QCoreApplication.translate
-        self.caliberShort.setPlaceholderText(_translate("weapon", 'Tile text:'))
-        super().retranslateUi(weapon)
+        self.tileTop.setPlaceholderText(_translate("weapon", 'Tile text:'))
+        super().retranslate_ui(weapon)
+
+    def show_tile_help(self):
+        # TODO:
+        ...
 
     def auto_tile(self):
         """changes current auto tile creation mode"""
         if self.auto_tile_mode == 1:
-            self.caliberShort.setText(self.caliberName.text().replace(' ', '').strip()[:7])
+            self.tileTop.setText(self.caliberName.text().replace(' ', '').strip()[:7])
             self.auto_tile_mode = 0
         else:
             reg = search(r'\.+\d+', self.caliberName.text())
             cal = reg.group() if reg else ''
             tile = ''.join((list(filter(lambda char: char.isupper(), self.caliberName.text()))))
             # self.caliberShort.setText(f'{cal + tile}'[:7])
-            self.caliberShort.setText(f'{cal + tile}'[:7])
+            self.tileTop.setText(f'{cal + tile}'[:7])
             self.auto_tile_mode = 1
 
-    def setupUi(self, weapon):
+    def setup_ui(self, weapon):
         weapon.setObjectName("weapon")
         weapon.setCheckable(False)
 
@@ -44,52 +52,61 @@ class ProfileWeapon(QtWidgets.QGroupBox):
 
         self.gridLayout.addWidget(TLabel('Name:'), 0, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Caliber:'), 1, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('Sight height:'), 2, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('Twist:'), 3, 0, 1, 1)
+        self.gridLayout.addWidget(TLabel('Tile top:'), 2, 0, 1, 1)
+        self.gridLayout.addWidget(TLabel('Sight height:'), 3, 0, 1, 1)
+        self.gridLayout.addWidget(TLabel('Twist:'), 4, 0, 1, 1)
+
 
         self.twist = UnitSpinBox(weapon, Unit.INCH(10), 'unit/twist')
-        self.sh = UnitSpinBox(weapon, Unit.CENTIMETER(9), 'unit/sight_height')
+        self.sh = UnitSpinBox(weapon, Unit.MILLIMETER(90), 'unit/sight_height')
 
         self.twist.setObjectName("twist")
         self.sh.setObjectName("sight_height")
 
         self.rightTwist = QtWidgets.QRadioButton(weapon)
+        self.caliberName = QtWidgets.QLineEdit(weapon)
+        self.tileTop = QtWidgets.QLineEdit(weapon)
+
         self.rightTwist.setEnabled(True)
         self.rightTwist.setChecked(True)
         self.rightTwist.setObjectName("rightTwist")
         self.leftTwist = QtWidgets.QRadioButton(weapon)
         self.leftTwist.setObjectName("leftTwist")
-        self.caliberName = QtWidgets.QLineEdit(weapon)
-        self.caliberName.setMaxLength(20)
+        # self.caliberName.setMaxLength(20)
         self.caliberName.setObjectName("caliberName")
-        self.caliberShort = QtWidgets.QLineEdit(weapon)
-        self.caliberShort.setMinimumSize(QtCore.QSize(0, 0))
-        self.caliberShort.setMaxLength(8)
-        self.caliberShort.setObjectName("caliberShort")
+        self.tileTop.setMinimumSize(QtCore.QSize(0, 0))
+        self.tileTop.setMaxLength(8)
+        self.tileTop.setObjectName("caliberShort")
+
         self.rifleName = QtWidgets.QLineEdit(weapon)
-        self.rifleName.setMaxLength(20)
+        # self.rifleName.setMaxLength(20)
         self.rifleName.setFrame(True)
         self.rifleName.setObjectName("rifleName")
 
         self.gridLayout.addWidget(self.rifleName, 0, 1, 1, 4)
         self.gridLayout.addWidget(self.caliberName, 1, 1, 1, 3)
-        self.gridLayout.addWidget(self.sh, 2, 1, 1, 1)
-        self.gridLayout.addWidget(self.twist, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.tileTop, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.sh, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.twist, 4, 1, 1, 1)
 
-        self.gridLayout.addWidget(self.caliberShort, 1, 4, 1, 1)
 
-        self.gridLayout.addWidget(self.rightTwist, 3, 2, 1, 1)
-        self.gridLayout.addWidget(self.leftTwist, 3, 3, 1, 1)
+        self.gridLayout.addWidget(self.rightTwist, 4, 2, 1, 1)
+        self.gridLayout.addWidget(self.leftTwist, 4, 3, 1, 1)
 
         self.auto_tile_act = QtGui.QAction(
             qta.icon(
                 'mdi6.autorenew', color='white', color_active='orange', color_disabled='grey'
             ), 'Auto')
-        self.caliberShort.addAction(self.auto_tile_act, QtWidgets.QLineEdit.TrailingPosition)
+        self.tile_help = QtGui.QAction(
+            qta.icon(
+                'mdi6.help', color='white', color_active='orange', color_disabled='grey'
+            ), 'Help')
+        self.tileTop.addAction(self.tile_help, QtWidgets.QLineEdit.TrailingPosition)
+        self.tileTop.addAction(self.auto_tile_act, QtWidgets.QLineEdit.TrailingPosition)
 
-        self.retranslateUi(weapon)
+        self.retranslate_ui(weapon)
 
-    def retranslateUi(self, weapon):
+    def retranslate_ui(self, weapon):
         _translate = QtCore.QCoreApplication.translate
         weapon.setTitle(_translate("weapon", "Weapon"))
         self.rightTwist.setText(_translate("weapon", "Right"))

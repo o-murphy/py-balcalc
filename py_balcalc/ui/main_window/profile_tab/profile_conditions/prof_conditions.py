@@ -9,9 +9,9 @@ class ProfileConditions(QtWidgets.QGroupBox):
 
     def __init__(self, parent=None):
         super(ProfileConditions, self).__init__(parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
-    def setupUi(self, conditions):
+    def setup_ui(self, conditions):
         conditions.setObjectName("conditions")
         conditions.setCheckable(False)
 
@@ -63,10 +63,10 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Angle:'), 5, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Azimuth:'), 6, 0, 1, 1)
 
-        self.retranslateUi(conditions)
+        self.retranslate_ui(conditions)
         QtCore.QMetaObject.connectSlotsByName(conditions)
 
-    def retranslateUi(self, conditions):
+    def retranslate_ui(self, conditions):
         _translate = QtCore.QCoreApplication.translate
         conditions.setTitle(_translate("conditions", "Zeroing conditions "))
         self.z_humidity.setSuffix(_translate("conditions", " %"))

@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
+import os
+
 import a7p
 from PySide6 import QtWidgets, QtCore
 from .add_button import AddButton
 from .profile_wizard import ProfileWizard
-from .ui import Ui_MainWindow
+from .ui import UiMainWindow
 from ..footer import FooterWidget
 from .profile_tab import ProfileTab
 from .profiles_tools import ProfilesTools
 
-from py_balcalc.file import open_files
+from py_balcalc.file import open_files, save_file
 
 
-class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
     filesDropped = QtCore.Signal(object)
 
     def __init__(self, app=None):
         super().__init__()
 
-        self.setupUi(self)
+        self.setup_ui(self)
         self.app = app
         self.translator_custom = QtCore.QTranslator()
 
@@ -84,6 +86,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.profilesTabs.tabCloseRequested.connect(self.close_tab)
 
         self.profile_tools.saveAsButton.clicked.connect(self.save_file_as)
+        self.profile_tools.saveButton.clicked.connect(self.on_save_button)
 
         self.filesDropped.connect(lambda file_names: self.open_files(*file_names))
 
@@ -98,27 +101,94 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.filesDropped.emit(files)
 
     def open_files(self, *file_names):
-        profiles = open_files(file_names)
-        for payload in profiles:
-            profile_tab = ProfileTab(self, payload)
+        profiles = open_files(*file_names)
+        for i, payload in enumerate(profiles):
+            profile_tab = ProfileTab(self, payload, file_names[i])
             self.profilesTabs.addTab(profile_tab, payload.profile.profile_name)
         self.switch_stacked()
         self.profilesTabs.setCurrentIndex(self.profilesTabs.count() - 1)
 
-    def save_file_as(self):
+    def save_file_as(self, tab):
         tab: ProfileTab = self.profilesTabs.currentWidget()
         data = a7p.A7PFile.dumps(tab.export_a7p())
         file_name = self.save_file_dialog()
         if file_name:
             with open(file_name, 'wb') as fp:
                 fp.write(data)
+                return file_name
+
+    def on_save_button(self):
+        index = self.profilesTabs.currentIndex()
+        tab: ProfileTab = self.profilesTabs.currentWidget()
+        if not self.is_file_exists(tab.file_name):
+            file_name = self.save_file_as(tab)
+            if file_name:
+                tab.file_name = file_name
+                return True
+        else:
+            self.save_file(tab, False)
+
+    def save_file(self, tab, discard=True):
+        if not self.is_file_exists(tab.file_name):
+            file_name = self.save_file_as(tab)
+            if file_name:
+                tab.file_name = file_name
+                return True
+
+        else:
+            data = self.is_data_updated(tab)
+            std_btns = QtWidgets.QMessageBox.StandardButton
+            if data:
+                if discard:
+                    buttons = std_btns.Save | std_btns.Discard | std_btns.Cancel
+                else:
+                    buttons = std_btns.Save | std_btns.Cancel
+
+                dlg = QtWidgets.QMessageBox(
+                    QtWidgets.QMessageBox.Icon.Warning,
+                    "Warning",
+                    "File updated, are you want to save changes?",
+                    buttons
+                )
+                result = dlg.exec()
+                if result == QtWidgets.QMessageBox.StandardButton.Save.value:
+                    save_file(tab.file_name, data)
+                    return True
+                elif result == QtWidgets.QMessageBox.StandardButton.Discard.value:
+                    return True
+            else:
+                return True
+        return False
 
     def close_tab(self, index):
-        self.profilesTabs.removeTab(index)
-        self.switch_stacked()
+        tab: ProfileTab = self.profilesTabs.widget(index)
 
-    def setupUi(self, main_window: 'MainWindow'):
-        super().setupUi(main_window)
+        if self.save_file(tab):
+            self.profilesTabs.removeTab(index)
+            self.switch_stacked()
+
+    def is_file_exists(self, file_name):
+        return os.path.exists(file_name)
+
+    def is_data_updated(self, tab):
+
+        tab_data = tab.export_a7p()
+        try:
+            file_data = open_files(tab.file_name)[0]
+
+            # for field_descriptor, field_value in file_data.profile.ListFields():
+            #     v = tab_data.profile.__getattribute__(field_descriptor.name)
+            #     if field_value != v:
+            #         print(field_descriptor.name, field_value, v)
+
+            if file_data != tab_data:
+                raise IOError
+        except IOError:
+            return tab_data
+        return False
+
+    def setup_ui(self, main_window: 'MainWindow'):
+        super().setup_ui(main_window)
         self.profilesTabs.setTabsClosable(True)
         self.profilesTabs.setMovable(True)
         self.profilesTabs.setDocumentMode(True)

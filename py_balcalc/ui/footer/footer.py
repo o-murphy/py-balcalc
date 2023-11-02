@@ -11,7 +11,7 @@ from ..settings import AppSettings
 class FooterWidget(QtWidgets.QWidget, Ui_FooterWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setupUi(self)
+        self.setup_ui(self)
         self.horizontalLayout.insertWidget(0, QtWidgets.QLabel(f"v{__version__}"), QtCore.Qt.AlignLeft)
         # self.horizontalLayout.setAlignment(QtCore.Qt.AlignRight)
         # self.Preferences.clicked.connect(self.open_app_settings)

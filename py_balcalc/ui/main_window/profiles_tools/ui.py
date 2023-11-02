@@ -10,8 +10,8 @@ from PySide6 import QtCore, QtWidgets
 import qtawesome as qta
 
 
-class Ui_profilesTools(object):
-    def setupUi(self, profilesTools):
+class UiProfilesTools(object):
+    def setup_ui(self, profilesTools):
         profilesTools.setObjectName("profiles_tools")
         profilesTools.resize(325, 30)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -95,10 +95,10 @@ class Ui_profilesTools(object):
         self._layout.addWidget(self.newProfileButton)
         self._layout.addWidget(self.loadBookMark)
 
-        self.retranslateUi(profilesTools)
+        self.retranslate_ui(profilesTools)
         QtCore.QMetaObject.connectSlotsByName(profilesTools)
 
-    def retranslateUi(self, profiles_tools):
+    def retranslate_ui(self, profiles_tools):
         _translate = QtCore.QCoreApplication.translate
         profiles_tools.setWindowTitle(_translate("profiles_tools", "Form", ))
         self.loadBookMark.setToolTip(_translate("profiles_tools", "Load from templates"))

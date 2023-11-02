@@ -4,11 +4,11 @@ from configparser import ConfigParser
 import os
 from pathlib import Path
 
-from PySide6 import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore, QtWidgets
 from py_ballisticcalc.unit import *
 from py_ballisticcalc import Settings as CalcSettings
 
-from .ui import Ui_AppSettings
+from .ui import UiAppSettings
 from ...settings import appSettings
 from ...signals_manager import appSignalMgr
 
@@ -20,12 +20,15 @@ EnergyUnits = [value for key, value in Energy.__dict__.items() if isinstance(val
 AngularUnits = [value for key, value in Angular.__dict__.items() if isinstance(value, Unit)]
 WeightUnits = [value for key, value in Weight.__dict__.items() if isinstance(value, Unit)]
 
+CalcSettings.Units.sight_height = Unit.MILLIMETER
+CalcSettings.Units.velocity = Unit.MPS
+
 
 # loads, writes and sets app preferences from settings.ini file
-class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
+class AppSettings(QtWidgets.QDialog, UiAppSettings):
     def __init__(self):
         super(AppSettings, self).__init__()
-        self.setupUi(self)
+        self.setup_ui(self)
 
         # self.config = ConfigParser()
         # # self.config.read(CONFIG_PATH)
@@ -246,6 +249,6 @@ class AppSettings(QtWidgets.QDialog, Ui_AppSettings):
         # self.save_cfg()
         super().accept()
 
-    def retranslateUi(self, AppSettings):
-        super().retranslateUi(AppSettings)
+    def retranslate_ui(self, AppSettings):
+        super().retranslate_ui(AppSettings)
         _translate = QtCore.QCoreApplication.translate

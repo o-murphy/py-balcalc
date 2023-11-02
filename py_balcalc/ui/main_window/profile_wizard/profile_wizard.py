@@ -11,7 +11,7 @@ import a7p
 class ProfileWizard(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi()
+        self.setup_ui()
 
         self._profile = a7p.Profile()
 
@@ -21,7 +21,7 @@ class ProfileWizard(QtWidgets.QDialog):
 
         self.__post_init__()
 
-    def setupUi(self):
+    def setup_ui(self):
         self.setObjectName("ProfileWizard")
         self.setWindowTitle("Profile Wizard")
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -55,7 +55,7 @@ class ProfileWizard(QtWidgets.QDialog):
 
         self.weapon.rifleName.setText(self._profile.profile_name)
         self.weapon.caliberName.setText(self._profile.caliber)
-        self.weapon.caliberShort.setText(self._profile.short_name_top)
+        self.weapon.tileTop.setText(self._profile.short_name_top)
         self.weapon.rightTwist.setChecked(self._profile.twist_dir == 0)
         self.cartridge.cartridgeName.setText(self._profile.cartridge_name)
         self.bullet.bulletName.setText(self._profile.bullet_name)
@@ -71,7 +71,7 @@ class ProfileWizard(QtWidgets.QDialog):
         # TODO: store data to new a7p payload
         self._profile.profile_name = self.weapon.rifleName.text()
         self._profile.cartridge_name = self.weapon.caliberName.text()
-        self._profile.short_name_top = self.weapon.caliberShort.text()
+        self._profile.short_name_top = self.weapon.tileTop.text()
         self._profile.r_twist = int(self.weapon.twist.raw_value() >> Unit.INCH) * 100
         self._profile.sc_height = int(self.weapon.sh.raw_value() >> Unit.MILLIMETER)
         self._profile.twist_dir = 1 if self.weapon.rightTwist.isChecked() else 0
