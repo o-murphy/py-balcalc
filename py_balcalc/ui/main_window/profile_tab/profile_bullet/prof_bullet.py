@@ -1,7 +1,36 @@
-from PySide6 import QtWidgets
+import a7p
+from PySide6 import QtWidgets, QtCore
 
 from .ui import Ui_bullet
 from ..prof_drag_model import ProfileDragModel
+
+
+class ChangeDragModel(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.WindowTitleHint | QtCore.Qt.CustomizeWindowHint)
+        self.resize(200, 50)
+        self.lt = QtWidgets.QVBoxLayout(self)
+        self.combo = QtWidgets.QComboBox(self)
+        self.combo.addItem("Model G1", a7p.GType.G1)
+        self.combo.addItem("Model G7", a7p.GType.G7)
+        self.combo.addItem("CDM", a7p.GType.CUSTOM)
+        self.buttons = QtWidgets.QDialogButtonBox(self)
+        self.lt.addWidget(self.combo)
+        self.lt.addWidget(self.buttons, alignment=QtCore.Qt.AlignHCenter)
+
+        self.buttons.setStandardButtons(
+            self.buttons.StandardButton.Ok
+        )
+
+        self.translateUi()
+
+        self.buttons.accepted.connect(self.accept)
+        self.buttons.rejected.connect(self.reject)
+
+    def translateUi(self):
+        _translate = QtCore.QCoreApplication.translate
+        self.setWindowTitle(_translate('drag_model', "Change drag model"))
 
 
 class ProfileBullet(QtWidgets.QGroupBox, Ui_bullet):
@@ -10,98 +39,39 @@ class ProfileBullet(QtWidgets.QGroupBox, Ui_bullet):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-
-        # self._ch_df_text = {}
+        self.__post_init__()
 
     def setupUi(self, bullet):
         super().setupUi(bullet)
-        self.drag_model = ProfileDragModel()
+        self.drag_model = ProfileDragModel(self)
         self.gridLayout.addWidget(self.drag_model, self.gridLayout.rowCount(), 0, 1, 2)
 
-    # def _df_changed(self, idx):
-    #     """updates list of drag function for selected bullet"""
-    #     if idx >= 0:
-    #         self._cur_profile.drag_idx = self.dragType.currentData()
-    #         cur_df = self._cur_profile.drags[self._cur_profile.drag_idx]
-    #
-    #         self.retranslateUi(self)
-    #
-    #         drag_type = cur_df.drag_type
-    #         data = cur_df.data
-    #         comment = cur_df.comment
-    #
-    #         if drag_type in ['G1', 'G7']:
-    #             text = f'{self._ch_df_text["bc"]}: {data:.3f}'
-    #         elif drag_type.endswith('Multi-BC'):
-    #             count = [(bc, v) for (bc, v) in data if bc > 0 and v >= 0]
-    #             text = f'{self._ch_df_text["points"]}: ' + str(len(count))
-    #         else:
-    #             text = f'{self._ch_df_text["dfl"]}: ' + str(len(data))
-    #
-    #         self.dragFuncData.setText(text)
-    #         self.dragType.setToolTip(comment)
-    #
-    # def _edit_drag(self, data=None, comment=''):
-    #     """opens drag func editor with current bullet data and selected drag function"""
-    #     idx = self.dragType.currentData()
-    #     cur_df = self._cur_profile.drags[idx]
-    #
-    #     df_data = cur_df.data
-    #     df_type = cur_df.drag_type
-    #     df_comment = cur_df.comment
-    #
-    #     if df_type in ['G1', 'G7']:
-    #         bc_edit = BCEdit(df_data)
-    #         if bc_edit.exec_():
-    #             data = bc_edit.get()
-    #
-    #     elif df_type.endswith('Multi-BC'):
-    #         bc_edit = MBCEdit(df_data, comment)
-    #         if bc_edit.exec_():
-    #             data = bc_edit.get()
-    #
-    #     elif df_type == 'Custom':
-    #         edit = CDFEdit(df_data)
-    #         if edit.exec_():
-    #             data = edit.get()
-    #
-    #     if data:
-    #
-    #         if df_type in ['G1', 'G7']:
-    #             self._save_cur_df(data, df_comment)
-    #
-    #         elif df_type.endswith('Multi-BC'):
-    #             self._save_cur_df(*data)
-    #
-    #         elif df_type == 'Custom':
-    #             self._save_cur_df(*data)
-    #
-    # def _add_drag(self, data=None, comment=''):
-    #     """opens master to create new drag func for selected bullet"""
-    #     df_type = DFTypeDlg()
-    #
-    #     if df_type.exec_():
-    #         drag_type = df_type.combo.currentData()
-    #
-    #         if drag_type in ['G1', 'G7']:
-    #             bc_edit = BCEdit(data)
-    #             if bc_edit.exec_():
-    #                 data = bc_edit.get()
-    #
-    #         elif drag_type.endswith('Multi-BC'):
-    #             mbc_edit = MBCEdit(data)
-    #             if mbc_edit.exec_():
-    #                 data, comment = mbc_edit.get()
-    #
-    #         elif drag_type == 'Custom':
-    #             edit = CDFEdit(data)
-    #             if edit.exec_():
-    #                 data, comment = edit.get()
-    #
-    #         self._save_new_df(drag_type, data, comment)
-    #
-    #         return drag_type
-    #
+    def __post_init__(self):
+        self.change_drag_model.clicked.connect(self.on_change_drag_model)
+
+    def on_change_drag_model(self):
+
+        warn = QtWidgets.QMessageBox.warning(
+            self,
+            "Warning!",
+            "You'll lost all the previous drag model!",
+            QtWidgets.QMessageBox.StandardButton.Ok,
+            QtWidgets.QMessageBox.StandardButton.Cancel,
+        )
+        if warn:
+            dlg = ChangeDragModel()
+            if dlg.exec():
+                gtype = dlg.combo.currentData()
+                if gtype == a7p.GType.G1:
+                    self.drag_model_label.setText("Drag model: G1")
+                    self.drag_model.setCurrentIndex(0)
+                elif gtype == a7p.GType.G7:
+                    self.drag_model_label.setText("Drag model: G7")
+                    self.drag_model.setCurrentIndex(1)
+                else:
+                    self.drag_model_label.setText("Drag model: CDM")
+                    self.drag_model.setCurrentIndex(2)
+
     # def _open_df_editor(self):
     #     """
     #     opens drag function editor
@@ -122,34 +92,3 @@ class ProfileBullet(QtWidgets.QGroupBox, Ui_bullet):
     #     if cdf_edit.exec_():
     #         edited_df = cdf_edit.__getstate__()
     #         self._save_cur_df(edited_df['df_data'], edited_df['df_comment'], edited_df['df_type'])
-    #
-    # def _save_new_df(self, drag_type, data, comment):
-    #     """saves new drag function data to list"""
-    #     if data:
-    #         new_df = DragFunc(drag_type, data, comment, None, 'rw')
-    #         self._cur_profile.drags.append(new_df)
-    #         idx = len(self._cur_profile.drags) - 1
-    #         self.dragType.addItem(new_df.drag_type + ', ' + new_df.comment, idx)
-    #         self.dragType.setCurrentIndex(idx)
-    #
-    # def _save_cur_df(self, data, comment, df_type=None):
-    #     """updates selected drag function"""
-    #     idx = self.dragType.currentIndex()
-    #     cur_df = self._cur_profile.drags[idx]
-    #
-    #     cur_df.drag_type = df_type if df_type else cur_df.drag_type
-    #
-    #     if data:
-    #         cur_df.data = data
-    #         cur_df.comment = comment
-    #         self._df_changed(idx)
-    #         self.dragType.setItemText(idx, cur_df.drag_type + ', ' + cur_df.comment)
-
-    # def retranslateUi(self, bullet):
-    #     _translate = QtCore.QCoreApplication.translate
-    #     self._ch_df_text = {
-    #         'bc': _translate("bullet", 'BC'),
-    #         'points': _translate("bullet", 'Points'),
-    #         'dfl': _translate("bullet", 'DFL')
-    #     }
-    #     super().retranslateUi(bullet)
