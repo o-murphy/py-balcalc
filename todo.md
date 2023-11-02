@@ -1,0 +1,7 @@
+- [ ] Add unit fields auto min/max
+- [ ] Storing/restoring settings
+- [ ] Add fields validation
+- [ ] Add CDM support
+- [ ] Add calculator
+- [ ] Update resources
+- [ ] Update stylesheets

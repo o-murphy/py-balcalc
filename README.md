@@ -20,3 +20,5 @@ pip install https://github.com/o-murphy/py-ballisticcalc-gui
 # run
 py_balcalc
 ```
+
+### [Todo](todo.md)
