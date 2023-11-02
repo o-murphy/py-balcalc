@@ -22,6 +22,7 @@ WeightUnits = [value for key, value in Weight.__dict__.items() if isinstance(val
 
 CalcSettings.Units.sight_height = Unit.MILLIMETER
 CalcSettings.Units.velocity = Unit.MPS
+CalcSettings.Units.distance = Unit.METER
 
 
 # loads, writes and sets app preferences from settings.ini file

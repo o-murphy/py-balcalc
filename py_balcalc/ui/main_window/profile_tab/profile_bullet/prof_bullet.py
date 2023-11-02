@@ -64,7 +64,7 @@ class ProfileBullet(QtWidgets.QGroupBox):
             QtWidgets.QMessageBox.StandardButton.Ok,
             QtWidgets.QMessageBox.StandardButton.Cancel,
         )
-        if warn:
+        if warn == QtWidgets.QMessageBox.StandardButton.Ok:
             dlg = ChangeDragModel()
             if dlg.exec():
                 gtype = dlg.combo.currentData()

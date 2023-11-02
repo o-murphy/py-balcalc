@@ -85,6 +85,13 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
         self.conditions.z_angle.set_raw_value(Unit.DEGREE(self._profile.c_zero_w_pitch))
         self.conditions.z_humidity.setValue(self._profile.c_zero_air_humidity)
 
+        self.a7p_meta.distances.load_data(
+            [Unit.METER(d / 100) for d in self._profile.distances]
+        )
+        self.weapon.zero_dist.set_raw_value(
+            Unit.METER(self._profile.distances[self._profile.c_zero_distance_idx] / 100)
+        )
+
         if self._profile.bc_type == a7p.GType.G1:
             self.bullet.drag_model_label.setText("Drag model: G1")
             self.bullet.drag_model.setCurrentIndex(0)
@@ -149,6 +156,17 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
                     coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
 
         # TODO: add CDM
+
+        zero_dist = int((self.weapon.zero_dist.raw_value() >> Unit.METER) * 100)
+        dist_list = self.a7p_meta.distances.dump_data()
+
+        proto_dist_list = [int((d >> Unit.METER) * 100) for d in self.a7p_meta.distances.dump_data()]
+        proto_dist_list.append(zero_dist)
+        proto_dist_list.sort()
+
+        self._profile.c_zero_distance_idx = proto_dist_list.index(zero_dist)
+        del self._profile.distances[:]
+        self._profile.distances.extend(proto_dist_list)
 
         del self._profile.coef_rows[:]
         self._profile.coef_rows.extend(coef_rows)

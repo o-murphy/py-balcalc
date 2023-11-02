@@ -38,38 +38,37 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
     #     super(MainWindow, self).dragLeaveEvent(event)
 
     def open_wizard(self):
-        dlg = ProfileWizard(self)
-        if dlg.exec_():
+
+        def on_wizard_accept():
             data = a7p.A7PFile.dumps(dlg.export_a7p())
 
             file_name = self.save_file_dialog()
             if file_name:
                 with open(file_name, 'wb') as fp:
                     fp.write(data)
+                dlg.accept()
                 self.open_files(file_name)
+
+        dlg = ProfileWizard(self)
+        dlg.onAccepted.connect(on_wizard_accept)
+        dlg.exec()
 
     def save_file_dialog(self):
         options = QtWidgets.QFileDialog.Options()
         file_name, file_format = QtWidgets.QFileDialog.getSaveFileName(
             self,
             "QFileDialog.getSaveFileName()",
-            # USER_RECENT,
             filter="ArcherBC2 Profile (*.a7p)",
-            # filter="ArcherBC2 Profile (*.a7p);;JSON (*.json);;All Files (*)",
             options=options
         )
         return file_name
 
     def open_file_dialog(self):
-        # self.close_file()
-        # if self.is_saved:
         options = QtWidgets.QFileDialog.Options()
         file_names, file_format = QtWidgets.QFileDialog.getOpenFileNames(
             self,
             "QFileDialog.getOpenFileName()",
-            # USER_RECENT,
             filter="ArcherBC2 Profile (*.a7p)",
-            # filter="ArcherBC2 Profile (*.a7p);;JSON (*.json);;All Files (*)",
             options=options
         )
         if file_names:
@@ -108,22 +107,22 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         self.switch_stacked()
         self.profilesTabs.setCurrentIndex(self.profilesTabs.count() - 1)
 
-    def save_file_as(self, tab):
-        tab: ProfileTab = self.profilesTabs.currentWidget()
+    def save_file_as(self, tab=None):
+        if not tab:
+            tab: ProfileTab = self.profilesTabs.currentWidget()
         data = a7p.A7PFile.dumps(tab.export_a7p())
         file_name = self.save_file_dialog()
         if file_name:
             with open(file_name, 'wb') as fp:
                 fp.write(data)
+                tab.file_name = file_name
                 return file_name
 
     def on_save_button(self):
-        index = self.profilesTabs.currentIndex()
         tab: ProfileTab = self.profilesTabs.currentWidget()
         if not self.is_file_exists(tab.file_name):
             file_name = self.save_file_as(tab)
             if file_name:
-                tab.file_name = file_name
                 return True
         else:
             self.save_file(tab, False)

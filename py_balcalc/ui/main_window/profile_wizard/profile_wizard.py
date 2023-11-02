@@ -1,7 +1,8 @@
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
 from py_balcalc.signals_manager import appSignalMgr
+from ..profile_tab.profile_a7p_meta import ProfileA7PMeta
 from ..profile_tab.profile_weapon import ProfileWeapon
 from ..profile_tab.profile_cartridge import ProfileCartridge
 from ..profile_tab.profile_bullet import ProfileBullet
@@ -9,6 +10,8 @@ import a7p
 
 
 class ProfileWizard(QtWidgets.QDialog):
+    onAccepted = QtCore.Signal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setup_ui()
@@ -42,10 +45,12 @@ class ProfileWizard(QtWidgets.QDialog):
         self.weapon = ProfileWeapon(self)
         self.cartridge = ProfileCartridge(self)
         self.bullet = ProfileBullet(self)
+        self.a7p_meta = ProfileA7PMeta(self)
 
         self.stacked.insertWidget(0, self.weapon)
         self.stacked.insertWidget(1, self.cartridge)
         self.stacked.insertWidget(2, self.bullet)
+        self.stacked.insertWidget(3, self.a7p_meta)
 
     def __post_init__(self):
         """
@@ -89,14 +94,19 @@ class ProfileWizard(QtWidgets.QDialog):
         self.bullet.length.set_raw_value(Unit.INCH(self._profile.b_length / 1000))
         self.bullet.diameter.set_raw_value(Unit.INCH(self._profile.b_diameter / 1000))
 
+        self.a7p_meta.distances.load_data(
+            [Unit.METER(d) for d in a7p.A7PFactory.DistanceTable.MEDIUM_RANGE.value]
+        )
+
     def next_screen(self):
         index = self.stacked.currentIndex()
-        if index == 1:
+        if index == self.stacked.count() - 2:
             self.next_btn.setText("Accept")
         if index < self.stacked.count():
             self.stacked.setCurrentIndex(index + 1)
-        if index == 2:
-            self.accept()
+        if index == self.stacked.count() - 1:
+            # self.accept()
+            self.onAccepted.emit()
 
     def prev_screen(self):
         index = self.stacked.currentIndex()

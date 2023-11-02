@@ -55,13 +55,17 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Tile top:'), 2, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Sight height:'), 3, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Twist:'), 4, 0, 1, 1)
+        self.gridLayout.addWidget(TLabel('Zeroing distance:'), 5, 0, 1, 1)
 
 
         self.twist = UnitSpinBox(weapon, Unit.INCH(10), 'unit/twist')
         self.sh = UnitSpinBox(weapon, Unit.MILLIMETER(90), 'unit/sight_height')
+        self.zero_dist = UnitSpinBox(weapon, Unit.METER(100), 'unit/distance')
+        self.zero_dist.setMaximum(1500)
 
         self.twist.setObjectName("twist")
         self.sh.setObjectName("sight_height")
+        self.sh.setObjectName("zero_dist")
 
         self.rightTwist = QtWidgets.QRadioButton(weapon)
         self.caliberName = QtWidgets.QLineEdit(weapon)
@@ -88,6 +92,7 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.tileTop, 2, 1, 1, 1)
         self.gridLayout.addWidget(self.sh, 3, 1, 1, 1)
         self.gridLayout.addWidget(self.twist, 4, 1, 1, 1)
+        self.gridLayout.addWidget(self.zero_dist, 5, 1, 1, 1)
 
 
         self.gridLayout.addWidget(self.rightTwist, 4, 2, 1, 1)

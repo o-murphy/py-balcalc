@@ -21,8 +21,8 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.z_pressure = UnitSpinBox(conditions, Unit.HP(1000), 'unit/pressure')
         self.z_angle = UnitSpinBox(conditions, Unit.DEGREE(0), 'unit/angular')
         self.z_temp = UnitSpinBox(conditions, Unit.CELSIUS(0), 'unit/temperature')
-        self.z_azimuth = UnitSpinBox(conditions, Unit.DEGREE(0), 'unit/angular')
-        self.z_latitude = UnitSpinBox(conditions, Unit.DEGREE(0), 'unit/angular')
+        # self.z_azimuth = UnitSpinBox(conditions, Unit.DEGREE(0), 'unit/angular')
+        # self.z_latitude = UnitSpinBox(conditions, Unit.DEGREE(0), 'unit/angular')
         self.z_powder_temp = UnitSpinBox(conditions, Unit.CELSIUS(0), 'unit/temperature')
         self.z_humidity = QtWidgets.QSpinBox(conditions)
 
@@ -30,9 +30,9 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.z_powder_temp, 1, 1)
         self.gridLayout.addWidget(self.z_humidity, 2, 1)
         self.gridLayout.addWidget(self.z_pressure, 3, 1)
-        self.gridLayout.addWidget(self.z_latitude, 4, 1)
-        self.gridLayout.addWidget(self.z_angle, 5, 1)
-        self.gridLayout.addWidget(self.z_azimuth, 6, 1)
+        # self.gridLayout.addWidget(self.z_latitude, 4, 1)
+        self.gridLayout.addWidget(self.z_angle, 4, 1)
+        # self.gridLayout.addWidget(self.z_azimuth, 6, 1)
 
         self.z_pressure.setMaximum(1100)
         self.z_pressure.setObjectName("z_pressure")
@@ -46,11 +46,11 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.z_humidity.setMaximum(100)
         self.z_humidity.setObjectName("z_humidity")
 
-        self.z_azimuth.setMaximum(359)
-        self.z_azimuth.setObjectName("z_azimuth")
-
-        self.z_latitude.setMaximum(359)
-        self.z_latitude.setObjectName("z_latitude")
+        # self.z_azimuth.setMaximum(359)
+        # self.z_azimuth.setObjectName("z_azimuth")
+        #
+        # self.z_latitude.setMaximum(359)
+        # self.z_latitude.setObjectName("z_latitude")
 
         self.z_powder_temp.setMinimum(-60)
         self.z_powder_temp.setObjectName("z_powder_temp")
@@ -59,9 +59,9 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Powder Temperature:'), 1, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Humidity:'), 2, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Pressure:'), 3, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('Latitude:'), 4, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('Angle:'), 5, 0, 1, 1)
-        self.gridLayout.addWidget(TLabel('Azimuth:'), 6, 0, 1, 1)
+        # self.gridLayout.addWidget(TLabel('Latitude:'), 4, 0, 1, 1)
+        self.gridLayout.addWidget(TLabel('Angle:'), 4, 0, 1, 1)
+        # self.gridLayout.addWidget(TLabel('Azimuth:'), 6, 0, 1, 1)
 
         self.retranslate_ui(conditions)
         QtCore.QMetaObject.connectSlotsByName(conditions)
