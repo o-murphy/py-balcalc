@@ -79,8 +79,8 @@ class ProfileBullet(QtWidgets.QGroupBox):
                     self.drag_model.setCurrentIndex(2)
 
     def setup_ui(self, bullet):
-        bullet.setObjectName("bullet")
-        bullet.setCheckable(False)
+        bullet.setObjectName("ProfileBullet")
+        bullet.setCheckable(True)
 
         self.gridLayout = QtWidgets.QGridLayout(bullet)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)

@@ -1,5 +1,42 @@
 /* QCheckBox */
 
+QGroupBox {
+	color: rgb(255, 255, 255);
+	border: 1px solid rgb(78, 78, 78);
+	padding-top: 25px;
+    font-size: 14px;
+}
+
+QGroupBox::title {
+	padding: 5px 20px 5px 20px;
+	color: rgb(255, 170, 0);
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background-color: rgb(40, 40, 40);
+    font-size: 14px;
+}
+
+
+QGroupBox#ProfileWeapon::indicator {
+    image: url(":/munition/rifle.svg");
+}
+
+QGroupBox#ProfileCartridge::indicator {
+    image: url(":/munition/cartridge.svg");
+}
+
+QGroupBox#ProfileBullet::indicator {
+    image: url(":/munition/bullet.svg");
+}
+
+QGroupBox#ProfileConditions::indicator {
+    image: url("");
+}
+
+QGroupBox#ProfileA7PMeta::indicator {
+    image: url("");
+}
+
 QCheckBox {
 	padding-left: 5px;
 	padding-right: 5px;
@@ -169,34 +206,6 @@ QLabel {
 	font-size: 14px;
 }
 
-QGroupBox {
-	color: rgb(255, 255, 255);
-	border: 1px solid rgb(78, 78, 78);
-	padding-top: 25px;
-    font-size: 14px;
-}
-
-QGroupBox::title {
-	padding: 5px 20px 5px 20px;
-	color: rgb(255, 170, 0);
-	border-top-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	background-color: rgb(40, 40, 40);
-    font-size: 14px;
-}
-
-QGroupBox#rifleGroupBox::indicator {
-    image: url(":/ballistics/rifle.svg");
-}
-
-QGroupBox#cartridgeGroupBox::indicator {
-    image: url(":/ballistics/cartridge.svg");
-}
-
-QGroupBox#bulletGroupBox::indicator {
-    image: url(":/ballistics/bullet.svg");
-}
-
 QTableWidget, QTableView {
     outline: 0;
 	background-color: rgb(40, 40, 40);
@@ -235,7 +244,11 @@ QPushButton:hover, QToolButton:hover, QCommandLinkButton:hover {
 QTabBar::tab {
 	height: 25px; width: 200px;
 	font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
+
+/* TODO: resources fix */
 
 QWidget:disabled {
 	color: rgb(160, 160, 160);
@@ -247,6 +260,16 @@ QTabBar::tab:top {
 	background-color:rgb(28, 28, 28);
 	color: rgb(95, 95, 95);
 	border-bottom: 2px solid rgb(28, 28, 28);
+}
+
+QTabBar::close-button {
+ image: url(":/munition/window-close.svg");
+ subcontrol-position: right;
+}
+
+QTabBar::close-button:hover {
+ image: url(":/munition/window-close-orange.svg");
+ subcontrol-position: right;
 }
 
 #MainTabWidget QTabBar::tab:top {

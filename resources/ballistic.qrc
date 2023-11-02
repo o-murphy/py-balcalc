@@ -1,0 +1,9 @@
+<RCC version="1.0">
+<qresource prefix="munition">
+    <file>rifle.svg</file>
+    <file>bullet.svg</file>
+    <file>cartridge.svg</file>
+    <file>window-close.svg</file>
+    <file>window-close-orange.svg</file>
+</qresource>
+</RCC>

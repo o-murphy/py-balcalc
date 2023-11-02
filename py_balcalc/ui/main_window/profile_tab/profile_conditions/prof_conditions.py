@@ -12,8 +12,8 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.setup_ui(self)
 
     def setup_ui(self, conditions):
-        conditions.setObjectName("conditions")
-        conditions.setCheckable(False)
+        conditions.setObjectName("ProfileConditions")
+        conditions.setCheckable(True)
 
         self.gridLayout = QtWidgets.QGridLayout(conditions)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)

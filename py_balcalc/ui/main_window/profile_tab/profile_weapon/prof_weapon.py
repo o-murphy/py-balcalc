@@ -44,8 +44,8 @@ class ProfileWeapon(QtWidgets.QGroupBox):
             self.auto_tile_mode = 1
 
     def setup_ui(self, weapon):
-        weapon.setObjectName("weapon")
-        weapon.setCheckable(False)
+        weapon.setObjectName("ProfileWeapon")
+        weapon.setCheckable(True)
 
         self.gridLayout = QtWidgets.QGridLayout(weapon)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)

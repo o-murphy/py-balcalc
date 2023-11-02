@@ -67,8 +67,8 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
             self.distances.load_data(values)
 
     def setup_ui(self, a7p_meta):
-        a7p_meta.setObjectName("a7p_meta")
-        a7p_meta.setCheckable(False)
+        a7p_meta.setObjectName("ProfileA7PMeta")
+        a7p_meta.setCheckable(True)
 
         self.gridLayout = QtWidgets.QGridLayout(a7p_meta)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)

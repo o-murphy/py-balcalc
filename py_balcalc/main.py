@@ -1,11 +1,11 @@
 import sys
 
-from PySide6 import QtWidgets, QtGui
+from PySide6 import QtWidgets
 
 from py_balcalc.logger import logger
 from py_balcalc.ui import MainWindow
-from py_balcalc.ui.stylesheet import main_app_qss
 from py_balcalc.ui.resources import *
+from py_balcalc.ui.stylesheet import main_app_qss
 
 
 def qt_message_handler(mode, context, message):
@@ -29,7 +29,7 @@ def main():
     # QtCore.qInstallMessageHandler(qt_message_handler)
 
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon('.rsrc/Icon.ico'))
+    # app.setWindowIcon(QtGui.QIcon('.rsrc/Icon.ico'))
     app.setStyleSheet(main_app_qss())
 
     window = MainWindow(app)

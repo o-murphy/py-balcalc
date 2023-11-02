@@ -12,8 +12,8 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.setup_ui(self)
 
     def setup_ui(self, cartridge):
-        cartridge.setObjectName("cartridge")
-        cartridge.setCheckable(False)
+        cartridge.setObjectName("ProfileCartridge")
+        cartridge.setCheckable(True)
 
         self.gridLayout = QtWidgets.QGridLayout(cartridge)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
