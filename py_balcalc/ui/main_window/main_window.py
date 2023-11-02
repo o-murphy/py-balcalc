@@ -102,8 +102,8 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
 
     def open_files(self, *file_names):
         profiles = open_files(*file_names)
-        for i, payload in enumerate(profiles):
-            profile_tab = ProfileTab(self, payload, file_names[i])
+        for i, (path, payload) in enumerate(profiles):
+            profile_tab = ProfileTab(self, payload, path)
             self.profilesTabs.addTab(profile_tab, payload.profile.profile_name)
         self.switch_stacked()
         self.profilesTabs.setCurrentIndex(self.profilesTabs.count() - 1)
@@ -174,7 +174,7 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
 
         tab_data = tab.export_a7p()
         try:
-            file_data = open_files(tab.file_name)[0]
+            filename, file_data = open_files(tab.file_name)[0]
 
             # for field_descriptor, field_value in file_data.profile.ListFields():
             #     v = tab_data.profile.__getattribute__(field_descriptor.name)

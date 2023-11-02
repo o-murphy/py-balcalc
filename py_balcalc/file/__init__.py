@@ -36,7 +36,7 @@ def open_files(*file_names):
         if Path(path).suffix in ['.a7p', '.A7P']:
             with open(path, 'rb') as fp:
                 a7p_file = A7PFile.load(fp)
-            profiles.append(a7p_file)
+            profiles.append((path, a7p_file))
     return profiles
 
     # with open(fileName, 'r') as fp:
