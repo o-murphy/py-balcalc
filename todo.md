@@ -10,3 +10,4 @@
 - [ ] Add Ukrainian translation
 - [ ] Add export/import data to .toml with app specific data
 - [ ] Add profiles gallery
+- [x] Add a7p limits

@@ -2,7 +2,7 @@ from PySide6 import QtWidgets
 from py_ballisticcalc import AbstractUnit, Unit, UnitPropsDict
 from py_ballisticcalc.unit import UnitProps
 from qtpy import QtCore
-from py_balcalc.settings import DEF_FIELDS_LIMITS, app_settings
+from py_balcalc.settings import DEF_UNITS_LIMITS, app_settings
 from py_balcalc.signals_manager import appSignalMgr
 
 
@@ -38,8 +38,8 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
 
     def set_display_unit(self, unit: Unit):
         self.setDecimals(unit.accuracy)
-        self.setMaximum(DEF_FIELDS_LIMITS[self._unit_settings_key]['max'])
-        self.setMinimum(DEF_FIELDS_LIMITS[self._unit_settings_key]['min'])
+        self.setMaximum(DEF_UNITS_LIMITS[self._unit_settings_key]['max'])
+        self.setMinimum(DEF_UNITS_LIMITS[self._unit_settings_key]['min'])
         self.setSingleStep(10**(-self.decimals()))
         self.tr()
 

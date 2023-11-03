@@ -1,6 +1,7 @@
 from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
+from py_balcalc.settings import DEF_STRINGS_LIMITS, DEF_FLOAT_LIMITS
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 
 
@@ -10,6 +11,11 @@ class ProfileCartridge(QtWidgets.QGroupBox):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setup_ui(self)
+
+    def __post_init__(self):
+        self.cartridgeName.setMaxLength(DEF_STRINGS_LIMITS['cartridge_name'])
+        self.ts.setMaximum(DEF_FLOAT_LIMITS['c_t_coeff']['max'])
+        self.ts.setMinimum(DEF_FLOAT_LIMITS['c_t_coeff']['min'])
 
     def setup_ui(self, cartridge):
         cartridge.setObjectName("ProfileCartridge")

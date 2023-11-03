@@ -3,6 +3,7 @@ from re import search
 from PySide6 import QtWidgets, QtCore, QtGui
 from py_ballisticcalc import Unit
 
+from py_balcalc.settings import DEF_STRINGS_LIMITS
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 import qtawesome as qta
 
@@ -18,13 +19,16 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.__post_init__()
         
     def __post_init__(self):
+        self.rifleName.setMaxLength(DEF_STRINGS_LIMITS['profile_name'])
+        self.tileTop.setMaxLength(DEF_STRINGS_LIMITS['short_name_top'])
+        self.caliberName.setMaxLength(DEF_STRINGS_LIMITS['caliber'])
+
         self.auto_tile_act.triggered.connect(self.auto_tile)
         self.tile_help.triggered.connect(self.show_tile_help)
 
     def retranslate_ui(self, weapon):
         _translate = QtCore.QCoreApplication.translate
         self.tileTop.setPlaceholderText(_translate("weapon", 'Tile text:'))
-        super().retranslate_ui(weapon)
 
     def show_tile_help(self):
         # TODO:

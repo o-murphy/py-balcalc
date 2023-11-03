@@ -2,6 +2,7 @@ import a7p
 from PySide6 import QtWidgets, QtCore, QtGui
 from py_ballisticcalc import Unit
 
+from py_balcalc.settings import DEF_STRINGS_LIMITS
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 from ..prof_drag_model import ProfileDragModel
 import qtawesome as qta
@@ -42,6 +43,9 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.__post_init__()
 
     def __post_init__(self):
+        self.bulletName.setMaxLength(DEF_STRINGS_LIMITS['bullet_name'])
+        self.tileBot.setMaxLength(DEF_STRINGS_LIMITS['short_name_bot'])
+
         self.change_drag_model.clicked.connect(self.on_change_drag_model)
         self.auto_tile_act.triggered.connect(self.auto_tile)
         self.tile_help.triggered.connect(self.show_tile_help)

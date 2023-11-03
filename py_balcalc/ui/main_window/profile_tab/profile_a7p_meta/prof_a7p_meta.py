@@ -2,6 +2,7 @@ import a7p
 from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
+from py_balcalc.settings import DEF_DISTANCES_LIST_SIZE, DEF_STRINGS_LIMITS, DEF_FLOAT_LIMITS
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 
 
@@ -13,7 +14,7 @@ class DistancesList(QtWidgets.QTableWidget):
         self.setEditTriggers(QtWidgets.QTableView.DoubleClicked)
         self.retranslate_ui()
 
-    def create_cols(self, count=196):
+    def create_cols(self, count=DEF_DISTANCES_LIST_SIZE):
         self.setColumnCount(count)
 
         for i in range(self.columnCount()):
@@ -31,7 +32,9 @@ class DistancesList(QtWidgets.QTableWidget):
     def load_data(self, distances):
         count = len(distances)
         self.clear()
-        self.create_cols(196 if count <= 196 else count)
+        self.create_cols(
+            DEF_DISTANCES_LIST_SIZE if count <= DEF_DISTANCES_LIST_SIZE else count
+        )
         for i, d in enumerate(distances):
             w = self.cellWidget(0, i)
             w.set_raw_value(d)
@@ -52,6 +55,16 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setup_ui(self)
+
+        self.__post_init__()
+
+    def __post_init__(self):
+        self.zero_x.setMaximum(DEF_FLOAT_LIMITS['zero_x']['max'])
+        self.zero_x.setMinimum(DEF_FLOAT_LIMITS['zero_x']['min'])
+        self.zero_y.setMaximum(DEF_FLOAT_LIMITS['zero_y']['max'])
+        self.zero_y.setMinimum(DEF_FLOAT_LIMITS['zero_y']['min'])
+        # self.device_uuid.setMaxLength(DEF_STRINGS_LIMITS['device_uuid'])
+        # self.user_note.setMaxLength(DEF_STRINGS_LIMITS['user_note'])  # TODO: setMaxLength
 
     def change_distances_list(self, item):
 
