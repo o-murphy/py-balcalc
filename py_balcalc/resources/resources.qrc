@@ -10,4 +10,8 @@
     <file>icons/check-white.svg</file>
     <file>icons/check-black.svg</file>
 </qresource>
+<qresource>
+    <file>flags/us.png</file>
+    <file>flags/ua.png</file>
+</qresource>
 </RCC>

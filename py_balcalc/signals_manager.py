@@ -2,7 +2,8 @@ from PySide6.QtCore import QObject, Signal
 
 
 class SignalsManager(QObject):
-    appSettingsUpdated = Signal()
+    settings_units_updated = Signal()
+    settings_locale_updated = Signal()
 
 
 appSignalMgr = SignalsManager()

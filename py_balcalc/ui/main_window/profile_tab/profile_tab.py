@@ -65,7 +65,7 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
         self.a7p_meta.zero_x.setValue(self._profile.zero_x / -1000)
         self.a7p_meta.zero_y.setValue(self._profile.zero_y / 1000)
 
-        appSignalMgr.appSettingsUpdated.connect(self._update_values)
+        appSignalMgr.settings_units_updated.connect(self._update_values)
 
     def _update_values(self):
         self.weapon.sh.set_raw_value(Unit.MILLIMETER(self._profile.sc_height))

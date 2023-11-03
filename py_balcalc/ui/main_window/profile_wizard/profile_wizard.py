@@ -70,7 +70,7 @@ class ProfileWizard(QtWidgets.QDialog):
 
         self._update_values()
 
-        appSignalMgr.appSettingsUpdated.connect(self._update_values)
+        appSignalMgr.settings_units_updated.connect(self._update_values)
 
     def export_a7p(self):
         # TODO: store data to new a7p payload

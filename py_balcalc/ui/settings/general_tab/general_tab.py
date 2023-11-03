@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtCore
 
 from py_balcalc.ui.custom_widgets import TLabel
 
@@ -14,23 +14,17 @@ class GeneralTab(QtWidgets.QWidget):
         self.gridLayout.setObjectName("gridLayout")
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 3, 0, 1, 2)
-        self.Language = QtWidgets.QComboBox(self)
+        self.locale = QtWidgets.QComboBox(self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Language.sizePolicy().hasHeightForWidth())
-        self.Language.setSizePolicy(sizePolicy)
-        self.Language.setMinimumSize(QtCore.QSize(100, 0))
-        self.Language.setObjectName("Language")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/flags/res/flags/united-kingdom.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Language.addItem(icon, "")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/flags/res/flags/ukraine.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Language.addItem(icon1, "")
-        self.gridLayout.addWidget(self.Language, 0, 1, 1, 1)
+        sizePolicy.setHeightForWidth(self.locale.sizePolicy().hasHeightForWidth())
+        self.locale.setSizePolicy(sizePolicy)
+        self.locale.setMinimumSize(QtCore.QSize(100, 0))
+        self.locale.setObjectName("locale")
 
-        self.gridLayout.addWidget(TLabel("Language"), 0, 0)
+        self.gridLayout.addWidget(TLabel("locale"), 0, 0)
+        self.gridLayout.addWidget(self.locale, 0, 1, 1, 1)
 
         self.line = QtWidgets.QFrame(self)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -41,5 +35,3 @@ class GeneralTab(QtWidgets.QWidget):
 
     def translate_ui(self):
         _translate = QtCore.QCoreApplication.translate
-        self.Language.setItemText(0, _translate("AppSettings", "English"))
-        self.Language.setItemText(1, _translate("AppSettings", "Українська"))

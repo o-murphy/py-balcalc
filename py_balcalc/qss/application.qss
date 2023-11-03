@@ -267,14 +267,15 @@ QTabBar::tab:top {
 }
 
 QTabBar::close-button {
- image: url(":/munition/window-close.svg");
+ image: url(":/icons/window-close-white.svg");
  subcontrol-position: right;
 }
 
 QTabBar::close-button:hover {
- image: url(":/munition/window-close-orange.svg");
+ image: url(":/icons/window-close-orange.svg");
  subcontrol-position: right;
 }
+
 
 #MainTabWidget QTabBar::tab:top {
 	height: 35px;
@@ -782,24 +783,11 @@ QTableWidget::item, QTableView::item {
 		background-color: rgb(75, 75, 75);
 }
 
-#profileItem QWidget#tile {
-    background-color: black;
-    border: 0px;
-    /* font-size: 14px; */
-    color: black;
-    /* font-family: "Bahnschrift Light Condensed"; */
-}
 */
-QLabel#caliberShort, QLabel#weightTile {
-	background-color: white;
-	color: black;
-	/* font: "Arial Narrow"; */
-    font-size: 13px;
-}
-
 
 /* profilesTable */
-QTableWidget::item, QTableView::item {
+
+/*QTableWidget::item, QTableView::item {
     padding-left: 2px;
     padding-right: 2px;
-}
+}*/

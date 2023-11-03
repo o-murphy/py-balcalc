@@ -1,11 +1,12 @@
-- [ ] Add units fields auto min/max
-- [ ] Add Settings for the calculator library
-- [ ] Storing/restoring settings
+- [x] Add units fields auto min/max
+- [x] Add Settings for the calculator library
+- [x] Storing/restoring settings
 - [ ] Add fields validation
 - [ ] Add CDM support
 - [ ] Add calculator
-- [ ] Update resources
-- [ ] Update stylesheets
+- [x] Update resources
+- [x] Update stylesheets
 - [ ] Fix .a7p file overwriting without user's update
 - [ ] Add Ukrainian translation
 - [ ] Add export/import data to .toml with app specific data
+- [ ] Add profiles gallery
