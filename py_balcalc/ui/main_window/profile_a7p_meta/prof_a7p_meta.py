@@ -2,17 +2,20 @@ import a7p
 from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
-from py_balcalc.settings import DEF_DISTANCES_LIST_SIZE, DEF_STRINGS_LIMITS, DEF_FLOAT_LIMITS
+from py_balcalc.settings import DEF_DISTANCES_LIST_SIZE, DEF_FLOAT_LIMITS
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 
 
 class DistancesList(QtWidgets.QTableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.init_ui()
+
+    def init_ui(self):
         self.setRowCount(1)
         self.verticalHeader().setHidden(True)
         self.setEditTriggers(QtWidgets.QTableView.DoubleClicked)
-        self.retranslate_ui()
+        self.tr_ui()
 
     def create_cols(self, count=DEF_DISTANCES_LIST_SIZE):
         self.setColumnCount(count)
@@ -45,8 +48,8 @@ class DistancesList(QtWidgets.QTableWidget):
             out.append(self.cellWidget(0, i).raw_value())
         return out
 
-    def retranslate_ui(self):
-        _translate = QtCore.QCoreApplication.translate
+    def tr_ui(self):
+        ...
 
 
 class ProfileA7PMeta(QtWidgets.QGroupBox):
@@ -54,8 +57,7 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setup_ui(self)
-
+        self.init_ui()
         self.__post_init__()
 
     def __post_init__(self):
@@ -79,11 +81,11 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
             values = [Unit.METER(d) for d in a7p.A7PFactory.DistanceTable[item].value]
             self.distances.load_data(values)
 
-    def setup_ui(self, a7p_meta):
-        a7p_meta.setObjectName("ProfileA7PMeta")
-        a7p_meta.setCheckable(True)
+    def init_ui(self):
+        self.setObjectName("ProfileA7PMeta")
+        self.setCheckable(True)
 
-        self.gridLayout = QtWidgets.QGridLayout(a7p_meta)
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 
         self.gridLayout.addWidget(TLabel('Device UUID:'), 0, 0, 1, 1)
@@ -98,7 +100,7 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
         self.distances = DistancesList(self)
         self.user_note = QtWidgets.QPlainTextEdit(self)
 
-        self.change_distances = QtWidgets.QHBoxLayout(self)
+        self.change_distances = QtWidgets.QHBoxLayout()
 
         for item in a7p.A7PFactory.DistanceTable.__members__:
             button = QtWidgets.QPushButton(item)
@@ -116,8 +118,8 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.distances, 4, 1)
         self.gridLayout.addWidget(self.user_note, 5, 1)
 
-        self.retranslate_ui(a7p_meta)
+        self.tr_ui()
 
-    def retranslate_ui(self, a7p_meta):
-        _translate = QtCore.QCoreApplication.translate
-        a7p_meta.setTitle(_translate("a7p_meta", "A7P Meta"))
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.setTitle(tr("a7p_meta", "A7P Meta"))

@@ -3,29 +3,39 @@ import os
 from pathlib import Path
 
 import a7p
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtCore
 from .add_button import AddButton
 from .profile_wizard import ProfileWizard
-from .ui import UiMainWindow
-from ..footer import FooterWidget
+from .footer import FooterWidget
 from .profile_tab import ProfileTab
 from .profiles_tools import ProfilesTools
 
 from py_balcalc.file import open_files, save_file
-from ...settings import app_settings
+from py_balcalc.settings import app_settings, get_user_dir
 
 
-class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     filesDropped = QtCore.Signal(object)
 
     def __init__(self, app=None):
         super().__init__()
 
-        self.setup_ui(self)
+        self.init_ui()
         self.app = app
         self.translator_custom = QtCore.QTranslator()
 
-        self.setConnects()
+        self.__post_init__()
+
+    def __post_init__(self):
+        self.add_button.clicked.connect(self.open_file_dialog)
+        self.profile_tools.openFile.clicked.connect(self.open_file_dialog)
+        self.profile_tools.newProfileButton.clicked.connect(self.open_wizard)
+        self.profilesTabs.tabCloseRequested.connect(self.close_tab)
+
+        self.profile_tools.saveAsButton.clicked.connect(self.save_file_as)
+        self.profile_tools.saveButton.clicked.connect(self.on_save_button)
+
+        self.filesDropped.connect(lambda file_names: self.open_files(*file_names))
 
     #     self.setAcceptDrops(True)
     #
@@ -57,14 +67,14 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
 
     def save_file_dialog(self, file_name):
         if not Path(file_name).exists():
-            file_name = Path(app_settings.value("env/user_dir"), Path(file_name).name).as_posix()
+            file_name = Path(get_user_dir(), Path(file_name).name).as_posix()
         options = QtWidgets.QFileDialog.Options()
         _file_name, file_format = QtWidgets.QFileDialog.getSaveFileName(
             self,
             caption="Save file",
             dir=file_name,
             filter="ArcherBC2 Profile (*.a7p)",
-            options=options
+            # options=options
         )
         if _file_name:
             app_settings.setValue("env/user_dir", Path(_file_name).parent)
@@ -75,7 +85,7 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         file_names, file_format = QtWidgets.QFileDialog.getOpenFileNames(
             self,
             caption="Open files",
-            dir=Path(app_settings.value("env/user_dir")).as_posix(),
+            dir=Path(get_user_dir()).as_posix(),
             filter="ArcherBC2 Profile (*.a7p)",
             options=options
         )
@@ -85,17 +95,6 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
     def switch_stacked(self):
         count = self.profilesTabs.count()
         self.stacked.setCurrentIndex(count > 0)
-
-    def setConnects(self):
-        self.add_button.clicked.connect(self.open_file_dialog)
-        self.profile_tools.openFile.clicked.connect(self.open_file_dialog)
-        self.profile_tools.newProfileButton.clicked.connect(self.open_wizard)
-        self.profilesTabs.tabCloseRequested.connect(self.close_tab)
-
-        self.profile_tools.saveAsButton.clicked.connect(self.save_file_as)
-        self.profile_tools.saveButton.clicked.connect(self.on_save_button)
-
-        self.filesDropped.connect(lambda file_names: self.open_files(*file_names))
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -203,8 +202,38 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
             return tab_data
         return False
 
-    def setup_ui(self, main_window: 'MainWindow'):
-        super().setup_ui(main_window)
+    def closeEvent(self, event) -> None:
+        self.custom_close(event)
+
+    def custom_close(self, event):
+        for i in range(self.profilesTabs.count()):
+            if not self.close_tab(self.profilesTabs.currentIndex()):
+                event.ignore()
+                return
+
+    def init_ui(self):
+        self.setObjectName("main_window")
+        self.setEnabled(True)
+        self.resize(720, 580)
+
+        self.setMinimumSize(self.size())
+        # icon = QtGui.QIcon()
+        # icon.addPixmap(QtGui.QPixmap(":/title/Icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # main_window.setWindowIcon(icon)
+        self.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
+
+        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget.setObjectName("centralwidget")
+        self.vlayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.vlayout.setContentsMargins(-1, -1, -1, 9)
+        self.vlayout.setObjectName("gridLayout")
+
+        self.profilesTabs = QtWidgets.QTabWidget(self.centralwidget)
+        self.profilesTabs.setObjectName("tabWidget")
+
+        self.vlayout.addWidget(self.profilesTabs, 0)
+        self.setCentralWidget(self.centralwidget)
+
         self.profilesTabs.setTabsClosable(True)
         self.profilesTabs.setMovable(True)
         self.profilesTabs.setDocumentMode(True)
@@ -223,11 +252,8 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         self.footer_widget = FooterWidget(self)
         self.vlayout.addWidget(self.footer_widget)
 
-    def closeEvent(self, event) -> None:
-        self.custom_close(event)
+        self.tr_ui()
 
-    def custom_close(self, event):
-        for i in range(self.profilesTabs.count()):
-            if not self.close_tab(self.profilesTabs.currentIndex()):
-                event.ignore()
-                return
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.setWindowTitle(tr("main_window", "PyBalCalc"))

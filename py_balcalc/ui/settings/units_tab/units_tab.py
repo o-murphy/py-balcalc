@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets
 
 from py_balcalc.ui.custom_widgets import TLabel
 
@@ -77,7 +77,7 @@ class UnitsTab(QtWidgets.QWidget):
         self.gridLayout.addWidget(self.ogwUnits, 13, 1, 1, 1)
         self.gridLayout.addWidget(self.thUnits, 14, 1, 1, 1)
 
-        self.translate_ui()
+        self.tr_ui()
 
-    def translate_ui(self):
-        _translate = QtCore.QCoreApplication.translate
+    def tr_ui(self):
+        ...

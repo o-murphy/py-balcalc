@@ -23,7 +23,7 @@ class GeneralTab(QtWidgets.QWidget):
         self.locale.setMinimumSize(QtCore.QSize(100, 0))
         self.locale.setObjectName("locale")
 
-        self.gridLayout.addWidget(TLabel("locale"), 0, 0)
+        self.gridLayout.addWidget(TLabel("Locale"), 0, 0)
         self.gridLayout.addWidget(self.locale, 0, 1, 1, 1)
 
         self.line = QtWidgets.QFrame(self)
@@ -31,7 +31,7 @@ class GeneralTab(QtWidgets.QWidget):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.gridLayout.addWidget(self.line, 1, 0, 1, 2)
-        self.translate_ui()
+        self.tr_ui()
 
-    def translate_ui(self):
-        _translate = QtCore.QCoreApplication.translate
+    def tr_ui(self):
+        ...

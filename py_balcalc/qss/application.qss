@@ -34,11 +34,11 @@ QGroupBox#ProfileBullet::indicator {
 }
 
 QGroupBox#ProfileConditions::indicator {
-    image: url("");
+    image: null;
 }
 
 QGroupBox#ProfileA7PMeta::indicator {
-    image: url("");
+    image: null;
 }
 
 QCheckBox {
@@ -101,7 +101,7 @@ QComboBox::drop-down:hover {
 }
 
 QComboBox::drop-down:disabled {
-    image: url("");
+    image: null;
 }
 
 
@@ -186,7 +186,7 @@ QSpinBox::down-button:disabled,
 QSpinBox::up-button:disabled,
 QDoubleSpinBox::down-button:disabled,
 QDoubleSpinBox::up-button:disabled {
-    image: url("");
+    image: null;
 }
 /* else */
 

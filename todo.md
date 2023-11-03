@@ -2,7 +2,8 @@
 - [x] Add Settings for the calculator library
 - [x] Storing/restoring settings
 - [x] Fix arrow icons
-- [ ] Wizard export
+- [x] Wizard export
+- [x] Refactoring of widgets codestyle
 - [ ] Check if fields not used
 - [ ] Add fields validation
 - [ ] Add CDM support
@@ -14,4 +15,4 @@
 - [ ] Add export/import data to .toml with app specific data
 - [ ] Add profiles gallery
 - [x] Add a7p limits
-- [ ] Add check if user dir exists
+- [x] Add check if user dir exists

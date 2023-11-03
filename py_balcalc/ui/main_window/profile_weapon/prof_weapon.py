@@ -15,9 +15,9 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         super().__init__(parent)
         self.auto_tile_mode = 0
 
-        self.setup_ui(self)
+        self.init_ui(self)
         self.__post_init__()
-        
+
     def __post_init__(self):
         self.rifleName.setMaxLength(DEF_STRINGS_LIMITS['profile_name'])
         self.tileTop.setMaxLength(DEF_STRINGS_LIMITS['short_name_top'])
@@ -25,10 +25,6 @@ class ProfileWeapon(QtWidgets.QGroupBox):
 
         self.auto_tile_act.triggered.connect(self.auto_tile)
         self.tile_help.triggered.connect(self.show_tile_help)
-
-    def retranslate_ui(self, weapon):
-        _translate = QtCore.QCoreApplication.translate
-        self.tileTop.setPlaceholderText(_translate("weapon", 'Tile text:'))
 
     def show_tile_help(self):
         # TODO:
@@ -47,7 +43,7 @@ class ProfileWeapon(QtWidgets.QGroupBox):
             self.tileTop.setText(f'{cal + tile}'[:7])
             self.auto_tile_mode = 1
 
-    def setup_ui(self, weapon):
+    def init_ui(self, weapon):
         weapon.setObjectName("ProfileWeapon")
         weapon.setCheckable(True)
 
@@ -60,7 +56,6 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Sight height:'), 3, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Twist:'), 4, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Zeroing distance:'), 5, 0, 1, 1)
-
 
         self.twist = UnitSpinBox(weapon, Unit.INCH(10), 'unit/twist')
         self.sh = UnitSpinBox(weapon, Unit.MILLIMETER(90), 'unit/sight_height')
@@ -98,7 +93,6 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.twist, 4, 1, 1, 1)
         self.gridLayout.addWidget(self.zero_dist, 5, 1, 1, 1)
 
-
         self.gridLayout.addWidget(self.rightTwist, 4, 2, 1, 1)
         self.gridLayout.addWidget(self.leftTwist, 4, 3, 1, 1)
 
@@ -113,10 +107,12 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.tileTop.addAction(self.tile_help, QtWidgets.QLineEdit.TrailingPosition)
         self.tileTop.addAction(self.auto_tile_act, QtWidgets.QLineEdit.TrailingPosition)
 
-        self.retranslate_ui(weapon)
+        self.tr_ui(weapon)
 
-    def retranslate_ui(self, weapon):
-        _translate = QtCore.QCoreApplication.translate
-        weapon.setTitle(_translate("weapon", "Weapon"))
-        self.rightTwist.setText(_translate("weapon", "Right"))
-        self.leftTwist.setText(_translate("weapon", "Left"))
+    def tr_ui(self, weapon):
+        tr = QtCore.QCoreApplication.translate
+        weapon.setTitle(tr("weapon", "Weapon"))
+        self.rightTwist.setText(tr("weapon", "Right"))
+        self.leftTwist.setText(tr("weapon", "Left"))
+
+        self.tileTop.setPlaceholderText(tr("weapon", 'Tile text:'))

@@ -2,18 +2,16 @@
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from .ui import UiProfilesTools
 import qtawesome as qta
 
-
 # top profiles_table toolbar
-from ...settings import AppSettings
+from py_balcalc.ui.settings import AppSettings
 
 
-class ProfilesTools(QtWidgets.QWidget, UiProfilesTools):
+class ProfilesTools(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setup_ui(self)
+        self.init_ui()
 
         self.layout().setAlignment(QtCore.Qt.AlignLeft)
         self.saveButton.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -27,18 +25,7 @@ class ProfilesTools(QtWidgets.QWidget, UiProfilesTools):
 
         self.saveButton.customContextMenuRequested.connect(self.on_context_menu)
 
-        self.Preferences.clicked.connect(self.open_app_settings)
-
-        # self.saveAsAction.triggered.connect(tabw.save_as_file_dialog)
-
-    def setup_ui(self, profilesTools):
-        super(ProfilesTools, self).setup_ui(profilesTools)
-        self.Preferences = QtWidgets.QToolButton(self)
-        self.Preferences.setMinimumSize(QtCore.QSize(30, 30))
-        self.Preferences.setIcon(qta.icon('mdi6.cog', color='white'))
-        self.Preferences.setIconSize(QtCore.QSize(24, 24))
-        self.Preferences.setObjectName("Preferences")
-        self._layout.addWidget(self.Preferences, alignment=QtCore.Qt.AlignRight)
+        self.preferences.clicked.connect(self.open_app_settings)
 
     def on_context_menu(self, point):
         self.saveButtonMenu.exec_(self.saveButton.mapToGlobal(point))
@@ -46,3 +33,71 @@ class ProfilesTools(QtWidgets.QWidget, UiProfilesTools):
     def open_app_settings(self):
         """opens AppSettings dialog and updates app settings if it changed"""
         AppSettings().exec_()
+
+    def init_ui(self):
+        self.setObjectName("profiles_tools")
+        self.resize(325, 30)
+
+        self._layout = QtWidgets.QHBoxLayout(self)
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        self._layout.setSpacing(0)
+        self._layout.setObjectName("_layout")
+
+        self.loadBookMark = QtWidgets.QToolButton(self)
+        self.loadBookMark.setMinimumSize(QtCore.QSize(30, 30))
+        self.loadBookMark.setIcon(qta.icon('mdi6.database', color='white'))
+        self.loadBookMark.setIconSize(QtCore.QSize(24, 24))
+        self.loadBookMark.setObjectName("loadBookMark")
+
+        self.newProfileButton = QtWidgets.QToolButton(self)
+        self.newProfileButton.setMinimumSize(QtCore.QSize(30, 30))
+        self.newProfileButton.setIcon(qta.icon('mdi6.plus', color='white'))
+        self.newProfileButton.setIconSize(QtCore.QSize(24, 24))
+        self.newProfileButton.setObjectName("newProfileButton")
+
+        self.saveButton = QtWidgets.QToolButton(self)
+        self.saveButton.setMinimumSize(QtCore.QSize(30, 30))
+        self.saveButton.setIcon(qta.icon('mdi6.content-save-outline', color='white'))
+        self.saveButton.setIconSize(QtCore.QSize(24, 24))
+        self.saveButton.setObjectName("saveButton")
+
+        self.openFile = QtWidgets.QToolButton(self)
+        self.openFile.setMinimumSize(QtCore.QSize(30, 30))
+        self.openFile.setIcon(qta.icon('mdi6.file-outline', color='white'))
+        self.openFile.setIconSize(QtCore.QSize(24, 24))
+        self.openFile.setObjectName("openFile")
+
+        self.saveAsButton = QtWidgets.QToolButton(self)
+        self.saveAsButton.setMinimumSize(QtCore.QSize(30, 30))
+        self.saveAsButton.setIcon(qta.icon('mdi6.content-save-settings-outline', color='white'))
+        self.saveAsButton.setIconSize(QtCore.QSize(24, 24))
+        self.saveAsButton.setObjectName("saveAsButton")
+
+        self.preferences = QtWidgets.QToolButton(self)
+        self.preferences.setMinimumSize(QtCore.QSize(30, 30))
+        self.preferences.setIcon(qta.icon('mdi6.cog', color='white'))
+        self.preferences.setIconSize(QtCore.QSize(24, 24))
+        self.preferences.setObjectName("Preferences")
+
+        self._layout.addWidget(self.openFile)
+        self._layout.addWidget(self.saveButton)
+        self._layout.addWidget(self.saveAsButton)
+        self._layout.addWidget(self.newProfileButton)
+        self._layout.addWidget(self.loadBookMark)
+        self._layout.addWidget(self.preferences, alignment=QtCore.Qt.AlignRight)
+
+        self.tr_ui()
+
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.loadBookMark.setToolTip(tr("profiles_tools", "Load from templates"))
+        self.newProfileButton.setToolTip(tr("profiles_tools", "Add Profile (CTRL+N)"))
+        self.newProfileButton.setShortcut(tr("profiles_tools", "Ctrl+N"))
+        self.saveButton.setToolTip(tr("profiles_tools", "Save File (CTRL+S)"))
+        self.saveButton.setShortcut(tr("profiles_tools", "Ctrl+S"))
+        self.openFile.setToolTip(tr("profiles_tools", "Open File (CTRL+O)"))
+        self.openFile.setShortcut(tr("profiles_tools", "Ctrl+O"))
+        self.saveAsButton.setToolTip(tr("profiles_tools", "Save as File (CTRL+S)"))
+        self.saveAsButton.setShortcut(tr("profiles_tools", "Ctrl+Shift+S"))
+
+        self.preferences.setToolTip(tr("profiles_tools", "Settings"))

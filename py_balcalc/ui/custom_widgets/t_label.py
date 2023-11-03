@@ -7,9 +7,16 @@ class TLabel(QtWidgets.QLabel):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setAlignment(QtCore.Qt.AlignTop)
-        appSignalMgr.settings_locale_updated.connect(self.tr)
+        self.init_ui()
+        self.__post_init__()
 
-    def tr(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setText(_translate('TLabel', self.text()))
+    def init_ui(self):
+        self.setAlignment(QtCore.Qt.AlignTop)
+        self.tr_ui()
+
+    def __post_init__(self):
+        appSignalMgr.settings_locale_updated.connect(self.tr_ui)
+
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.setText(tr('TLabel', self.text()))

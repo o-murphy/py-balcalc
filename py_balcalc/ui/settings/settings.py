@@ -7,13 +7,17 @@ from .units_tab import UnitsTab
 from .general_tab import GeneralTab
 
 
-DistanceUnits = [value for key, value in Distance.__dict__.items() if isinstance(value, Unit)]
-VelocityUnits = [value for key, value in Velocity.__dict__.items() if isinstance(value, Unit)]
-TemperatureUnits = [value for key, value in Temperature.__dict__.items() if isinstance(value, Unit)]
-PressureUnits = [value for key, value in Pressure.__dict__.items() if isinstance(value, Unit)]
-EnergyUnits = [value for key, value in Energy.__dict__.items() if isinstance(value, Unit)]
-AngularUnits = [value for key, value in Angular.__dict__.items() if isinstance(value, Unit)]
-WeightUnits = [value for key, value in Weight.__dict__.items() if isinstance(value, Unit)]
+def get_units_list(unit):
+    return [value for key, value in unit.__dict__.items() if isinstance(value, Unit)]
+
+
+DistanceUnits = get_units_list(Distance)
+VelocityUnits = get_units_list(Velocity)
+TemperatureUnits = get_units_list(Temperature)
+PressureUnits = get_units_list(Pressure)
+EnergyUnits = get_units_list(Energy)
+AngularUnits = get_units_list(Angular)
+WeightUnits = get_units_list(Weight)
 
 
 class AppSettings(QtWidgets.QDialog):
@@ -21,7 +25,7 @@ class AppSettings(QtWidgets.QDialog):
 
     def __init__(self):
         super(AppSettings, self).__init__()
-        self.setup_ui(self)
+        self.init_ui()
 
         self.init_general_tab()
         self.init_units_tab()
@@ -80,23 +84,20 @@ class AppSettings(QtWidgets.QDialog):
         init_one_combo(self.units_tab.pathUnits, AngularUnits, 'unit/adjustment')
         init_one_combo(self.units_tab.angleUnits, AngularUnits, 'unit/angular')
 
-    def accept(self) -> None:
-        super().accept()
+    def init_ui(self):
+        self.setObjectName("AppSettings")
+        self.resize(328, 424)
 
-    def setup_ui(self, AppSettings):
-        AppSettings.setObjectName("AppSettings")
-        AppSettings.resize(328, 424)
-
-        self.gridLayout = QtWidgets.QGridLayout(AppSettings)
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setObjectName("gridLayout")
-        self.buttonBox = QtWidgets.QDialogButtonBox(AppSettings)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setCenterButtons(True)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 1, 0, 1, 1, QtCore.Qt.AlignBottom)
 
-        self.tabsSettings = QtWidgets.QTabWidget(AppSettings)
+        self.tabsSettings = QtWidgets.QTabWidget(self)
         self.tabsSettings.setObjectName("tabsSettings")
 
         self.general_tab = GeneralTab(self)
@@ -110,14 +111,14 @@ class AppSettings(QtWidgets.QDialog):
         self.buttonBox.accepted.connect(AppSettings.accept)  # type: ignore
         self.buttonBox.rejected.connect(AppSettings.reject)  # type: ignore
 
-        self.retranslate_ui()
+        self.tr_ui()
 
-    def retranslate_ui(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("AppSettings", "Settings"))
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.setWindowTitle(tr("AppSettings", "Settings"))
         self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.general_tab),
-                                     _translate("AppSettings", "General settings"))
-        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.units_tab), _translate("AppSettings", "Units"))
+                                     tr("AppSettings", "General settings"))
+        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.units_tab), tr("AppSettings", "Units"))
 
-        self.general_tab.locale.setItemText(0, _translate("AppSettings", "English"))
-        self.general_tab.locale.setItemText(1, _translate("AppSettings", "Українська"))
+        self.general_tab.locale.setItemText(0, tr("AppSettings", "English"))
+        self.general_tab.locale.setItemText(1, tr("AppSettings", "Українська"))

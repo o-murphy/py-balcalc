@@ -1,19 +1,25 @@
 import os.path
-import sys
 
 from PySide6.QtCore import QSettings
-from py_ballisticcalc import Unit
+from py_ballisticcalc import Unit, UnitPropsDict
 from py_ballisticcalc import Settings as CalcSettings
+from py_ballisticcalc.unit import UnitProps
 
 
 CalcSettings.Units.sight_height = Unit.MILLIMETER
 CalcSettings.Units.velocity = Unit.MPS
 CalcSettings.Units.distance = Unit.METER
 
+# Fix of Unit.INCH accuracy
+UnitPropsDict[Unit.INCH] = UnitProps("inch", 3, "inch")
+
+
+DEFAULT_USER_DIR = os.path.join(os.path.expanduser("~"), 'archer_bc2_profiles')
+
 
 DEFAULT_SETTINGS = {
     "locale": "us",
-    "env/user_dir": os.path.join(os.path.expanduser("~"), 'archer_bc2_profiles'),
+    "env/user_dir": DEFAULT_USER_DIR,
     "unit/sight_height": CalcSettings.Units.sight_height,
     "unit/twist": CalcSettings.Units.twist,
     "unit/velocity": CalcSettings.Units.velocity,
@@ -91,5 +97,19 @@ def load_default_settings(settings: QSettings):
             settings.setValue(key, value)
 
 
+def get_default_user_dir():
+    os.makedirs(DEFAULT_USER_DIR, exist_ok=True)
+    return DEFAULT_USER_DIR
+
+
+def get_user_dir():
+    last_user_dir = app_settings.value("env/user_dir")
+    if not os.path.exists(last_user_dir):
+        app_settings.setValue("env/user_dir", DEFAULT_USER_DIR)
+        return get_default_user_dir()
+    return app_settings.value("env/user_dir")
+
+
+get_default_user_dir()
 app_settings = AppSettingsStorage('PyBalCalc', 'Settings')
 load_default_settings(app_settings)

@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtCore
 
 import qtawesome as qta
 
@@ -7,10 +7,10 @@ class AddButton(QtWidgets.QPushButton):
 
     def __init__(self, parent=None):
         super(AddButton, self).__init__(parent)
-        self.setup_ui(self)
+        self.init_ui(self)
         self.setAcceptDrops(True)
 
-    def setup_ui(self, addButton):
+    def init_ui(self, addButton):
         addButton.setObjectName("Ui_addButton")
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.setSizePolicy(sizePolicy)
@@ -29,7 +29,7 @@ class AddButton(QtWidgets.QPushButton):
         """
         )
 
-        self.retranslateUi()
+        self.tr_ui()
 
     def enterEvent(self, QEvent):
         self.setIcon(qta.icon('mdi6.file-outline', color='orange'))
@@ -45,6 +45,6 @@ class AddButton(QtWidgets.QPushButton):
         self.setIcon(qta.icon('mdi6.file-outline', color='grey'))
         super(AddButton, self).dragLeaveEvent(event)
 
-    def retranslateUi(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setText(_translate("Ui_addButton", "Click here or drop files"))
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.setText(tr("Ui_addButton", "Click here or drop files"))

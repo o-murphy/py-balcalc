@@ -7,7 +7,9 @@ from py_balcalc.ui.custom_widgets import UnitSpinBox, NoWheelDoubleSpinBox
 class ModelG(QtWidgets.QTableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.init_ui()
 
+    def init_ui(self):
         self.setColumnCount(2)
         self.setRowCount(5)
 
@@ -22,21 +24,23 @@ class ModelG(QtWidgets.QTableWidget):
             self.setCellWidget(i, 1, d)
 
         self.setEditTriggers(QtWidgets.QTableView.DoubleClicked)
-        self.retranslateUi(self)
 
-    def retranslateUi(self, drag_model):
-        _translate = QtCore.QCoreApplication.translate
+        self.tr_ui()
+
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
         self.setHorizontalHeaderItem(
-            0, QtWidgets.QTableWidgetItem(_translate("drag_model", "Velocity"))
+            0, QtWidgets.QTableWidgetItem(tr("drag_model", "Velocity"))
         )
         self.setHorizontalHeaderItem(
-            1, QtWidgets.QTableWidgetItem(_translate("drag_model", "BC"))
+            1, QtWidgets.QTableWidgetItem(tr("drag_model", "BC"))
         )
 
 
 class ModelCDM(QtWidgets.QTableView):
     def __init__(self, parent=None):
         super().__init__(parent)
+        # TODO: ModelCDM editing
 
 
 class ProfileDragModel(QtWidgets.QStackedWidget):
@@ -46,8 +50,6 @@ class ProfileDragModel(QtWidgets.QStackedWidget):
         self.init_ui()
 
     def init_ui(self):
-        _translate = QtCore.QCoreApplication.translate
-
         self.g1 = ModelG(self)
         self.g7 = ModelG(self)
         self.cdm = ModelCDM(self)
@@ -55,3 +57,7 @@ class ProfileDragModel(QtWidgets.QStackedWidget):
         self.addWidget(self.g1)
         self.addWidget(self.g7)
         self.addWidget(self.cdm)
+        self.tr_ui()
+
+    def tr_ui(self):
+        ...

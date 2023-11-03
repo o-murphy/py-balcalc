@@ -1,18 +1,16 @@
-import a7p
 from PySide6 import QtCore, QtWidgets
 
 from py_ballisticcalc import Unit
 
-from py_balcalc.signals_manager import appSignalMgr
-from .ui import UiProfileTab
-from .profile_weapon import ProfileWeapon
-from .profile_cartridge import ProfileCartridge
-from .profile_bullet import ProfileBullet
-from .profile_conditions import ProfileConditions
-from .profile_a7p_meta import ProfileA7PMeta
+from py_balcalc.ui.main_window.profile_weapon import ProfileWeapon
+from py_balcalc.ui.main_window.profile_cartridge import ProfileCartridge
+from py_balcalc.ui.main_window.profile_bullet import ProfileBullet
+from py_balcalc.ui.main_window.profile_conditions import ProfileConditions
+from py_balcalc.ui.main_window.profile_a7p_meta import ProfileA7PMeta
+from py_balcalc.ui.main_window.data_worker import DataWorker
 
 
-class ProfileTab(QtWidgets.QWidget, UiProfileTab):
+class ProfileTab(QtWidgets.QWidget, DataWorker):
     def __init__(self, parent=None, payload=None, file_name=None):
         super().__init__(parent)
         self.weapon = ProfileWeapon(self)
@@ -20,71 +18,14 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
         self.bullet = ProfileBullet(self)
         self.conditions = ProfileConditions(self)
         self.a7p_meta = ProfileA7PMeta(self)
-        self.setup_ui(self)
+        self.init_ui()
 
         self._profile = payload.profile
         self.file_name = file_name
         self.__post_init__()
 
-    def setup_ui(self, profileTab):
-        super(ProfileTab, self).setup_ui(profileTab)
-        self.munition_tab.layout().setAlignment(QtCore.Qt.AlignTop)
-        self.conditions_tab.layout().setAlignment(QtCore.Qt.AlignTop)
-        self.a7p_meta_tab.layout().setAlignment(QtCore.Qt.AlignTop)
-        self.munition_tab.layout().addWidget(self.weapon, 0, 0, 1, 1)
-        self.munition_tab.layout().addWidget(self.cartridge, 1, 0, 1, 1)
-        self.munition_tab.layout().addWidget(self.bullet, 0, 1, 2, 1)
-        self.conditions_tab.layout().addWidget(self.conditions, 0, 0, 1, 1)
-        self.a7p_meta_tab.layout().addWidget(self.a7p_meta, 0, 0, 1, 1)
-
-        self.munition_tab.layout().setColumnStretch(0, 1)
-        self.munition_tab.layout().setColumnStretch(1, 1)
-
-    def __post_init__(self):
-        """
-        updates inner widgets data with selected profile data
-        enables/disables inner tabs if profile type is correct
-        """
-
-        self.weapon.rifleName.setText(self._profile.profile_name)
-        self.weapon.caliberName.setText(self._profile.caliber)
-        self.weapon.tileTop.setText(self._profile.short_name_top)
-        self.weapon.rightTwist.setChecked(self._profile.twist_dir == 0)
-
-        self.cartridge.cartridgeName.setText(self._profile.cartridge_name)
-        self.bullet.bulletName.setText(self._profile.bullet_name)
-        self.bullet.tileBot.setText(self._profile.short_name_bot)
-
-        if not self._profile.short_name_top:
-            self.weapon.auto_tile()
-
-        self._update_values()
-
-        self.a7p_meta.device_uuid.setText(self._profile.device_uuid)
-        self.a7p_meta.user_note.setPlainText(self._profile.user_note)
-        self.a7p_meta.zero_x.setValue(self._profile.zero_x / -1000)
-        self.a7p_meta.zero_y.setValue(self._profile.zero_y / 1000)
-
-        appSignalMgr.settings_units_updated.connect(self._update_values)
-
     def _update_values(self):
-        self.weapon.sh.set_raw_value(Unit.MILLIMETER(self._profile.sc_height))
-        self.weapon.twist.set_raw_value(Unit.INCH(self._profile.r_twist / 100))
-
-        self.cartridge.mv.set_raw_value(Unit.MPS(self._profile.c_muzzle_velocity / 10))
-        self.cartridge.temp.set_raw_value(Unit.CELSIUS(self._profile.c_zero_temperature))
-        self.cartridge.ts.setValue(self._profile.c_t_coeff / 1000)
-
-        self.bullet.weight.set_raw_value(Unit.GRAIN(self._profile.b_weight / 10))
-        self.bullet.length.set_raw_value(Unit.INCH(self._profile.b_length / 1000))
-        self.bullet.diameter.set_raw_value(Unit.INCH(self._profile.b_diameter / 1000))
-
-        self.conditions.z_pressure.set_raw_value(Unit.HP(self._profile.c_zero_air_pressure / 10))
-        self.conditions.z_temp.set_raw_value(Unit.CELSIUS(self._profile.c_zero_temperature))
-        self.conditions.z_powder_temp.set_raw_value(Unit.CELSIUS(self._profile.c_zero_p_temperature))
-        self.conditions.z_angle.set_raw_value(Unit.DEGREE(self._profile.c_zero_w_pitch))
-        self.conditions.z_humidity.setValue(self._profile.c_zero_air_humidity)
-
+        super()._update_values()
         self.a7p_meta.distances.load_data(
             [Unit.METER(d / 100) for d in self._profile.distances]
         )
@@ -92,88 +33,61 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
             Unit.METER(self._profile.distances[self._profile.c_zero_distance_idx] / 100)
         )
 
-        if self._profile.bc_type == a7p.GType.G1:
-            self.bullet.drag_model_label.setText("Drag model: G1")
-            self.bullet.drag_model.setCurrentIndex(0)
-            for i, row in enumerate(self._profile.coef_rows):
-                v = self.bullet.drag_model.g1.cellWidget(i, 0)
-                c = self.bullet.drag_model.g1.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.mv / 10))
-                c.setValue(Unit.MPS(row.bc_cd / 10000))
-        elif self._profile.bc_type == a7p.GType.G7:
-            self.bullet.drag_model_label.setText("Drag model: G7")
-            self.bullet.drag_model.setCurrentIndex(1)
-            for i, row in enumerate(self._profile.coef_rows):
-                v = self.bullet.drag_model.g7.cellWidget(i, 0)
-                c = self.bullet.drag_model.g7.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.mv / 10))
-                c.setValue(Unit.MPS(row.bc_cd / 10000))
-        # TODO: add CDM
+    def init_ui(self):
+        self.setObjectName("profileTab")
 
-    def export_a7p(self):
-        self._profile.profile_name = self.weapon.rifleName.text()
-        self._profile.cartridge_name = self.weapon.caliberName.text()
-        self._profile.short_name_top = self.weapon.tileTop.text()
-        self._profile.short_name_bot = self.bullet.tileBot.text()
-        self._profile.r_twist = int((self.weapon.twist.raw_value() >> Unit.INCH) * 100)
-        self._profile.sc_height = int(self.weapon.sh.raw_value() >> Unit.MILLIMETER)
-        self._profile.twist_dir = 1 if self.weapon.rightTwist.isChecked() else 0
+        self.gridLayout = QtWidgets.QGridLayout(self)
 
-        self._profile.cartridge_name = self.cartridge.cartridgeName.text()
-        self._profile.c_muzzle_velocity = int((self.cartridge.mv.raw_value() >> Unit.MPS) * 10)
-        self._profile.c_t_coeff = int((self.cartridge.ts.value()) * 1000)
+        self.content_tabs = QtWidgets.QTabWidget(self)
 
-        self._profile.bullet_name = self.bullet.bulletName.text()
-        self._profile.b_weight = int((self.bullet.weight.raw_value() >> Unit.GRAIN) * 10)
-        self._profile.b_length = int((self.bullet.length.raw_value() >> Unit.INCH) * 1000)
-        self._profile.b_diameter = int((self.bullet.diameter.raw_value() >> Unit.INCH) * 1000)
+        self.munition_tab = QtWidgets.QWidget()
+        self.conditions_tab = QtWidgets.QWidget()
+        self.a7p_meta_tab = QtWidgets.QWidget()
 
-        self._profile.user_note = self.a7p_meta.user_note.toPlainText()
-        self._profile.zero_x = int(self.a7p_meta.zero_x.value() * -1000)
-        self._profile.zero_y = int(self.a7p_meta.zero_y.value() * 1000)
+        self.content_tabs.setObjectName("content_tabs")
+        self.munition_tab.setObjectName("munition_tab")
+        self.conditions_tab.setObjectName("conditions_tab")
+        self.a7p_meta_tab.setObjectName("a7p_meta_tab")
 
-        self._profile.c_zero_air_pressure = (int(self.conditions.z_pressure.raw_value() >> Unit.HP) * 10)
-        self._profile.c_zero_temperature = int(self.conditions.z_temp.raw_value() >> Unit.CELSIUS)
-        self._profile.c_zero_p_temperature = int(self.conditions.z_powder_temp.raw_value() >> Unit.CELSIUS)
-        self._profile.c_zero_w_pitch = int(self.conditions.z_angle.raw_value() >> Unit.DEGREE)
-        self._profile.c_zero_air_humidity = int(self.conditions.z_humidity.value())
+        self.munition_tab_layout = QtWidgets.QGridLayout(self.munition_tab)
+        self.munition_tab_layout.setContentsMargins(6, 6, 6, 6)
+        self.munition_tab_layout.setObjectName("munition_tab_layout")
 
-        coef_rows = []
-        if self.bullet.drag_model.currentIndex() == 0:
-            self._profile.bc_type = a7p.GType.G1
-            for i in range(self.bullet.drag_model.g1.rowCount()):
-                v = self.bullet.drag_model.g1.cellWidget(i, 0).raw_value() >> Unit.MPS
-                c = self.bullet.drag_model.g1.cellWidget(i, 1).value()
-                if v > 0 and c > 0:
-                    coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
+        self.conditions_tab_layout = QtWidgets.QGridLayout(self.conditions_tab)
+        self.conditions_tab_layout.setContentsMargins(6, 6, 6, 6)
+        self.conditions_tab_layout.setObjectName("conditions_tab_layout")
 
-        elif self.bullet.drag_model.currentIndex() == 1:
-            self._profile.bc_type = a7p.GType.G7
-            for i in range(self.bullet.drag_model.g7.rowCount()):
-                v = self.bullet.drag_model.g7.cellWidget(i, 0).raw_value() >> Unit.MPS
-                c = self.bullet.drag_model.g7.cellWidget(i, 1).value()
-                if v > 0 and c > 0:
-                    coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
+        self.a7p_meta_tab_layout = QtWidgets.QGridLayout(self.a7p_meta_tab)
+        self.a7p_meta_tab_layout.setContentsMargins(6, 6, 6, 6)
+        self.a7p_meta_tab_layout.setObjectName("conditions_tab_layout")
 
-        # TODO: add CDM
+        self.content_tabs.addTab(self.munition_tab, "")
+        self.content_tabs.addTab(self.conditions_tab, "")
+        self.content_tabs.addTab(self.a7p_meta_tab, "")
 
-        zero_dist = int((self.weapon.zero_dist.raw_value() >> Unit.METER) * 100)
-        dist_list = self.a7p_meta.distances.dump_data()
+        self.gridLayout.addWidget(self.content_tabs, 0, 0, 1, 1)
+        self.content_tabs.setCurrentIndex(0)
 
-        proto_dist_list = [int((d >> Unit.METER) * 100) for d in dist_list]
-        proto_dist_list.append(zero_dist)
-        proto_dist_list.sort()
+        self.munition_tab_layout.setAlignment(QtCore.Qt.AlignTop)
+        self.conditions_tab_layout.setAlignment(QtCore.Qt.AlignTop)
+        self.a7p_meta_tab_layout.setAlignment(QtCore.Qt.AlignTop)
 
-        self._profile.c_zero_distance_idx = proto_dist_list.index(zero_dist)
-        del self._profile.distances[:]
-        self._profile.distances.extend(proto_dist_list)
+        self.munition_tab_layout.addWidget(self.weapon, 0, 0, 1, 1)
+        self.munition_tab_layout.addWidget(self.cartridge, 1, 0, 1, 1)
+        self.munition_tab_layout.addWidget(self.bullet, 0, 1, 2, 1)
+        self.conditions_tab_layout.addWidget(self.conditions, 0, 0, 1, 1)
+        self.a7p_meta_tab_layout.addWidget(self.a7p_meta, 0, 0, 1, 1)
 
-        del self._profile.coef_rows[:]
-        self._profile.coef_rows.extend(coef_rows)
+        self.munition_tab.layout().setColumnStretch(0, 1)
+        self.munition_tab.layout().setColumnStretch(1, 1)
 
-        return a7p.Payload(profile=self._profile)
+        self.tr_ui()
 
-    def create_name(self):
-        return f"{self.weapon.tileTop.text()}_" \
-               f"{self.bullet.tileBot.text()}_" \
-               f"{self.bullet.bulletName.text()}.a7p".replace(" ", "_")
+    def tr_ui(self):
+        tr = QtCore.QCoreApplication.translate
+        self.content_tabs.setTabText(self.content_tabs.indexOf(self.munition_tab),
+                                     tr("profileTab", "Current profile"))
+        self.content_tabs.setTabText(self.content_tabs.indexOf(self.conditions_tab),
+                                     tr("profileTab", "Zeroing conditions"))
+        self.content_tabs.setTabText(self.content_tabs.indexOf(self.a7p_meta_tab),
+                                     tr("profileTab", "A7P metadata"))
