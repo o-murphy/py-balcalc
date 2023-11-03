@@ -1,6 +1,8 @@
 from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.custom_widgets import UnitSpinBox, NoWheelDoubleSpinBox
 
 
@@ -26,9 +28,9 @@ class ModelG(QtWidgets.QTableWidget):
         self.setEditTriggers(QtWidgets.QTableView.DoubleClicked)
 
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.setHorizontalHeaderItem(
             0, QtWidgets.QTableWidgetItem(tr("drag_model", "Velocity"))
         )

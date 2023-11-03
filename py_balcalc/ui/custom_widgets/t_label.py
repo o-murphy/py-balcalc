@@ -1,5 +1,6 @@
 from PySide6 import QtWidgets, QtCore
 from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 
 
 class TLabel(QtWidgets.QLabel):
@@ -7,6 +8,7 @@ class TLabel(QtWidgets.QLabel):
 
     def __init__(self, *args):
         super().__init__(*args)
+        self._default_text = self.text()
         self.init_ui()
         self.__post_init__()
 
@@ -15,8 +17,8 @@ class TLabel(QtWidgets.QLabel):
         self.tr_ui()
 
     def __post_init__(self):
-        appSignalMgr.settings_locale_updated.connect(self.tr_ui)
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
-        self.setText(tr('TLabel', self.text()))
+        # tr = QtCore.QCoreApplication.translate
+        self.setText(tr('TLabel', self._default_text))

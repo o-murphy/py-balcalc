@@ -23,7 +23,7 @@ class GeneralTab(QtWidgets.QWidget):
         self.locale.setMinimumSize(QtCore.QSize(100, 0))
         self.locale.setObjectName("locale")
 
-        self.gridLayout.addWidget(TLabel("Locale"), 0, 0)
+        self.gridLayout.addWidget(TLabel("Language"), 0, 0)
         self.gridLayout.addWidget(self.locale, 0, 1, 1, 1)
 
         self.line = QtWidgets.QFrame(self)

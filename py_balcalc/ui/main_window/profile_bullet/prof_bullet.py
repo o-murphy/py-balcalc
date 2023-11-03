@@ -3,6 +3,8 @@ from PySide6 import QtWidgets, QtCore, QtGui
 from py_ballisticcalc import Unit
 
 from py_balcalc.settings import DEF_STRINGS_LIMITS
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 from .prof_drag_model import ProfileDragModel
 import qtawesome as qta
@@ -31,13 +33,13 @@ class ChangeDragModel(QtWidgets.QDialog):
 
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.setWindowTitle(tr('drag_model', "Change drag model"))
-        self.combo.setItemText(tr('drag_model', "Model G1"))
-        self.combo.setItemText(tr('drag_model', "Model G7"))
-        self.combo.setItemText(tr('drag_model', "CDM"))
+        self.combo.setItemText(0, tr('drag_model', "Model G1"))
+        self.combo.setItemText(1, tr('drag_model', "Model G7"))
+        self.combo.setItemText(2, tr('drag_model', "CDM"))
 
 
 class ProfileBullet(QtWidgets.QGroupBox):
@@ -146,8 +148,8 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.drag_model, self.gridLayout.rowCount(), 0, 1, 2)
 
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.setTitle(tr("bullet", "Bullet"))
         self.change_drag_model.setText(tr("bullet", "Change drag model"))

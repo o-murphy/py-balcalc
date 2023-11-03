@@ -16,7 +16,7 @@
     <file>icons/ammunition-orange.svg</file>
 </qresource>
 <qresource>
-    <file>flags/us.png</file>
-    <file>flags/ua.png</file>
+    <file>lang/English.png</file>
+    <file>lang/Ukrainian.png</file>
 </qresource>
 </RCC>

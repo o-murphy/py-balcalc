@@ -4,6 +4,8 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 import qtawesome as qta
 
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 # top profiles_table toolbar
 from py_balcalc.ui.settings import AppSettings
 
@@ -86,18 +88,19 @@ class ProfilesTools(QtWidgets.QWidget):
         self._layout.addWidget(self.loadBookMark)
         self._layout.addWidget(self.preferences, alignment=QtCore.Qt.AlignRight)
 
+        self.newProfileButton.setShortcut("Ctrl+N")
+        self.saveButton.setShortcut("Ctrl+S")
+        self.openFile.setShortcut("Ctrl+O")
+        self.saveAsButton.setShortcut("Ctrl+Shift+S")
+
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
+        # tr = QtCore.QCoreApplication.translate
         self.loadBookMark.setToolTip(tr("profiles_tools", "Load from templates"))
         self.newProfileButton.setToolTip(tr("profiles_tools", "Add Profile (CTRL+N)"))
-        self.newProfileButton.setShortcut(tr("profiles_tools", "Ctrl+N"))
         self.saveButton.setToolTip(tr("profiles_tools", "Save File (CTRL+S)"))
-        self.saveButton.setShortcut(tr("profiles_tools", "Ctrl+S"))
         self.openFile.setToolTip(tr("profiles_tools", "Open File (CTRL+O)"))
-        self.openFile.setShortcut(tr("profiles_tools", "Ctrl+O"))
-        self.saveAsButton.setToolTip(tr("profiles_tools", "Save as File (CTRL+S)"))
-        self.saveAsButton.setShortcut(tr("profiles_tools", "Ctrl+Shift+S"))
-
+        self.saveAsButton.setToolTip(tr("profiles_tools", "Save as File (CTRL+SHIFT+S)"))
         self.preferences.setToolTip(tr("profiles_tools", "Settings"))

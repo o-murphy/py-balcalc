@@ -2,6 +2,8 @@ from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
 from py_balcalc.settings import DEF_STRINGS_LIMITS, DEF_FLOAT_LIMITS
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 
 
@@ -47,9 +49,9 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.ts.setMaximum(100.0)
         self.ts.setDecimals(3)
 
-        self.tr_ui(cartridge)
+        self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
-    def tr_ui(self, cartridge):
-        tr = QtCore.QCoreApplication.translate
-        cartridge.setTitle(tr("cartridge", "Cartridge"))
+    def tr_ui(self):
+        self.setTitle(tr("cartridge", "Cartridge"))
         self.ts.setSuffix(tr("cartridge", " %"))

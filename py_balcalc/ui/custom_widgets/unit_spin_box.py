@@ -4,6 +4,7 @@ from py_ballisticcalc.unit import UnitProps
 from qtpy import QtCore
 from py_balcalc.settings import DEF_UNITS_LIMITS, app_settings
 from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 
 
 class UnitSpinBox(QtWidgets.QDoubleSpinBox):
@@ -41,6 +42,7 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         self.setMinimum(DEF_UNITS_LIMITS[self._unit_settings_key]['min'])
         self.setSingleStep(10**(-self.decimals()))
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def update_display_unit(self):
         self.set_display_unit(app_settings.value(self._unit_settings_key))
@@ -58,9 +60,11 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         self.set_display_unit(app_settings.value(self._unit_settings_key))
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
-        self.setSuffix(
-            ' ' + tr(
-                "units",
-                app_settings.value(self._unit_settings_key).symbol)
-        )
+        try:
+            self.setSuffix(
+                ' ' + tr(
+                    "units",
+                    app_settings.value(self._unit_settings_key).symbol)
+            )
+        except Exception:
+            print(self.objectName(), app_settings.value(self._unit_settings_key))

@@ -4,6 +4,8 @@ from PySide6 import QtWidgets, QtCore, QtGui
 from py_ballisticcalc import Unit
 
 from py_balcalc.settings import DEF_STRINGS_LIMITS
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 import qtawesome as qta
 
@@ -107,11 +109,11 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.tileTop.addAction(self.tile_help, QtWidgets.QLineEdit.TrailingPosition)
         self.tileTop.addAction(self.auto_tile_act, QtWidgets.QLineEdit.TrailingPosition)
 
-        self.tr_ui(weapon)
+        self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
-    def tr_ui(self, weapon):
-        tr = QtCore.QCoreApplication.translate
-        weapon.setTitle(tr("weapon", "Weapon"))
+    def tr_ui(self):
+        self.setTitle(tr("weapon", "Weapon"))
         self.rightTwist.setText(tr("weapon", "Right"))
         self.leftTwist.setText(tr("weapon", "Left"))
 

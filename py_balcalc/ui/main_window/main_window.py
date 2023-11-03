@@ -12,6 +12,8 @@ from .profiles_tools import ProfilesTools
 
 from py_balcalc.file import open_files, save_file
 from py_balcalc.settings import app_settings, get_user_dir
+from py_balcalc.translator import tr
+from ...signals_manager import appSignalMgr
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -253,7 +255,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.vlayout.addWidget(self.footer_widget)
 
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.setWindowTitle(tr("main_window", "PyBalCalc"))

@@ -2,6 +2,8 @@ from PySide6 import QtCore, QtWidgets, QtGui
 
 from py_ballisticcalc import Unit
 
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.main_window.profile_weapon import ProfileWeapon
 from py_balcalc.ui.main_window.profile_cartridge import ProfileCartridge
 from py_balcalc.ui.main_window.profile_bullet import ProfileBullet
@@ -85,9 +87,9 @@ class ProfileTab(QtWidgets.QWidget, DataWorker):
         self.munition_tab.layout().setColumnStretch(1, 1)
 
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.content_tabs.setTabText(self.content_tabs.indexOf(self.munition_tab),
                                      tr("profileTab", "Current profile"))
         self.content_tabs.setTabText(self.content_tabs.indexOf(self.conditions_tab),

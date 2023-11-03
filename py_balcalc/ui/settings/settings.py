@@ -5,6 +5,7 @@ from py_balcalc.settings import app_settings
 from py_balcalc.signals_manager import appSignalMgr
 from .units_tab import UnitsTab
 from .general_tab import GeneralTab
+from py_balcalc.translator import translator, tr
 
 
 def get_units_list(unit):
@@ -30,13 +31,18 @@ class AppSettings(QtWidgets.QDialog):
         self.init_general_tab()
         self.init_units_tab()
         self.tabsSettings.setCurrentIndex(0)
+        self.__post_init__()
+
+    def __post_init__(self):
+        appSignalMgr.translator_updated.connect(self.tr_ui)
+        # appSignalMgr.translator_updated.connect(self.tr_units)  # TODO:
 
     def init_general_tab(self):
         # Todo load list of languages
 
-        for lang in ['us', 'ua']:
+        for lang in translator.translations:
             icon = QtGui.QIcon()
-            icon.addPixmap(QtGui.QPixmap(f":/flags/{lang}.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon.addPixmap(QtGui.QPixmap(f":/lang/{lang}.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.general_tab.locale.addItem(icon, lang, lang)
 
         def on_change(key, value):
@@ -62,7 +68,7 @@ class AppSettings(QtWidgets.QDialog):
                 app_settings.setValue(default, combo_box.currentData())
                 appSignalMgr.settings_units_updated.emit()
 
-            [combo_box.addItem(i.key, userData=i) for i in items]
+            [combo_box.addItem(tr('settings', i.key), userData=i) for i in items]
             combo_box.setCurrentIndex(combo_box.findData(app_settings.value(default)))
             combo_box.currentIndexChanged.connect(on_change)
 
@@ -83,6 +89,18 @@ class AppSettings(QtWidgets.QDialog):
 
         init_one_combo(self.units_tab.pathUnits, AngularUnits, 'unit/adjustment')
         init_one_combo(self.units_tab.angleUnits, AngularUnits, 'unit/angular')
+
+    def tr_units(self):
+
+        def tr_one(combo_box: QtWidgets.QComboBox):
+            for i in range(combo_box.count()):
+                data = combo_box.currentData(i)
+                combo_box.setItemText(i, tr('settings', data.key))
+                combo_box.setItemData(data)
+
+        for ch in self.units_tab.findChildren(QtWidgets.QComboBox):
+            tr_one(ch)
+
 
     def init_ui(self):
         self.setObjectName("AppSettings")
@@ -114,7 +132,6 @@ class AppSettings(QtWidgets.QDialog):
         self.tr_ui()
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.setWindowTitle(tr("AppSettings", "Settings"))
         self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.general_tab),
                                      tr("AppSettings", "General settings"))

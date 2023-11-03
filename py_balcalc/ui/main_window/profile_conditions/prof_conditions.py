@@ -1,6 +1,8 @@
 from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
 
 
@@ -50,9 +52,10 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Humidity:'), 2, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Pressure:'), 3, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Angle:'), 4, 0, 1, 1)
-        self.tr_ui(conditions)
 
-    def tr_ui(self, conditions):
-        tr = QtCore.QCoreApplication.translate
-        conditions.setTitle(tr("conditions", "Zeroing conditions "))
+        appSignalMgr.translator_updated.connect(self.tr_ui)
+        self.tr_ui()
+
+    def tr_ui(self):
+        self.setTitle(tr("conditions", "Zeroing conditions"))
         self.z_humidity.setSuffix(tr("conditions", " %"))

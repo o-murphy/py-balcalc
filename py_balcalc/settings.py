@@ -12,7 +12,7 @@ CalcSettings.Units.distance = Unit.METER
 
 # Fix of Unit.INCH accuracy
 UnitPropsDict[Unit.INCH] = UnitProps("inch", 3, "inch")
-
+UnitPropsDict[Unit.IN_HG] = UnitProps('inhg', 6, 'inhg')
 
 DEFAULT_USER_DIR = os.path.join(os.path.expanduser("~"), 'archer_bc2_profiles')
 
@@ -112,4 +112,5 @@ def get_user_dir():
 
 get_default_user_dir()
 app_settings = AppSettingsStorage('PyBalCalc', 'Settings')
+print(app_settings.fileName())
 load_default_settings(app_settings)

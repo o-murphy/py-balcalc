@@ -3,6 +3,7 @@ import sys
 from PySide6 import QtWidgets
 
 from py_balcalc.resources import *
+from py_balcalc.translator import tr
 from py_balcalc.ui import MainWindow
 from py_balcalc.ui.message_handler import qt_message_handler
 from py_balcalc.ui.stylesheet import main_app_qss

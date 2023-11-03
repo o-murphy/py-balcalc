@@ -2,6 +2,7 @@ from PySide6 import QtWidgets, QtCore
 from py_ballisticcalc import Unit
 
 from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
 from py_balcalc.ui.main_window.data_worker import DataWorker
 from py_balcalc.ui.main_window.profile_a7p_meta import ProfileA7PMeta
 from py_balcalc.ui.main_window.profile_weapon import ProfileWeapon
@@ -96,9 +97,9 @@ class ProfileWizard(QtWidgets.QDialog, DataWorker):
         self.stacked.insertWidget(3, self.a7p_meta)
 
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.next_btn.setText(tr("wizard", "Next"))
         self.back_btn.setText(tr("wizard", "Back"))
         self.cancel_btn.setText(tr("wizard", "Cancel"))

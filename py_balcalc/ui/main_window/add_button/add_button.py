@@ -2,6 +2,9 @@ from PySide6 import QtWidgets, QtCore
 
 import qtawesome as qta
 
+from py_balcalc.signals_manager import appSignalMgr
+from py_balcalc.translator import tr
+
 
 class AddButton(QtWidgets.QPushButton):
 
@@ -30,6 +33,7 @@ class AddButton(QtWidgets.QPushButton):
         )
 
         self.tr_ui()
+        appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def enterEvent(self, QEvent):
         self.setIcon(qta.icon('mdi6.file-outline', color='orange'))
@@ -46,5 +50,4 @@ class AddButton(QtWidgets.QPushButton):
         super(AddButton, self).dragLeaveEvent(event)
 
     def tr_ui(self):
-        tr = QtCore.QCoreApplication.translate
         self.setText(tr("Ui_addButton", "Click here or drop files"))
