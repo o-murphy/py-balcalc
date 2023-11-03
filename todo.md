@@ -2,7 +2,8 @@
 - [x] Add Settings for the calculator library
 - [x] Storing/restoring settings
 - [x] Fix arrow icons
-- [x] Wizard export
+- [ ] Wizard export
+- [ ] Check if fields not used
 - [ ] Add fields validation
 - [ ] Add CDM support
 - [ ] Add calculator
