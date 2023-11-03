@@ -1,6 +1,7 @@
 - [x] Add units fields auto min/max
 - [x] Add Settings for the calculator library
 - [x] Storing/restoring settings
+- [ ] Fix arrow icons
 - [ ] Add fields validation
 - [ ] Add CDM support
 - [ ] Add calculator
