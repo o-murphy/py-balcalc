@@ -90,7 +90,7 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     background: transparent;
-	image: url(":/custom/res/custom/caret-down-fill_8.png");
+	image: url(":/icons/menu-down-white.svg");
     width: 20px;
 }
 
@@ -166,12 +166,12 @@ QSpinBox:disabled, QDoubleSpinBox:disabled {
 QSpinBox::up-button,
 QDoubleSpinBox::up-button {
 	width: 20px;
-	image: url(":/custom/res/custom/caret-up-fill_8.png");
+	image: url(":/icons/menu-up-white.svg");
 }
 QSpinBox::down-button,
 QDoubleSpinBox::down-button {
 	width: 20px;
-	image: url(":/custom/res/custom/caret-down-fill_8.png");
+	image: url(":/icons/menu-down-white.svg");
 }
 QSpinBox::down-button:hover,
 QSpinBox::up-button:hover,
@@ -399,7 +399,7 @@ QDateEdit::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     background: transparent;
-	image: url(":/custom/res/custom/caret-down-fill_8.png");
+	image: url(":/icons/menu-down-white.svg");
     width: 20px;
 }
 

@@ -9,6 +9,8 @@
     <file>icons/window-close-orange.svg</file>
     <file>icons/check-white.svg</file>
     <file>icons/check-black.svg</file>
+    <file>icons/menu-up-white.svg</file>
+    <file>icons/menu-down-white.svg</file>
 </qresource>
 <qresource>
     <file>flags/us.png</file>

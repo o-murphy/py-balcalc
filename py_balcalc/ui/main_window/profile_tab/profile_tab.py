@@ -160,7 +160,7 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
         zero_dist = int((self.weapon.zero_dist.raw_value() >> Unit.METER) * 100)
         dist_list = self.a7p_meta.distances.dump_data()
 
-        proto_dist_list = [int((d >> Unit.METER) * 100) for d in self.a7p_meta.distances.dump_data()]
+        proto_dist_list = [int((d >> Unit.METER) * 100) for d in dist_list]
         proto_dist_list.append(zero_dist)
         proto_dist_list.sort()
 
@@ -172,3 +172,8 @@ class ProfileTab(QtWidgets.QWidget, UiProfileTab):
         self._profile.coef_rows.extend(coef_rows)
 
         return a7p.Payload(profile=self._profile)
+
+    def create_name(self):
+        return f"{self.weapon.tileTop.text()}_" \
+               f"{self.bullet.tileBot.text()}_" \
+               f"{self.bullet.bulletName.text()}.a7p".replace(" ", "_")

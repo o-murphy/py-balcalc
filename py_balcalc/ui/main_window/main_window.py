@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
+from pathlib import Path
 
 import a7p
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 from .add_button import AddButton
 from .profile_wizard import ProfileWizard
 from .ui import UiMainWindow
@@ -11,6 +12,7 @@ from .profile_tab import ProfileTab
 from .profiles_tools import ProfilesTools
 
 from py_balcalc.file import open_files, save_file
+from ...settings import app_settings
 
 
 class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
@@ -42,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         def on_wizard_accept():
             data = a7p.A7PFile.dumps(dlg.export_a7p())
 
-            file_name = self.save_file_dialog()
+            file_name = self.save_file_dialog(dlg.create_name())
             if file_name:
                 with open(file_name, 'wb') as fp:
                     fp.write(data)
@@ -53,21 +55,27 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         dlg.onAccepted.connect(on_wizard_accept)
         dlg.exec()
 
-    def save_file_dialog(self):
+    def save_file_dialog(self, file_name):
+        if not Path(file_name).exists():
+            file_name = Path(app_settings.value("env/user_dir"), Path(file_name).name).as_posix()
         options = QtWidgets.QFileDialog.Options()
-        file_name, file_format = QtWidgets.QFileDialog.getSaveFileName(
+        _file_name, file_format = QtWidgets.QFileDialog.getSaveFileName(
             self,
-            "QFileDialog.getSaveFileName()",
+            caption="Save file",
+            dir=file_name,
             filter="ArcherBC2 Profile (*.a7p)",
             options=options
         )
-        return file_name
+        if _file_name:
+            app_settings.setValue("env/user_dir", Path(_file_name).parent)
+        return _file_name
 
     def open_file_dialog(self):
         options = QtWidgets.QFileDialog.Options()
         file_names, file_format = QtWidgets.QFileDialog.getOpenFileNames(
             self,
-            "QFileDialog.getOpenFileName()",
+            caption="Open files",
+            dir=Path(app_settings.value("env/user_dir")).as_posix(),
             filter="ArcherBC2 Profile (*.a7p)",
             options=options
         )
@@ -111,7 +119,7 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         if not tab:
             tab: ProfileTab = self.profilesTabs.currentWidget()
         data = a7p.A7PFile.dumps(tab.export_a7p())
-        file_name = self.save_file_dialog()
+        file_name = self.save_file_dialog(tab.create_name())
         if file_name:
             with open(file_name, 'wb') as fp:
                 fp.write(data)
@@ -120,33 +128,40 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
 
     def on_save_button(self):
         tab: ProfileTab = self.profilesTabs.currentWidget()
-        if not self.is_file_exists(tab.file_name):
-            file_name = self.save_file_as(tab)
-            if file_name:
-                return True
-        else:
-            self.save_file(tab, False)
+        self.save_file(tab, False)
 
     def save_file(self, tab, discard=True):
+
+        std_btns = QtWidgets.QMessageBox.StandardButton
+        buttons = std_btns.Save | std_btns.Cancel
+        if discard:
+            buttons |= std_btns.Discard
+
         if not self.is_file_exists(tab.file_name):
-            file_name = self.save_file_as(tab)
-            if file_name:
-                tab.file_name = file_name
+            dlg = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Icon.Warning,
+                "Warning",
+                f"File not saved, are you want to save changes?\n{tab.create_name()}",
+                buttons
+            )
+            result = dlg.exec()
+            if result == QtWidgets.QMessageBox.StandardButton.Save.value:
+                file_name = self.save_file_as(tab)
+                if file_name:
+                    tab.file_name = file_name
+                    return True
+            elif result == QtWidgets.QMessageBox.StandardButton.Discard.value:
                 return True
+            return False
 
         else:
             data = self.is_data_updated(tab)
-            std_btns = QtWidgets.QMessageBox.StandardButton
             if data:
-                if discard:
-                    buttons = std_btns.Save | std_btns.Discard | std_btns.Cancel
-                else:
-                    buttons = std_btns.Save | std_btns.Cancel
 
                 dlg = QtWidgets.QMessageBox(
                     QtWidgets.QMessageBox.Icon.Warning,
                     "Warning",
-                    "File updated, are you want to save changes?",
+                    f"File updated, are you want to save changes?\n{tab.file_name}",
                     buttons
                 )
                 result = dlg.exec()
@@ -165,6 +180,8 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         if self.save_file(tab):
             self.profilesTabs.removeTab(index)
             self.switch_stacked()
+            return True
+        return False
 
     def is_file_exists(self, file_name):
         return os.path.exists(file_name)
@@ -206,18 +223,11 @@ class MainWindow(QtWidgets.QMainWindow, UiMainWindow):
         self.footer_widget = FooterWidget(self)
         self.vlayout.addWidget(self.footer_widget)
 
-    # def closeEvent(self, event) -> None:
-    #     self.custom_close(event)
-    #
-    # def custom_close(self, event):
-    #     if not self.profiles_tab.is_saved:
-    #         choice = self.profiles_tab.close_file()
-    #         if choice == QtWidgets.QMessageBox.Cancel or not self.profiles_tab.is_saved:
-    #             event.ignore()
-    #         else:
-    #             QtGui.QCloseEvent()
-    #     else:
-    #         QtGui.QCloseEvent()
-    #     # if hasattr(self, 'profiles_tab'):
-    #     #     self.profiles_tab.save_backup()
-    #     # sys.exit()
+    def closeEvent(self, event) -> None:
+        self.custom_close(event)
+
+    def custom_close(self, event):
+        for i in range(self.profilesTabs.count()):
+            if not self.close_tab(self.profilesTabs.currentIndex()):
+                event.ignore()
+                return

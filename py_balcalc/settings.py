@@ -1,3 +1,6 @@
+import os.path
+import sys
+
 from PySide6.QtCore import QSettings
 from py_ballisticcalc import Unit
 from py_ballisticcalc import Settings as CalcSettings
@@ -10,6 +13,7 @@ CalcSettings.Units.distance = Unit.METER
 
 DEFAULT_SETTINGS = {
     "locale": "us",
+    "env/user_dir": os.path.join(os.path.expanduser("~"), 'archer_bc2_profiles'),
     "unit/sight_height": CalcSettings.Units.sight_height,
     "unit/twist": CalcSettings.Units.twist,
     "unit/velocity": CalcSettings.Units.velocity,

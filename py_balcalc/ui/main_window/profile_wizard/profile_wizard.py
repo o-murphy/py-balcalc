@@ -82,6 +82,11 @@ class ProfileWizard(QtWidgets.QDialog):
         self._profile.twist_dir = 1 if self.weapon.rightTwist.isChecked() else 0
         return a7p.Payload(profile=self._profile)
 
+    def create_name(self):
+        return f"{self.weapon.tileTop.text()}_" \
+               f"{self.bullet.tileBot.text()}_" \
+               f"{self.bullet.bulletName.text()}.a7p".replace(" ", "_")
+
     def _update_values(self):
         self.weapon.sh.set_raw_value(Unit.MILLIMETER(self._profile.sc_height))
         self.weapon.twist.set_raw_value(Unit.INCH(self._profile.r_twist / 100))
