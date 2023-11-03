@@ -1,4 +1,4 @@
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 
 from py_ballisticcalc import Unit
 
@@ -61,9 +61,12 @@ class ProfileTab(QtWidgets.QWidget, DataWorker):
         self.a7p_meta_tab_layout.setContentsMargins(6, 6, 6, 6)
         self.a7p_meta_tab_layout.setObjectName("conditions_tab_layout")
 
-        self.content_tabs.addTab(self.munition_tab, "")
-        self.content_tabs.addTab(self.conditions_tab, "")
-        self.content_tabs.addTab(self.a7p_meta_tab, "")
+        self.content_tabs.addTab(
+            self.munition_tab, QtGui.QIcon(":/icons/ammunition-orange.svg"), "")
+        self.content_tabs.addTab(
+            self.conditions_tab, QtGui.QIcon(":/icons/water-thermometer-outline-orange.svg"), "")
+        self.content_tabs.addTab(
+            self.a7p_meta_tab, QtGui.QIcon(":/icons/card-bulleted-outline-orange.svg"), "")
 
         self.gridLayout.addWidget(self.content_tabs, 0, 0, 1, 1)
         self.content_tabs.setCurrentIndex(0)

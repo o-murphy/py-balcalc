@@ -34,11 +34,11 @@ QGroupBox#ProfileBullet::indicator {
 }
 
 QGroupBox#ProfileConditions::indicator {
-    image: null;
+    image: url(":/icons/water-thermometer-outline-orange.svg");
 }
 
 QGroupBox#ProfileA7PMeta::indicator {
-    image: null;
+    image: url(":/icons/card-bulleted-outline-orange.svg");
 }
 
 QCheckBox {

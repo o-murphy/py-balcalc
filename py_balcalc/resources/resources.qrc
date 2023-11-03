@@ -11,6 +11,9 @@
     <file>icons/check-black.svg</file>
     <file>icons/menu-up-white.svg</file>
     <file>icons/menu-down-white.svg</file>
+    <file>icons/water-thermometer-outline-orange.svg</file>
+    <file>icons/card-bulleted-outline-orange.svg</file>
+    <file>icons/ammunition-orange.svg</file>
 </qresource>
 <qresource>
     <file>flags/us.png</file>

@@ -74,7 +74,7 @@ class MainWindow(QtWidgets.QMainWindow):
             caption="Save file",
             dir=file_name,
             filter="ArcherBC2 Profile (*.a7p)",
-            # options=options
+            options=options
         )
         if _file_name:
             app_settings.setValue("env/user_dir", Path(_file_name).parent)

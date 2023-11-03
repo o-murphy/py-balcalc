@@ -108,8 +108,8 @@ class AppSettings(QtWidgets.QDialog):
 
         self.gridLayout.addWidget(self.tabsSettings, 0, 0, 1, 1, QtCore.Qt.AlignTop)
 
-        self.buttonBox.accepted.connect(AppSettings.accept)  # type: ignore
-        self.buttonBox.rejected.connect(AppSettings.reject)  # type: ignore
+        self.buttonBox.accepted.connect(self.accept)  # type: ignore
+        self.buttonBox.rejected.connect(self.reject)  # type: ignore
 
         self.tr_ui()
 
