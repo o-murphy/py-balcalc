@@ -3,8 +3,8 @@ import sys
 from PySide6 import QtWidgets
 
 from py_balcalc.logger import logger
+from py_balcalc.resources import *
 from py_balcalc.ui import MainWindow
-from py_balcalc.ui.resources import *
 from py_balcalc.ui.stylesheet import main_app_qss
 
 

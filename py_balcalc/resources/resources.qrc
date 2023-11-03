@@ -1,0 +1,13 @@
+<RCC version="1.0">
+<qresource>
+    <file>munition/rifle.svg</file>
+    <file>munition/bullet.svg</file>
+    <file>munition/cartridge.svg</file>
+</qresource>
+<qresource>
+    <file>icons/window-close-white.svg</file>
+    <file>icons/window-close-orange.svg</file>
+    <file>icons/check-white.svg</file>
+    <file>icons/check-black.svg</file>
+</qresource>
+</RCC>
