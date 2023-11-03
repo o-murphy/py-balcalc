@@ -25,8 +25,9 @@ CalcSettings.Units.velocity = Unit.MPS
 CalcSettings.Units.distance = Unit.METER
 
 
-# loads, writes and sets app preferences from settings.ini file
 class AppSettings(QtWidgets.QDialog, UiAppSettings):
+    """loads, writes and sets app preferences from settings.ini file"""
+
     def __init__(self):
         super(AppSettings, self).__init__()
         self.setup_ui(self)
@@ -42,7 +43,7 @@ class AppSettings(QtWidgets.QDialog, UiAppSettings):
         #     self.update_config()
         self.init_defaults()
         self.init_units_tab()
-        self.tabSettings.setCurrentIndex(1)
+        self.tabsSettings.setCurrentIndex(1)
 
     def init_defaults(self):
         appSettings.setValue("unit/sight_height", CalcSettings.Units.sight_height)
@@ -72,7 +73,7 @@ class AppSettings(QtWidgets.QDialog, UiAppSettings):
     #     self.init_extension_tab()
     #     self.load_extension_settings()
     #
-    #     self.tabSettings.setCurrentIndex(1)
+    #     self.tabsSettings.setCurrentIndex(1)
     #
     #     self.save_cfg()
 
@@ -145,23 +146,23 @@ class AppSettings(QtWidgets.QDialog, UiAppSettings):
             combo_box.setCurrentIndex(combo_box.findData(appSettings.value(default)))
             combo_box.currentIndexChanged.connect(on_change)
 
-        init_one_combo(self.shUnits, DistanceUnits, 'unit/sight_height')
-        init_one_combo(self.twistUnits, DistanceUnits, 'unit/twist')
-        init_one_combo(self.distUnits, DistanceUnits, 'unit/distance')
-        init_one_combo(self.dUnits, DistanceUnits, 'unit/diameter')
-        init_one_combo(self.lnUnits, DistanceUnits, 'unit/length')
-        init_one_combo(self.dropUnits, DistanceUnits, 'unit/drop')
-        init_one_combo(self.thUnits, DistanceUnits, 'unit/target_height')
+        init_one_combo(self.units_tab.shUnits, DistanceUnits, 'unit/sight_height')
+        init_one_combo(self.units_tab.twistUnits, DistanceUnits, 'unit/twist')
+        init_one_combo(self.units_tab.distUnits, DistanceUnits, 'unit/distance')
+        init_one_combo(self.units_tab.dUnits, DistanceUnits, 'unit/diameter')
+        init_one_combo(self.units_tab.lnUnits, DistanceUnits, 'unit/length')
+        init_one_combo(self.units_tab.dropUnits, DistanceUnits, 'unit/drop')
+        init_one_combo(self.units_tab.thUnits, DistanceUnits, 'unit/target_height')
 
-        init_one_combo(self.vUnits, VelocityUnits, 'unit/velocity')
-        init_one_combo(self.tempUnits, TemperatureUnits, 'unit/temperature')
-        init_one_combo(self.pUnits, PressureUnits, 'unit/pressure')
-        init_one_combo(self.wUnits, WeightUnits, 'unit/weight')
-        init_one_combo(self.ogwUnits, WeightUnits, 'unit/ogw')
-        init_one_combo(self.eUnits, EnergyUnits, 'unit/energy')
+        init_one_combo(self.units_tab.vUnits, VelocityUnits, 'unit/velocity')
+        init_one_combo(self.units_tab.tempUnits, TemperatureUnits, 'unit/temperature')
+        init_one_combo(self.units_tab.pUnits, PressureUnits, 'unit/pressure')
+        init_one_combo(self.units_tab.wUnits, WeightUnits, 'unit/weight')
+        init_one_combo(self.units_tab.ogwUnits, WeightUnits, 'unit/ogw')
+        init_one_combo(self.units_tab.eUnits, EnergyUnits, 'unit/energy')
 
-        init_one_combo(self.pathUnits, AngularUnits, 'unit/adjustment')
-        init_one_combo(self.angleUnits, AngularUnits, 'unit/angular')
+        init_one_combo(self.units_tab.pathUnits, AngularUnits, 'unit/adjustment')
+        init_one_combo(self.units_tab.angleUnits, AngularUnits, 'unit/angular')
 
     def load_general_settings(self):
         """loads last general settings from settings.ini"""
