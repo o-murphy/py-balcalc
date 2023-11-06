@@ -45,6 +45,11 @@ include-package-data = true
 where = ["."]
 include = ["py_balcalc*"]  # alternatively: `exclude = ["additional*"]`
 
+[tool.setuptools.package-data]
+py_balcalc = [
+    "translations/*.json"
+]
+
 [tool.setuptools.dynamic]
 version = {attr = "py_balcalc.__version__"}
 
