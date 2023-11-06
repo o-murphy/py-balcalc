@@ -3,12 +3,13 @@
 - [ ] Fix .a7p file overwriting without user's update
 - [ ] Add export/import data to .toml with app specific data
 - [ ] Add profiles gallery
-- [ ] Show tile help
 - [ ] Add setup.py that would prebuild resources.py from sources
 - [ ] refactor file dialogs
 - [ ] refactor bc-table loading
 - [ ] fix attribute error on empty CDM
 
+- [x] Show tile help (won't fix)
+- [x] Auto tile if it's empty
 - [x] Add units fields auto min/max
 - [x] Add Settings for the calculator library
 - [x] Storing/restoring settings

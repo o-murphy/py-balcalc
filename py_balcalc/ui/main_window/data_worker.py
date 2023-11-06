@@ -44,16 +44,16 @@ class DataWorker:
         appSignalMgr.settings_units_updated.connect(self._update_values)
 
     def _update_values(self):
-        self.weapon.sh.set_raw_value(Unit.MILLIMETER(self._profile.sc_height))
+        self.weapon.sc_height.set_raw_value(Unit.MILLIMETER(self._profile.sc_height))
         self.weapon.twist.set_raw_value(Unit.INCH(self._profile.r_twist / 100))
 
-        self.cartridge.mv.set_raw_value(Unit.MPS(self._profile.c_muzzle_velocity / 10))
+        self.cartridge.c_muzzle_velocity.set_raw_value(Unit.MPS(self._profile.c_muzzle_velocity / 10))
         self.cartridge.temp.set_raw_value(Unit.CELSIUS(self._profile.c_zero_temperature))
-        self.cartridge.ts.setValue(self._profile.c_t_coeff / 1000)
+        self.cartridge.c_t_coeff.setValue(self._profile.c_t_coeff / 1000)
 
-        self.bullet.weight.set_raw_value(Unit.GRAIN(self._profile.b_weight / 10))
-        self.bullet.length.set_raw_value(Unit.INCH(self._profile.b_length / 1000))
-        self.bullet.diameter.set_raw_value(Unit.INCH(self._profile.b_diameter / 1000))
+        self.bullet.b_weight.set_raw_value(Unit.GRAIN(self._profile.b_weight / 10))
+        self.bullet.b_length.set_raw_value(Unit.INCH(self._profile.b_length / 1000))
+        self.bullet.b_diameter.set_raw_value(Unit.INCH(self._profile.b_diameter / 1000))
 
         if self._profile.bc_type == a7p.GType.G1:
             self.bullet.drag_model_label.setText("Drag model: G1")
@@ -61,7 +61,7 @@ class DataWorker:
             for i, row in enumerate(self._profile.coef_rows):
                 v = self.bullet.drag_model.g1.cellWidget(i, 0)
                 c = self.bullet.drag_model.g1.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.mv / 10))
+                v.set_raw_value(Unit.MPS(row.c_muzzle_velocity / 10))
                 c.setValue(Unit.MPS(row.bc_cd / 10000))
         elif self._profile.bc_type == a7p.GType.G7:
             self.bullet.drag_model_label.setText("Drag model: G7")
@@ -69,7 +69,7 @@ class DataWorker:
             for i, row in enumerate(self._profile.coef_rows):
                 v = self.bullet.drag_model.g7.cellWidget(i, 0)
                 c = self.bullet.drag_model.g7.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.mv / 10))
+                v.set_raw_value(Unit.MPS(row.c_muzzle_velocity / 10))
                 c.setValue(Unit.MPS(row.bc_cd / 10000))
 
         elif self._profile.bc_type == a7p.GType.CUSTOM:
@@ -85,23 +85,24 @@ class DataWorker:
             self.conditions.z_humidity.setValue(self._profile.c_zero_air_humidity)
 
     def export_a7p(self):
+        self.auto_tile()
 
         self._profile.profile_name = self.weapon.profile_name.text()
         self._profile.cartridge_name = self.weapon.caliber.text()
         self._profile.short_name_top = self.weapon.tileTop.text()
         self._profile.short_name_bot = self.bullet.tileBot.text()
         self._profile.r_twist = int((self.weapon.twist.raw_value() >> Unit.INCH) * 100)
-        self._profile.sc_height = int(self.weapon.sh.raw_value() >> Unit.MILLIMETER)
+        self._profile.sc_height = int(self.weapon.sc_height.raw_value() >> Unit.MILLIMETER)
         self._profile.twist_dir = 1 if self.weapon.rightTwist.isChecked() else 0
 
         self._profile.cartridge_name = self.cartridge.cartridge_name.text()
-        self._profile.c_muzzle_velocity = int((self.cartridge.mv.raw_value() >> Unit.MPS) * 10)
-        self._profile.c_t_coeff = int((self.cartridge.ts.value()) * 1000)
+        self._profile.c_muzzle_velocity = int((self.cartridge.c_muzzle_velocity.raw_value() >> Unit.MPS) * 10)
+        self._profile.c_t_coeff = int((self.cartridge.c_t_coeff.value()) * 1000)
 
         self._profile.bullet_name = self.bullet.bullet_name.text()
-        self._profile.b_weight = int((self.bullet.weight.raw_value() >> Unit.GRAIN) * 10)
-        self._profile.b_length = int((self.bullet.length.raw_value() >> Unit.INCH) * 1000)
-        self._profile.b_diameter = int((self.bullet.diameter.raw_value() >> Unit.INCH) * 1000)
+        self._profile.b_weight = int((self.bullet.b_weight.raw_value() >> Unit.GRAIN) * 10)
+        self._profile.b_length = int((self.bullet.b_length.raw_value() >> Unit.INCH) * 1000)
+        self._profile.b_diameter = int((self.bullet.b_diameter.raw_value() >> Unit.INCH) * 1000)
 
         self._profile.user_note = self.a7p_meta.user_note.toPlainText()
         self._profile.zero_x = int(self.a7p_meta.zero_x.value() * -1000)
@@ -165,6 +166,12 @@ class DataWorker:
             ])
 
         return a7p.Payload(profile=self._profile)
+
+    def auto_tile(self):
+        if not self.weapon.tileTop.text():
+            self.weapon.auto_tile()
+        if not self.bullet.tileBot.text():
+            self.bullet.auto_tile()
 
     def validate(self):
         childs = [ch for ch in self.findChildren(QtWidgets.QWidget) if hasattr(ch, 'valid')]

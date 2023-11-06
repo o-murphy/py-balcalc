@@ -60,12 +60,12 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Zeroing distance:'), 5, 0, 1, 1)
 
         self.twist = UnitSpinBox(self, Unit.INCH(10), 'unit/twist')
-        self.sh = UnitSpinBox(self, Unit.MILLIMETER(90), 'unit/sight_height')
+        self.sc_height = UnitSpinBox(self, Unit.MILLIMETER(90), 'unit/sight_height')
         self.zero_dist = UnitSpinBox(self, Unit.METER(100), 'unit/distance')
 
         self.twist.setObjectName("twist")
-        self.sh.setObjectName("sight_height")
-        self.sh.setObjectName("zero_dist")
+        self.sc_height.setObjectName("sight_height")
+        self.sc_height.setObjectName("zero_dist")
 
         self.rightTwist = QtWidgets.QRadioButton(self)
         self.caliber = QtWidgets.QLineEdit(self)
@@ -88,7 +88,7 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.profile_name, 0, 1, 1, 4)
         self.gridLayout.addWidget(self.caliber, 1, 1, 1, 3)
         self.gridLayout.addWidget(self.tileTop, 2, 1, 1, 1)
-        self.gridLayout.addWidget(self.sh, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.sc_height, 3, 1, 1, 1)
         self.gridLayout.addWidget(self.twist, 4, 1, 1, 1)
         self.gridLayout.addWidget(self.zero_dist, 5, 1, 1, 1)
 
@@ -116,5 +116,5 @@ class ProfileWeapon(QtWidgets.QGroupBox):
 
         self.tileTop.setPlaceholderText(tr("weapon", 'Tile text:'))
 
-        self.profile_name.setPlaceholderText(tr("root", "Field can't be empty"))
-        self.tileTop.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.profile_name.setPlaceholderText(tr("root", "Required"))
+        self.tileTop.setPlaceholderText(tr("root", "Required"))

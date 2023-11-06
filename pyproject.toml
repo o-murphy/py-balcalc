@@ -27,8 +27,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
-dependencies = ["PySide6~=6.6.0", "qtawesome", "py_ballisticcalc==1.1.0", "a7p"]
-dynamic = ["version"]
+dynamic = ["version", "dependencies"]
 
 [project.urls]
 "Homepage" = "https://github.com/o-murphy/py_balcalc"
@@ -52,6 +51,7 @@ py_balcalc = [
 
 [tool.setuptools.dynamic]
 version = {attr = "py_balcalc.__version__"}
+dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
 exts = ['py_ballisticcalc.exts']

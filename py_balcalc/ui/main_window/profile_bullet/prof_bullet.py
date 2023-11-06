@@ -59,9 +59,9 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.tile_help.triggered.connect(self.show_tile_help)
 
     def auto_tile(self):
-        value = self.weight.value()
+        value = self.b_weight.value()
         value = int(value) if value % 1 == 0 else value
-        self.tileBot.setText(f"{value}{self.weight.suffix()}".replace(" ", ""))
+        self.tileBot.setText(f"{value}{self.b_weight.suffix()}".replace(" ", ""))
 
     def show_tile_help(self):
         # TODO:
@@ -112,19 +112,19 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.tileBot.setObjectName("caliberShort")
 
         self.bullet_name = RegExpLineEdit(self, valid_regex=r'.+')
-        self.weight = UnitSpinBox(self, Unit.GRAIN(175), 'unit/weight')
-        self.diameter = UnitSpinBox(self, Unit.INCH(0.308), 'unit/diameter')
-        self.length = UnitSpinBox(self, Unit.INCH(1.2), 'unit/length')
+        self.b_weight = UnitSpinBox(self, Unit.GRAIN(175), 'unit/b_weight')
+        self.b_diameter = UnitSpinBox(self, Unit.INCH(0.308), 'unit/b_diameter')
+        self.b_length = UnitSpinBox(self, Unit.INCH(1.2), 'unit/b_length')
 
         self.bullet_name.setObjectName("bullet_name")
-        self.weight.setObjectName("weight")
-        self.diameter.setObjectName("diameter")
-        self.length.setObjectName("length")
+        self.b_weight.setObjectName("b_weight")
+        self.b_diameter.setObjectName("b_diameter")
+        self.b_length.setObjectName("b_length")
 
         self.gridLayout.addWidget(self.bullet_name, 0, 1, 1, 2)
-        self.gridLayout.addWidget(self.weight, 1, 1, 1, 1)
-        self.gridLayout.addWidget(self.diameter, 2, 1, 1, 1)
-        self.gridLayout.addWidget(self.length, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.b_weight, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.b_diameter, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.b_length, 3, 1, 1, 1)
         self.gridLayout.addWidget(self.tileBot, 4, 1, 1, 1)
 
         self.change_drag_model = QtWidgets.QPushButton(self)
@@ -150,6 +150,6 @@ class ProfileBullet(QtWidgets.QGroupBox):
     def tr_ui(self):
         self.setTitle(tr("bullet", "Bullet"))
         self.change_drag_model.setText(tr("bullet", "Change drag model"))
-        self.bullet_name.setPlaceholderText(tr("root", "Field can't be empty"))
-        self.tileBot.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.bullet_name.setPlaceholderText(tr("root", "Required"))
+        self.tileBot.setPlaceholderText(tr("root", "Required"))
 

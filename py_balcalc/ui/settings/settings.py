@@ -75,15 +75,15 @@ class AppSettings(QtWidgets.QDialog):
         init_one_combo(self.units_tab.shUnits, DistanceUnits, 'unit/sight_height')
         init_one_combo(self.units_tab.twistUnits, DistanceUnits, 'unit/twist')
         init_one_combo(self.units_tab.distUnits, DistanceUnits, 'unit/distance')
-        init_one_combo(self.units_tab.dUnits, DistanceUnits, 'unit/diameter')
-        init_one_combo(self.units_tab.lnUnits, DistanceUnits, 'unit/length')
+        init_one_combo(self.units_tab.dUnits, DistanceUnits, 'unit/b_diameter')
+        init_one_combo(self.units_tab.lnUnits, DistanceUnits, 'unit/b_length')
         init_one_combo(self.units_tab.dropUnits, DistanceUnits, 'unit/drop')
         init_one_combo(self.units_tab.thUnits, DistanceUnits, 'unit/target_height')
 
         init_one_combo(self.units_tab.vUnits, VelocityUnits, 'unit/velocity')
         init_one_combo(self.units_tab.tempUnits, TemperatureUnits, 'unit/temperature')
         init_one_combo(self.units_tab.pUnits, PressureUnits, 'unit/pressure')
-        init_one_combo(self.units_tab.wUnits, WeightUnits, 'unit/weight')
+        init_one_combo(self.units_tab.wUnits, WeightUnits, 'unit/b_weight')
         init_one_combo(self.units_tab.ogwUnits, WeightUnits, 'unit/ogw')
         init_one_combo(self.units_tab.eUnits, EnergyUnits, 'unit/energy')
 

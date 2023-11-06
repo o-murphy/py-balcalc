@@ -16,7 +16,7 @@ class ProfileCartridge(QtWidgets.QGroupBox):
 
     def __post_init__(self):
         self.cartridge_name.setMaxLength(DEF_STRINGS_LIMITS['cartridge_name'])
-        self.ts.setRange(*DEF_FLOAT_LIMITS['c_t_coeff'].values())
+        self.c_t_coeff.setRange(*DEF_FLOAT_LIMITS['c_t_coeff'].values())
 
     def init_ui(self):
         self.setObjectName("ProfileCartridge")
@@ -32,26 +32,26 @@ class ProfileCartridge(QtWidgets.QGroupBox):
 
         self.cartridge_name = RegExpLineEdit(self, valid_regex=r'.+')
 
-        self.ts = QtWidgets.QDoubleSpinBox(self)
+        self.c_t_coeff = QtWidgets.QDoubleSpinBox(self)
         self.temp = UnitSpinBox(self, Unit.CELSIUS(15), 'unit/temperature')
-        self.mv = UnitSpinBox(self, Unit.MPS(800), 'unit/velocity')
+        self.c_muzzle_velocity = UnitSpinBox(self, Unit.MPS(800), 'unit/velocity')
 
-        self.ts.setObjectName("ts")
+        self.c_t_coeff.setObjectName("c_t_coeff")
         self.temp.setObjectName("temp")
-        self.mv.setObjectName("muzzle_velocity")
+        self.c_muzzle_velocity.setObjectName("muzzle_velocity")
 
         self.gridLayout.addWidget(self.cartridge_name, 0, 1, 1, 2)
-        self.gridLayout.addWidget(self.mv, 1, 1)
+        self.gridLayout.addWidget(self.c_muzzle_velocity, 1, 1)
         self.gridLayout.addWidget(self.temp, 2, 1)
-        self.gridLayout.addWidget(self.ts, 3, 1)
+        self.gridLayout.addWidget(self.c_t_coeff, 3, 1)
 
-        self.ts.setMaximum(100.0)
-        self.ts.setDecimals(3)
+        self.c_t_coeff.setMaximum(100.0)
+        self.c_t_coeff.setDecimals(3)
 
         self.tr_ui()
         appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def tr_ui(self):
         self.setTitle(tr("cartridge", "Cartridge"))
-        self.ts.setSuffix(tr("cartridge", " %"))
-        self.cartridge_name.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.c_t_coeff.setSuffix(tr("cartridge", " %"))
+        self.cartridge_name.setPlaceholderText(tr("root", "Required"))

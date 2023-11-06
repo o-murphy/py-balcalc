@@ -72,12 +72,12 @@ class TableModel(QtCore.QAbstractTableModel):
             return self._data[index.row()][index.column()]
 
     def rowCount(self, index):
-        # The length of the outer list.
+        # The b_length of the outer list.
         return len(self._data)
 
     def columnCount(self, index):
         # The following takes the first sub-list, and returns
-        # the length (only works if all rows are an equal length)
+        # the b_length (only works if all rows are an equal b_length)
         return len(self._data[0])
 
     def headerData(self, section, orientation, role):
@@ -102,7 +102,7 @@ class ModelCDM(QtWidgets.QTableView):
         appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def load_data(self, data: list[a7p.CoefRow]):
-        rows = [[i.mv / 10000, i.bc_cd / 10000] for i in data]
+        rows = [[i.c_muzzle_velocity / 10000, i.bc_cd / 10000] for i in data]
         self.model = TableModel(rows)
         self.setModel(self.model)
         self.tr_ui()
