@@ -18,7 +18,7 @@ DEFAULT_USER_DIR = os.path.join(os.path.expanduser("~"), 'archer_bc2_profiles')
 
 
 DEFAULT_SETTINGS = {
-    "locale": "us",
+    "locale": "English",
     "env/user_dir": DEFAULT_USER_DIR,
     "unit/sight_height": CalcSettings.Units.sight_height,
     "unit/twist": CalcSettings.Units.twist,
@@ -40,22 +40,24 @@ DEFAULT_SETTINGS = {
 
 DEF_UNITS_LIMITS = {
     "unit/sight_height": {'max': Unit.CENTIMETER(30), 'min': Unit.CENTIMETER(0.1)},
-    "unit/twist": {'max': Unit.INCH(30), 'min': Unit.INCH(0)},
-    "unit/velocity": {'max': Unit.MPS(3000), 'min': Unit.MPS(0)},
-    "unit/distance": {'max': Unit.METER(5000), 'min': Unit.METER(10)},
-    "unit/diameter": {'max': Unit.INCH(65.535), 'min': Unit.INCH(0.001)},
-    "unit/length": {'max': Unit.INCH(10), 'min': Unit.INCH(0.1)},
-    "unit/temperature": {'max': Unit.CELSIUS(100), 'min': Unit.CELSIUS(-100)},
-    "unit/pressure": {'max': Unit.HP(1050), 'min': Unit.HP(875)},
-    # "unit/pressure": {'max': Unit.MM_HG(770), 'min': Unit.MM_HG(640)},
-    "unit/weight": {'max': Unit.GRAIN(6553.5), 'min': Unit.GRAIN(1)},
-    "unit/energy": {'max': None, 'min': Unit.POUND(0)},
-    "unit/drop": {'max': None, 'min': Unit.CM_PER_100M(0)},
-    "unit/adjustment": {'max': Unit.DEGREE(359), 'min': Unit.DEGREE(0)},
-    "unit/angular": {'max': Unit.DEGREE(359), 'min': Unit.DEGREE(0)},
-    "unit/target_height": {'max': Unit.METER(5), 'min': Unit.INCH(5)},
-    "unit/ogw": {'max': None, 'min': Unit.KILOGRAM(0)},
+    "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(30)},
+    "unit/velocity": {'min': Unit.MPS(0), 'max': Unit.MPS(3000)},
+    "unit/distance": {'min': Unit.METER(10), 'max': Unit.METER(5000)},
+    "unit/diameter": {'min': Unit.INCH(0.001), 'max': Unit.INCH(65.535)},
+    "unit/length": {'min': Unit.INCH(0.1), 'max': Unit.INCH(10)},
+    "unit/temperature": {'min': Unit.CELSIUS(-100), 'max': Unit.CELSIUS(100)},
+    "unit/pressure": {'min': Unit.HP(875), 'max': Unit.HP(1050)},
+    # "unit/pressure": {'min': Unit.MM_HG(640), 'max': Unit.MM_HG(770)},
+    "unit/weight": {'min': Unit.GRAIN(1), 'max': Unit.GRAIN(6553.5)},
+    "unit/energy": {'min': Unit.POUND(0), 'max': None},
+    "unit/drop": {'min': Unit.CM_PER_100M(0), 'max': None},
+    "unit/adjustment": {'min': Unit.DEGREE(0), 'max': Unit.DEGREE(359)},
+    "unit/angular": {'min': Unit.DEGREE(0), 'max': Unit.DEGREE(359)},
+    "unit/target_height": {'min': Unit.INCH(5), 'max': Unit.METER(5)},
+    "unit/ogw": {'min': Unit.KILOGRAM(0), 'max': None},
 }
+
+# TODO: remove NONE limits
 
 
 DEF_STRINGS_LIMITS = {

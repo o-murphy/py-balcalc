@@ -38,8 +38,8 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
 
     def set_display_unit(self, unit: Unit):
         self.setDecimals(unit.accuracy)
-        self.setMaximum(DEF_UNITS_LIMITS[self._unit_settings_key]['max'])
-        self.setMinimum(DEF_UNITS_LIMITS[self._unit_settings_key]['min'])
+        min_, max_ = DEF_UNITS_LIMITS[self._unit_settings_key].values()
+        self.setRange(min_ >> self._unit_settings_key, max_ >> self._unit_settings_key)
         self.setSingleStep(10**(-self.decimals()))
         self.tr_ui()
         appSignalMgr.translator_updated.connect(self.tr_ui)

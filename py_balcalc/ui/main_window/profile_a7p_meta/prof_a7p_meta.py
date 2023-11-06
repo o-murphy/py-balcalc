@@ -1,5 +1,5 @@
 import a7p
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 from py_ballisticcalc import Unit
 
 from py_balcalc.settings import DEF_DISTANCES_LIST_SIZE, DEF_FLOAT_LIMITS
@@ -35,11 +35,8 @@ class DistancesList(QtWidgets.QTableWidget):
         self.setFixedHeight(total_height)
 
     def load_data(self, distances):
-        count = len(distances)
         self.clear()
-        self.create_cols(
-            DEF_DISTANCES_LIST_SIZE if count <= DEF_DISTANCES_LIST_SIZE else count
-        )
+        self.create_cols()
         for i, d in enumerate(distances):
             w = self.cellWidget(0, i)
             w.set_raw_value(d)
@@ -52,6 +49,47 @@ class DistancesList(QtWidgets.QTableWidget):
 
     def tr_ui(self):
         ...
+
+
+# class DistanceDelegate(QtWidgets.QStyledItemDelegate):
+#
+#     def createEditor(self, parent, option, index):
+#         spinbox = UnitSpinBox(parent, Unit.METER(0), 'unit/distance')
+#         spinbox.setFrame(False)  # Remove the frame around the spinbox
+#         return spinbox
+#
+#     def setEditorData(self, editor, index):
+#         value = index.model().data(index, QtCore.Qt.EditRole)
+#         # editor.set_raw_value(value)  # Use the custom set_raw_value method of your UnitSpinBox
+#         print(f'set editor {value}')
+#
+#         editor.set_raw_value(value)  # Use the custom set_raw_value method of your UnitSpinBox
+#
+#     def setModelData(self, editor, model, index):
+#         value = editor.raw_value()
+#         print(f'set model {value}')
+#
+#         model.setData(index, value, QtCore.Qt.EditRole)
+#
+#     def updateEditorGeometry(self, editor, option, index):
+#         editor.setGeometry(option.rect)
+#
+#
+# class DistancesListView(QtWidgets.QListView):
+#     def __init__(self, parent=None):
+#         super().__init__(parent)
+#         self.setFlow(self.Flow.LeftToRight)
+#
+#         self.model = QtGui.QStandardItemModel(self)
+#         self.setModel(self.model)
+#         delegate = DistanceDelegate()
+#         self.setItemDelegate(delegate)
+#
+#     def load_data(self, distances):
+#         for raw_value in distances:
+#             item = QtGui.QStandardItem()
+#             item.setData(raw_value, QtCore.Qt.EditRole)
+#             self.model.appendRow(item)
 
 
 class ProfileA7PMeta(QtWidgets.QGroupBox):
@@ -100,6 +138,7 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
         self.zero_x = QtWidgets.QDoubleSpinBox(self)
         self.zero_y = QtWidgets.QDoubleSpinBox(self)
         self.distances = DistancesList(self)
+        # self.distances = DistancesListView(self)
         self.user_note = QtWidgets.QPlainTextEdit(self)
 
         self.change_distances = QtWidgets.QHBoxLayout()
@@ -117,6 +156,7 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
 
         self.gridLayout.addLayout(self.change_distances, 3, 1)
 
+        # self.gridLayout.addWidget(self.distances, 4, 1)
         self.gridLayout.addWidget(self.distances, 4, 1)
         self.gridLayout.addWidget(self.user_note, 5, 1)
 
