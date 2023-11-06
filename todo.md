@@ -17,3 +17,4 @@
 - [x] Add a7p limits
 - [x] Add check if user dir exists
 - [ ] Show tile help
+- [ ] Add setup.py that would prebuild resources.py from sources

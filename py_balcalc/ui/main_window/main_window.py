@@ -193,10 +193,10 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             filename, file_data = open_files(tab.file_name)[0]
 
-            for field_descriptor, field_value in file_data.profile.ListFields():
-                v = tab_data.profile.__getattribute__(field_descriptor.name)
-                if field_value != v:
-                    print(field_descriptor.name, field_value, v)
+            # for field_descriptor, field_value in file_data.profile.ListFields():
+            #     v = tab_data.profile.__getattribute__(field_descriptor.name)
+            #     if field_value != v:
+            #         print(field_descriptor.name, field_value, v)
 
             if file_data != tab_data:
                 raise IOError

@@ -1,4 +1,4 @@
-# py-ballisticcalc-gui
+# py-balcalc
 desktop gui for py-ballisticcalc library
 
 ## Installation
