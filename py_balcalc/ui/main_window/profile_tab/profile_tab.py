@@ -36,7 +36,8 @@ class ProfileTab(QtWidgets.QWidget, DataWorker):
         )
 
     def validate(self):
-        if not self.cartridge.c_muzzle_velocity.validate_value(min_=Unit.MPS(10)):
+        self.cartridge.c_muzzle_velocity.validate_value(min_=Unit.MPS(10))
+        if not self.cartridge.c_muzzle_velocity.valid():
             self.show_invalid_dlg()
             self.cartridge.c_muzzle_velocity.set_valid(False)
             self.cartridge.c_muzzle_velocity.setFocus()
