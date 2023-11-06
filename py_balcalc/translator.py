@@ -8,7 +8,7 @@ from py_balcalc.settings import app_settings
 from py_balcalc.signals_manager import appSignalMgr
 
 TRANSLATION_VERSION = '0.0.1'
-TR_PATH = Path('translations')
+TR_PATH = Path(__file__, '..', 'translations')
 
 DEFAULT_TRANSLATION = {
     "meta": {

@@ -1,1 +1,1 @@
-include py_balcalc/qss/*.qss
+include py_balcalc/translations/*.json

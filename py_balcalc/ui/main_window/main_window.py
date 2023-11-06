@@ -112,7 +112,7 @@ class MainWindow(QtWidgets.QMainWindow):
         profiles = open_files(*file_names)
         for i, (path, payload) in enumerate(profiles):
             profile_tab = ProfileTab(self, payload, path)
-            self.profilesTabs.addTab(profile_tab, payload.profile.profile_name)
+            self.profilesTabs.addTab(profile_tab, Path(profile_tab.file_name).name)
         self.switch_stacked()
         self.profilesTabs.setCurrentIndex(self.profilesTabs.count() - 1)
 
@@ -193,10 +193,10 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             filename, file_data = open_files(tab.file_name)[0]
 
-            # for field_descriptor, field_value in file_data.profile.ListFields():
-            #     v = tab_data.profile.__getattribute__(field_descriptor.name)
-            #     if field_value != v:
-            #         print(field_descriptor.name, field_value, v)
+            for field_descriptor, field_value in file_data.profile.ListFields():
+                v = tab_data.profile.__getattribute__(field_descriptor.name)
+                if field_value != v:
+                    print(field_descriptor.name, field_value, v)
 
             if file_data != tab_data:
                 raise IOError

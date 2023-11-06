@@ -23,6 +23,10 @@ class DistancesList(QtWidgets.QTableWidget):
         self.clear()
         self.setColumnCount(count)
 
+        for i in range(self.columnCount()):
+            w = UnitSpinBox(self, Unit.METER(0), 'unit/distance')
+            self.setCellWidget(0, i, w)
+
     def fit_to_content(self):
         total_height = self.rowHeight(0) \
                        + self.horizontalHeader().height() \
@@ -32,60 +36,23 @@ class DistancesList(QtWidgets.QTableWidget):
     def load_data(self, distances):
         self.create_cols()
         for i, d in enumerate(distances):
-            w = UnitSpinBox(self, Unit.METER(0), 'unit/distance')
-            w.set_raw_value(d)
-            self.setCellWidget(0, i, w)
+            widget = self.cellWidget(0, i)
+            if widget:
+                widget.set_raw_value(d)
         self.fit_to_content()
 
     def dump_data(self):
         out = []
         for i in range(self.columnCount()):
-            out.append(self.cellWidget(0, i).raw_value())
+            widget = self.cellWidget(0, i)
+            if widget:
+                value = widget.raw_value()
+                if value > 0:
+                    out.append(value)
         return out
 
     def tr_ui(self):
         ...
-
-
-# class DistanceDelegate(QtWidgets.QStyledItemDelegate):
-#
-#     def createEditor(self, parent, option, index):
-#         spinbox = UnitSpinBox(parent, Unit.METER(0), 'unit/distance')
-#         spinbox.setFrame(False)  # Remove the frame around the spinbox
-#         return spinbox
-#
-#     def setEditorData(self, editor, index):
-#         value = index.model().data(index, QtCore.Qt.EditRole)
-#         # editor.set_raw_value(value)  # Use the custom set_raw_value method of your UnitSpinBox
-#         print(f'set editor {value}')
-#
-#         editor.set_raw_value(value)  # Use the custom set_raw_value method of your UnitSpinBox
-#
-#     def setModelData(self, editor, model, index):
-#         value = editor.raw_value()
-#         print(f'set model {value}')
-#
-#         model.setData(index, value, QtCore.Qt.EditRole)
-#
-#     def updateEditorGeometry(self, editor, option, index):
-#         editor.setGeometry(option.rect)
-#
-#
-# class DistancesListView(QtWidgets.QListView):
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-#         self.setFlow(self.Flow.LeftToRight)
-#
-#         self.model = QtGui.QStandardItemModel(self)
-#         self.setModel(self.model)
-#         delegate = DistanceDelegate()
-#         self.setItemDelegate(delegate)
-#
-#     def load_data(self, distances):
-#         for raw_value in distances:
-#             item = QtGui.QStandardItem()
-#             item.setData(raw_value, QtCore.Qt.EditRole)
-#             self.model.appendRow(item)
 
 
 class ProfileA7PMeta(QtWidgets.QGroupBox):
@@ -97,12 +64,8 @@ class ProfileA7PMeta(QtWidgets.QGroupBox):
         self.__post_init__()
 
     def __post_init__(self):
-        self.zero_x.setMaximum(DEF_FLOAT_LIMITS['zero_x']['max'])
-        self.zero_x.setMinimum(DEF_FLOAT_LIMITS['zero_x']['min'])
-        self.zero_y.setMaximum(DEF_FLOAT_LIMITS['zero_y']['max'])
-        self.zero_y.setMinimum(DEF_FLOAT_LIMITS['zero_y']['min'])
-        # self.device_uuid.setMaxLength(DEF_STRINGS_LIMITS['device_uuid'])
-        # self.user_note.setMaxLength(DEF_STRINGS_LIMITS['user_note'])  # TODO: setMaxLength
+        self.zero_x.setRange(*DEF_FLOAT_LIMITS['zero_x'].values())
+        self.zero_y.setRange(*DEF_FLOAT_LIMITS['zero_y'].values())
 
     def change_distances_list(self, item):
 

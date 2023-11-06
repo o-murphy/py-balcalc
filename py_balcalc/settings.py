@@ -42,7 +42,7 @@ DEF_UNITS_LIMITS = {
     "unit/sight_height": {'max': Unit.CENTIMETER(30), 'min': Unit.CENTIMETER(0.1)},
     "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(30)},
     "unit/velocity": {'min': Unit.MPS(0), 'max': Unit.MPS(3000)},
-    "unit/distance": {'min': Unit.METER(10), 'max': Unit.METER(5000)},
+    "unit/distance": {'min': Unit.METER(0), 'max': Unit.METER(5000)},
     "unit/diameter": {'min': Unit.INCH(0.001), 'max': Unit.INCH(65.535)},
     "unit/length": {'min': Unit.INCH(0.1), 'max': Unit.INCH(10)},
     "unit/temperature": {'min': Unit.CELSIUS(-100), 'max': Unit.CELSIUS(100)},
@@ -56,8 +56,6 @@ DEF_UNITS_LIMITS = {
     "unit/target_height": {'min': Unit.INCH(5), 'max': Unit.METER(5)},
     "unit/ogw": {'min': Unit.KILOGRAM(0), 'max': Unit.KILOGRAM(INF)},
 }
-
-# TODO: remove NONE limits
 
 
 DEF_STRINGS_LIMITS = {
@@ -76,8 +74,8 @@ DEF_COEFFICIENTS_LIST_SIZE = 200
 DEF_SWITCH_LIST_SIZE = 4
 
 DEF_FLOAT_LIMITS = {
-    "zero_x": {"min": -600, "max": 600},  # TODO: not implemented yet
-    "zero_y": {"min": -600, "max": 600},  # TODO: not implemented yet
+    "zero_x": {"min": -600, "max": 600},
+    "zero_y": {"min": -600, "max": 600},
     "c_t_coeff": {"min": 0.002, "max": 3},
     "c_zero_air_humidity": {"min": 0, "max": 100},
 

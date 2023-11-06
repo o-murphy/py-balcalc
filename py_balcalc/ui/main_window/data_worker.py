@@ -130,7 +130,8 @@ class DataWorker:
         dist_list = self.a7p_meta.distances.dump_data()
 
         proto_dist_list = [int((d >> Unit.METER) * 100) for d in dist_list]
-        proto_dist_list.append(zero_dist)
+        if not zero_dist in proto_dist_list:
+            proto_dist_list.append(zero_dist)
         proto_dist_list.sort()
 
         self._profile.c_zero_distance_idx = proto_dist_list.index(zero_dist)
@@ -141,7 +142,7 @@ class DataWorker:
         self._profile.coef_rows.extend(coef_rows)
 
         if hasattr(self, 'conditions'):
-            self._profile.c_zero_air_pressure = (int(self.conditions.z_pressure.raw_value() >> Unit.HP) * 10)
+            self._profile.c_zero_air_pressure = int((self.conditions.z_pressure.raw_value() >> Unit.HP) * 10)
             self._profile.c_zero_temperature = int(self.conditions.z_temp.raw_value() >> Unit.CELSIUS)
             self._profile.c_zero_p_temperature = int(self.conditions.z_powder_temp.raw_value() >> Unit.CELSIUS)
             self._profile.c_zero_w_pitch = int(self.conditions.z_angle.raw_value() >> Unit.DEGREE)

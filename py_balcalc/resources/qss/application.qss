@@ -252,7 +252,6 @@ QTabBar::tab {
     padding-right: 15px;
 }
 
-/* TODO: resources fix */
 
 QWidget:disabled {
 	color: rgb(160, 160, 160);

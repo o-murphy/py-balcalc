@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py_ballisticcalc.gui"
+name = "py_balcalc"
 
 authors = [
     { name="o-murphy", email="thehelixpg@gmail.com" },
@@ -31,11 +31,11 @@ dependencies = ["PySide6~=6.6.0", "qtawesome", "py_ballisticcalc==1.1.0", "a7p"]
 dynamic = ["version"]
 
 [project.urls]
-"Homepage" = "https://github.com/o-murphy/py-ballisticcalc-gui"
-"Bug Reports" = "https://github.com/o-murphy/py-ballisticcalc-gui/issues"
+"Homepage" = "https://github.com/o-murphy/py_balcalc"
+"Bug Reports" = "https://github.com/o-murphy/py_balcalc/issues"
 #"Funding" = "https://donate.pypi.org"
 #"Say Thanks!" = ""
-"Source" = "https://github.com/o-murphy/py-ballisticcalc-gui"
+"Source" = "https://github.com/o-murphy/py_balcalc"
 
 [tool.setuptools]
 py-modules = ["py_balcalc"]
