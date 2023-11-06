@@ -37,7 +37,7 @@ DEFAULT_SETTINGS = {
     "unit/ogw": CalcSettings.Units.ogw,
 }
 
-
+INF = 99999
 DEF_UNITS_LIMITS = {
     "unit/sight_height": {'max': Unit.CENTIMETER(30), 'min': Unit.CENTIMETER(0.1)},
     "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(30)},
@@ -49,12 +49,12 @@ DEF_UNITS_LIMITS = {
     "unit/pressure": {'min': Unit.HP(875), 'max': Unit.HP(1050)},
     # "unit/pressure": {'min': Unit.MM_HG(640), 'max': Unit.MM_HG(770)},
     "unit/weight": {'min': Unit.GRAIN(1), 'max': Unit.GRAIN(6553.5)},
-    "unit/energy": {'min': Unit.POUND(0), 'max': None},
-    "unit/drop": {'min': Unit.CM_PER_100M(0), 'max': None},
+    "unit/energy": {'min': Unit.POUND(0), 'max': Unit.POUND(INF)},
+    "unit/drop": {'min': Unit.CM_PER_100M(0), 'max': Unit.CM_PER_100M(INF)},
     "unit/adjustment": {'min': Unit.DEGREE(0), 'max': Unit.DEGREE(359)},
     "unit/angular": {'min': Unit.DEGREE(0), 'max': Unit.DEGREE(359)},
     "unit/target_height": {'min': Unit.INCH(5), 'max': Unit.METER(5)},
-    "unit/ogw": {'min': Unit.KILOGRAM(0), 'max': None},
+    "unit/ogw": {'min': Unit.KILOGRAM(0), 'max': Unit.KILOGRAM(INF)},
 }
 
 # TODO: remove NONE limits

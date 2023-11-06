@@ -4,7 +4,7 @@
 - [x] Fix arrow icons
 - [x] Wizard export
 - [x] Refactoring of widgets codestyle
-- [ ] Check if fields not used
+- [x] Check if fields not used
 - [ ] Add fields validation
 - [ ] Add CDM support
 - [ ] Add calculator

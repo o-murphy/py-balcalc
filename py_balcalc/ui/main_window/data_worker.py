@@ -5,6 +5,7 @@ from py_balcalc.signals_manager import appSignalMgr
 
 
 class DataWorker:
+    _profile: a7p.Profile
     
     def __post_init__(self):
         """
@@ -120,6 +121,10 @@ class DataWorker:
                     coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
 
         # TODO: add CDM
+
+        self._profile.user_note = self.a7p_meta.user_note.toPlainText()[:250]
+        self._profile.zero_x = int(self.a7p_meta.zero_x.value() / -1000)
+        self._profile.zero_y = int(self.a7p_meta.zero_y.value() / 1000)
 
         zero_dist = int((self.weapon.zero_dist.raw_value() >> Unit.METER) * 100)
         dist_list = self.a7p_meta.distances.dump_data()

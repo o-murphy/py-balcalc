@@ -1,20 +1,18 @@
 import sys
 
-from PySide6 import QtWidgets
-
+from PySide6 import QtWidgets, QtGui
 from py_balcalc.resources import *
-from py_balcalc.translator import tr
-from py_balcalc.ui import MainWindow
+from py_balcalc.ui import MainWindow, stylesheet
 from py_balcalc.ui.message_handler import qt_message_handler
-from py_balcalc.ui.stylesheet import main_app_qss
 
 
 def main():
     QtCore.qInstallMessageHandler(qt_message_handler)
-
+    # sys.argv += ['-platform', 'windows:darkmode=2']
     app = QtWidgets.QApplication(sys.argv)
-    # app.setWindowIcon(QtGui.QIcon('.rsrc/Icon.ico'))
-    app.setStyleSheet(main_app_qss())
+    app.setStyle('Fusion')
+    app.setWindowIcon(QtGui.QIcon(':/app_icon.ico'))
+    app.setStyleSheet(stylesheet.load_from_resources(":/qss/application.qss"))
 
     window = MainWindow(app)
     window.show()

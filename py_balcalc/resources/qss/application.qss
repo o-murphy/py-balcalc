@@ -14,7 +14,7 @@ QGroupBox {
 
 QGroupBox::title {
 	padding: 5px 20px 5px 20px;
-	color: rgb(255, 170, 0);
+	color: "orange";
 	border-top-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	background-color: rgb(40, 40, 40);
@@ -62,7 +62,7 @@ QCheckBox:disabled {
 }
 
 QCheckBox::indicator:checked {
-    background: rgb(255, 170, 0);
+    background: "orange";
     image: url(":/icons/check-black.svg");
 }
 QCheckBox::indicator:unchecked {
@@ -101,7 +101,7 @@ QComboBox::drop-down:hover {
 }
 
 QComboBox::drop-down:disabled {
-    image: null;
+    image: none;
 }
 
 
@@ -128,7 +128,7 @@ QRadioButton::indicator {
 }
 
 QRadioButton::indicator:checked {
-		background-color: rgb(255, 170, 0);
+		background-color: "orange";
 		border: 0px;
 		border-radius: 4px;
 		image: url(":/icons/check-black");
@@ -287,9 +287,9 @@ QTabBar::close-button:hover {
 }
 
 QTabBar::tab:top:selected {
-	color: rgb(255, 170, 0);
+	color: "orange";
 
-    border-bottom: 2px solid rgb(255, 170, 0);
+    border-bottom: 2px solid "orange";
 }
 
 QTabBar::tab:top:hover:!selected {
@@ -306,8 +306,8 @@ QTabBar::tab:left {
 }
 
 QTabBar::tab:left:selected {
-	color: rgb(255, 170, 0);
-    border-right: 2px solid rgb(255, 170, 0);
+	color: "orange";
+    border-right: 2px solid "orange";
 }
 
 QTabBar::tab:left:hover:!selected {
@@ -725,7 +725,7 @@ QTableWidget::item:hover, QTableView::item:hover {
 }
 
 QTableWidget::item, QTableView::item {
-	background-color: rgb(55, 52, 63);
+	background-color: rgb(40, 40, 40);
 }
 
 

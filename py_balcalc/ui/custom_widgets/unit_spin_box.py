@@ -39,14 +39,15 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
     def set_display_unit(self, unit: Unit):
         self.setDecimals(unit.accuracy)
         min_, max_ = DEF_UNITS_LIMITS[self._unit_settings_key].values()
-        self.setRange(min_ >> self._unit_settings_key, max_ >> self._unit_settings_key)
+        self.setRange(min_ >> unit, max_ >> unit)
         self.setSingleStep(10**(-self.decimals()))
         self.tr_ui()
         appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def update_display_unit(self):
-        self.set_display_unit(app_settings.value(self._unit_settings_key))
-        self.setValue(self._raw_value >> app_settings.value(self._unit_settings_key))
+        unit = app_settings.value(self._unit_settings_key)
+        self.set_display_unit(unit)
+        self.setValue(self._raw_value >> unit)
 
     def update_raw_value(self, value):
         self._raw_value = app_settings.value(self._unit_settings_key)(value)

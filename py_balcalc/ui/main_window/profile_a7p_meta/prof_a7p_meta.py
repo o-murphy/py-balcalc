@@ -20,26 +20,22 @@ class DistancesList(QtWidgets.QTableWidget):
         self.tr_ui()
 
     def create_cols(self, count=DEF_DISTANCES_LIST_SIZE):
+        self.clear()
         self.setColumnCount(count)
 
-        for i in range(self.columnCount()):
-            d = UnitSpinBox(self, Unit.METER(0), 'unit/distance')
-            d.setMaximum(3000)
-            d.setDecimals(1)
-            d.setSingleStep(0.1)
-            self.setCellWidget(0, i, d)
-
+    def fit_to_content(self):
         total_height = self.rowHeight(0) \
                        + self.horizontalHeader().height() \
                        + self.horizontalScrollBar().height()
         self.setFixedHeight(total_height)
 
     def load_data(self, distances):
-        self.clear()
         self.create_cols()
         for i, d in enumerate(distances):
-            w = self.cellWidget(0, i)
+            w = UnitSpinBox(self, Unit.METER(0), 'unit/distance')
             w.set_raw_value(d)
+            self.setCellWidget(0, i, w)
+        self.fit_to_content()
 
     def dump_data(self):
         out = []

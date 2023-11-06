@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 import a7p
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 from .add_button import AddButton
 from .profile_wizard import ProfileWizard
 from .footer import FooterWidget
@@ -219,9 +219,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(720, 580)
 
         self.setMinimumSize(self.size())
-        # icon = QtGui.QIcon()
+        icon = QtGui.QIcon(':/app_icon.ico')
         # icon.addPixmap(QtGui.QPixmap(":/title/Icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # main_window.setWindowIcon(icon)
+        self.setWindowIcon(icon)
         self.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
 
         self.centralwidget = QtWidgets.QWidget(self)
