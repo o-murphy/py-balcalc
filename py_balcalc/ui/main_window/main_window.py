@@ -119,6 +119,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def save_file_as(self, tab=None):
         if not tab:
             tab: ProfileTab = self.profilesTabs.currentWidget()
+        if not tab.validate():
+            return
         data = a7p.A7PFile.dumps(tab.export_a7p())
         file_name = self.save_file_dialog(tab.create_name())
         if file_name:
@@ -147,6 +149,8 @@ class MainWindow(QtWidgets.QMainWindow):
             )
             result = dlg.exec()
             if result == QtWidgets.QMessageBox.StandardButton.Save.value:
+                if not tab.validate():
+                    return False
                 file_name = self.save_file_as(tab)
                 if file_name:
                     tab.file_name = file_name
@@ -167,6 +171,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 )
                 result = dlg.exec()
                 if result == QtWidgets.QMessageBox.StandardButton.Save.value:
+                    if not tab.validate():
+                        return False
                     save_file(tab.file_name, data)
                     return True
                 elif result == QtWidgets.QMessageBox.StandardButton.Discard.value:

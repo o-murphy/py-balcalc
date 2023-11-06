@@ -6,7 +6,8 @@
 - [x] Refactoring of widgets codestyle
 - [x] Check if fields not used
 - [ ] Add fields validation
-- [ ] Add CDM support
+- [x] Add CDM support
+- [ ] Add CDM editor
 - [ ] Add calculator
 - [x] Update resources
 - [x] Update stylesheets
@@ -18,3 +19,6 @@
 - [x] Add check if user dir exists
 - [ ] Show tile help
 - [ ] Add setup.py that would prebuild resources.py from sources
+- [ ] refactor file dialogs
+- [ ] refactor bc-table loading
+- [x] add a7p switches (internally)

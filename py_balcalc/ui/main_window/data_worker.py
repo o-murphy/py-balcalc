@@ -1,12 +1,21 @@
 import a7p
+from PySide6 import QtWidgets, QtGui
 from py_ballisticcalc import Unit
 
 from py_balcalc.signals_manager import appSignalMgr
+from .profile_weapon import ProfileWeapon
+from .profile_cartridge import ProfileCartridge
+from .profile_bullet import ProfileBullet
+from .profile_a7p_meta import ProfileA7PMeta
 
 
 class DataWorker:
     _profile: a7p.Profile
-    
+    weapon: ProfileWeapon
+    cartridge: ProfileCartridge
+    bullet: ProfileBullet
+    a7p_meta: ProfileA7PMeta
+
     def __post_init__(self):
         """
         updates inner widgets data with selected profile data
@@ -46,16 +55,6 @@ class DataWorker:
         self.bullet.length.set_raw_value(Unit.INCH(self._profile.b_length / 1000))
         self.bullet.diameter.set_raw_value(Unit.INCH(self._profile.b_diameter / 1000))
 
-
-
-        # self.a7p_meta.distances.load_data(
-        #     [Unit.METER(d / 100) for d in self._profile.distances]
-        # )
-
-        # self.weapon.zero_dist.set_raw_value(
-        #     Unit.METER(self._profile.distances[self._profile.c_zero_distance_idx] / 100)
-        # )
-
         if self._profile.bc_type == a7p.GType.G1:
             self.bullet.drag_model_label.setText("Drag model: G1")
             self.bullet.drag_model.setCurrentIndex(0)
@@ -72,7 +71,11 @@ class DataWorker:
                 c = self.bullet.drag_model.g7.cellWidget(i, 1)
                 v.set_raw_value(Unit.MPS(row.mv / 10))
                 c.setValue(Unit.MPS(row.bc_cd / 10000))
-        # TODO: add CDM
+
+        elif self._profile.bc_type == a7p.GType.CUSTOM:
+            self.bullet.drag_model_label.setText("CDM")
+            self.bullet.drag_model.setCurrentIndex(2)
+            self.bullet.drag_model.cdm.load_data(self._profile.coef_rows)
 
         if hasattr(self, 'conditions'):
             self.conditions.z_pressure.set_raw_value(Unit.HP(self._profile.c_zero_air_pressure / 10))
@@ -82,6 +85,7 @@ class DataWorker:
             self.conditions.z_humidity.setValue(self._profile.c_zero_air_humidity)
 
     def export_a7p(self):
+
         self._profile.profile_name = self.weapon.rifleName.text()
         self._profile.cartridge_name = self.weapon.caliberName.text()
         self._profile.short_name_top = self.weapon.tileTop.text()
@@ -120,6 +124,10 @@ class DataWorker:
                 if v > 0 and c > 0:
                     coef_rows.append(a7p.CoefRow(mv=int(v * 10), bc_cd=int(c * 10000)))
 
+        elif self.bullet.drag_model.currentIndex() == 2:
+            self._profile.bc_type = a7p.GType.CUSTOM
+            coef_rows = self.bullet.drag_model.cdm.dump_data()
+
         # TODO: add CDM
 
         self._profile.user_note = self.a7p_meta.user_note.toPlainText()[:250]
@@ -141,14 +149,37 @@ class DataWorker:
         del self._profile.coef_rows[:]
         self._profile.coef_rows.extend(coef_rows)
 
-        if hasattr(self, 'conditions'):
-            self._profile.c_zero_air_pressure = int((self.conditions.z_pressure.raw_value() >> Unit.HP) * 10)
-            self._profile.c_zero_temperature = int(self.conditions.z_temp.raw_value() >> Unit.CELSIUS)
-            self._profile.c_zero_p_temperature = int(self.conditions.z_powder_temp.raw_value() >> Unit.CELSIUS)
-            self._profile.c_zero_w_pitch = int(self.conditions.z_angle.raw_value() >> Unit.DEGREE)
-            self._profile.c_zero_air_humidity = int(self.conditions.z_humidity.value())
+        self._profile.c_zero_air_pressure = int((Unit.HP(1000) >> Unit.HP) * 10)
+        self._profile.c_zero_temperature = int(Unit.CELSIUS(15) >> Unit.CELSIUS)
+        self._profile.c_zero_p_temperature = int(Unit.CELSIUS(15) >> Unit.CELSIUS)
+        self._profile.c_zero_w_pitch = int(Unit.DEGREE(0) >> Unit.DEGREE)
+        self._profile.c_zero_air_humidity = int(50)
+
+        if not self._profile.switches:
+            # TODO: add switches
+            self._profile.switches.extend([
+                a7p.SwPos(c_idx=255, zoom=1, distance=10000),
+                a7p.SwPos(c_idx=255, zoom=2, distance=20000),
+                a7p.SwPos(c_idx=255, zoom=3, distance=30000),
+                a7p.SwPos(c_idx=255, zoom=4, distance=100000),
+            ])
 
         return a7p.Payload(profile=self._profile)
+
+    def validate(self):
+        childs = [ch for ch in self.findChildren(QtWidgets.QWidget) if hasattr(ch, 'valid')]
+        try:
+            for ch in childs:
+                assert ch.valid()
+            return True
+        except AssertionError:
+            QtWidgets.QMessageBox.warning(
+                self,
+                "Warning!",
+                "Invalid profile data!",
+                QtWidgets.QMessageBox.StandardButton.Ok
+            )
+        return False
 
     def create_name(self):
         return f"{self.weapon.tileTop.text()}_" \

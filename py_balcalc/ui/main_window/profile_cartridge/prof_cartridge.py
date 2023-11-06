@@ -4,7 +4,7 @@ from py_ballisticcalc import Unit
 from py_balcalc.settings import DEF_STRINGS_LIMITS, DEF_FLOAT_LIMITS
 from py_balcalc.signals_manager import appSignalMgr
 from py_balcalc.translator import tr
-from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
+from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox, RegExpLineEdit
 
 
 class ProfileCartridge(QtWidgets.QGroupBox):
@@ -12,18 +12,17 @@ class ProfileCartridge(QtWidgets.QGroupBox):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.init_ui(self)
+        self.init_ui()
 
     def __post_init__(self):
         self.cartridgeName.setMaxLength(DEF_STRINGS_LIMITS['cartridge_name'])
-        self.ts.setMaximum(DEF_FLOAT_LIMITS['c_t_coeff']['max'])
-        self.ts.setMinimum(DEF_FLOAT_LIMITS['c_t_coeff']['min'])
+        self.ts.setRange(*DEF_FLOAT_LIMITS['c_t_coeff'].values())
 
-    def init_ui(self, cartridge):
-        cartridge.setObjectName("ProfileCartridge")
-        cartridge.setCheckable(True)
+    def init_ui(self):
+        self.setObjectName("ProfileCartridge")
+        self.setCheckable(True)
 
-        self.gridLayout = QtWidgets.QGridLayout(cartridge)
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 
         self.gridLayout.addWidget(TLabel('Name:'), 0, 0)
@@ -31,10 +30,11 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Temperature:'), 2, 0)
         self.gridLayout.addWidget(TLabel('Temperature sensitivity:'), 3, 0)
 
-        self.cartridgeName = QtWidgets.QLineEdit(cartridge)
-        self.ts = QtWidgets.QDoubleSpinBox(cartridge)
-        self.temp = UnitSpinBox(cartridge, Unit.CELSIUS(15), 'unit/temperature')
-        self.mv = UnitSpinBox(cartridge, Unit.MPS(800), 'unit/velocity')
+        self.cartridgeName = RegExpLineEdit(self, valid_regex=r'.+')
+
+        self.ts = QtWidgets.QDoubleSpinBox(self)
+        self.temp = UnitSpinBox(self, Unit.CELSIUS(15), 'unit/temperature')
+        self.mv = UnitSpinBox(self, Unit.MPS(800), 'unit/velocity')
 
         self.ts.setObjectName("ts")
         self.temp.setObjectName("temp")
@@ -45,7 +45,6 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.temp, 2, 1)
         self.gridLayout.addWidget(self.ts, 3, 1)
 
-        self.mv.setMaximum(5000)
         self.ts.setMaximum(100.0)
         self.ts.setDecimals(3)
 
@@ -55,3 +54,4 @@ class ProfileCartridge(QtWidgets.QGroupBox):
     def tr_ui(self):
         self.setTitle(tr("cartridge", "Cartridge"))
         self.ts.setSuffix(tr("cartridge", " %"))
+        self.cartridgeName.setPlaceholderText(tr("root", "Field can't be empty"))

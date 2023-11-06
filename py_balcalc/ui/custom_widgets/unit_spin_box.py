@@ -13,7 +13,8 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
         super().__init__(parent)
 
         self._unit_settings_key = unit_settings_key
-        self._raw_value = default
+        # self._raw_value = default
+        self.set_raw_value(default)
 
         self.__post_init__()
 
@@ -57,8 +58,8 @@ class UnitSpinBox(QtWidgets.QDoubleSpinBox):
 
     def set_raw_value(self, value: AbstractUnit):
         self._raw_value = value
-        self.setValue(self._raw_value >> app_settings.value(self._unit_settings_key))
         self.set_display_unit(app_settings.value(self._unit_settings_key))
+        self.setValue(self._raw_value >> app_settings.value(self._unit_settings_key))
 
     def tr_ui(self):
         try:

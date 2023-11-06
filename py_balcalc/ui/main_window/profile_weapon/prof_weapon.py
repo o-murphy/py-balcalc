@@ -6,7 +6,7 @@ from py_ballisticcalc import Unit
 from py_balcalc.settings import DEF_STRINGS_LIMITS
 from py_balcalc.signals_manager import appSignalMgr
 from py_balcalc.translator import tr
-from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
+from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox, RegExpLineEdit
 import qtawesome as qta
 
 
@@ -17,7 +17,7 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         super().__init__(parent)
         self.auto_tile_mode = 0
 
-        self.init_ui(self)
+        self.init_ui()
         self.__post_init__()
 
     def __post_init__(self):
@@ -45,11 +45,11 @@ class ProfileWeapon(QtWidgets.QGroupBox):
             self.tileTop.setText(f'{cal + tile}'[:7])
             self.auto_tile_mode = 1
 
-    def init_ui(self, weapon):
-        weapon.setObjectName("ProfileWeapon")
-        weapon.setCheckable(True)
+    def init_ui(self):
+        self.setObjectName("ProfileWeapon")
+        self.setCheckable(True)
 
-        self.gridLayout = QtWidgets.QGridLayout(weapon)
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 
         self.gridLayout.addWidget(TLabel('Name:'), 0, 0, 1, 1)
@@ -59,23 +59,22 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Twist:'), 4, 0, 1, 1)
         self.gridLayout.addWidget(TLabel('Zeroing distance:'), 5, 0, 1, 1)
 
-        self.twist = UnitSpinBox(weapon, Unit.INCH(10), 'unit/twist')
-        self.sh = UnitSpinBox(weapon, Unit.MILLIMETER(90), 'unit/sight_height')
-        self.zero_dist = UnitSpinBox(weapon, Unit.METER(100), 'unit/distance')
-        self.zero_dist.setMaximum(1500)
+        self.twist = UnitSpinBox(self, Unit.INCH(10), 'unit/twist')
+        self.sh = UnitSpinBox(self, Unit.MILLIMETER(90), 'unit/sight_height')
+        self.zero_dist = UnitSpinBox(self, Unit.METER(100), 'unit/distance')
 
         self.twist.setObjectName("twist")
         self.sh.setObjectName("sight_height")
         self.sh.setObjectName("zero_dist")
 
-        self.rightTwist = QtWidgets.QRadioButton(weapon)
-        self.caliberName = QtWidgets.QLineEdit(weapon)
-        self.tileTop = QtWidgets.QLineEdit(weapon)
+        self.rightTwist = QtWidgets.QRadioButton(self)
+        self.caliberName = QtWidgets.QLineEdit(self)
+        self.tileTop = RegExpLineEdit(self, valid_regex=r'.+')
 
         self.rightTwist.setEnabled(True)
         self.rightTwist.setChecked(True)
         self.rightTwist.setObjectName("rightTwist")
-        self.leftTwist = QtWidgets.QRadioButton(weapon)
+        self.leftTwist = QtWidgets.QRadioButton(self)
         self.leftTwist.setObjectName("leftTwist")
         # self.caliberName.setMaxLength(20)
         self.caliberName.setObjectName("caliberName")
@@ -83,9 +82,7 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.tileTop.setMaxLength(8)
         self.tileTop.setObjectName("caliberShort")
 
-        self.rifleName = QtWidgets.QLineEdit(weapon)
-        # self.rifleName.setMaxLength(20)
-        self.rifleName.setFrame(True)
+        self.rifleName = RegExpLineEdit(self, valid_regex=r'.+')
         self.rifleName.setObjectName("rifleName")
 
         self.gridLayout.addWidget(self.rifleName, 0, 1, 1, 4)
@@ -118,3 +115,6 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.leftTwist.setText(tr("weapon", "Left"))
 
         self.tileTop.setPlaceholderText(tr("weapon", 'Tile text:'))
+
+        self.rifleName.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.tileTop.setPlaceholderText(tr("root", "Field can't be empty"))

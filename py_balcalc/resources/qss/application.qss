@@ -186,8 +186,13 @@ QSpinBox::down-button:disabled,
 QSpinBox::up-button:disabled,
 QDoubleSpinBox::down-button:disabled,
 QDoubleSpinBox::up-button:disabled {
-    image: null;
+    image: none;
 }
+
+QSpinBox:focus, QDoubleSpinBox:focus { border-bottom: 2px solid "orange"; }
+
+QSpinBox[invalid=true], QDoubleSpinBox[invalid=true] { border-bottom: 2px solid red; }
+
 /* else */
 
 QWidget {
@@ -205,6 +210,10 @@ QLineEdit {
 	background-color: rgb(40, 40, 40);
 	font-size: 14px;
 }
+
+QLineEdit:focus { border-bottom: 2px solid "orange"; }
+
+QLineEdit[invalid=true] { border-bottom: 2px solid red; }
 
 QLabel {
 	font-size: 14px;
@@ -746,47 +755,3 @@ QTableWidget::item, QTableView::item {
      border: 0px;
      border-radius: 2px;
 }
-
-
-
-/* profileItem */
-
-/*
-#profileItem QWidget {
-	border: 1px solid rgb(78, 78, 78);
-}
-
-#profileItem QLabel {
-	border: 0;
-	background-color: transparent;
-}
-
-#profileItem QSpinBox, QDoubleSpinBox {
-	background-color: rgb(40, 40, 40);
-	alternate-background-color: rgb(40, 40, 40);
-	color: rgb(255, 255, 255);
-	border: 0;
-}
-
-#profileItem QSpinBox::up-button, QDoubleSpinBox::up-button {
-	width: 20px;
-	image: url(":/custom/res/custom/caret-up-fill_8.png");
-}
-#profileItem QSpinBox::down-button, QDoubleSpinBox::down-button {
-	width: 20px;
-	image: url(":/custom/res/custom/caret-down-fill_8.png");
-}
-
-#profileItem QSpinBox::down-button:hover, QSpinBox::up-button:hover,
-#profileItem QDoubleSpinBox::down-button:hover, QDoubleSpinBox::up-button:hover {
-		background-color: rgb(75, 75, 75);
-}
-
-*/
-
-/* profilesTable */
-
-/*QTableWidget::item, QTableView::item {
-    padding-left: 2px;
-    padding-right: 2px;
-}*/

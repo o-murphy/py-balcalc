@@ -5,7 +5,7 @@ from py_ballisticcalc import Unit
 from py_balcalc.settings import DEF_STRINGS_LIMITS
 from py_balcalc.signals_manager import appSignalMgr
 from py_balcalc.translator import tr
-from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox
+from py_balcalc.ui.custom_widgets import TLabel, UnitSpinBox, RegExpLineEdit
 from .prof_drag_model import ProfileDragModel
 import qtawesome as qta
 
@@ -106,12 +106,12 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.drag_model_label = TLabel('None')
         self.gridLayout.addWidget(self.drag_model_label, 5, 0, 1, 1)
 
-        self.tileBot = QtWidgets.QLineEdit(self)
+        self.tileBot = RegExpLineEdit(self, valid_regex=r'.+')
         self.tileBot.setMinimumSize(QtCore.QSize(0, 0))
         self.tileBot.setMaxLength(8)
         self.tileBot.setObjectName("caliberShort")
 
-        self.bulletName = QtWidgets.QLineEdit(self)
+        self.bulletName = RegExpLineEdit(self, valid_regex=r'.+')
         self.weight = UnitSpinBox(self, Unit.GRAIN(175), 'unit/weight')
         self.diameter = UnitSpinBox(self, Unit.INCH(0.308), 'unit/diameter')
         self.length = UnitSpinBox(self, Unit.INCH(1.2), 'unit/length')
@@ -129,9 +129,6 @@ class ProfileBullet(QtWidgets.QGroupBox):
 
         self.change_drag_model = QtWidgets.QPushButton(self)
         self.gridLayout.addWidget(self.change_drag_model, 5, 1, 1, 1)
-
-        self.weight.setMaximum(1000.0)
-        # self.bulletName.setMaxLength(20)
 
         self.auto_tile_act = QtGui.QAction(
             qta.icon(
@@ -153,3 +150,6 @@ class ProfileBullet(QtWidgets.QGroupBox):
     def tr_ui(self):
         self.setTitle(tr("bullet", "Bullet"))
         self.change_drag_model.setText(tr("bullet", "Change drag model"))
+        self.bulletName.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.tileBot.setPlaceholderText(tr("root", "Field can't be empty"))
+

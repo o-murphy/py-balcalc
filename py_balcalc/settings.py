@@ -39,16 +39,16 @@ DEFAULT_SETTINGS = {
 
 INF = 99999
 DEF_UNITS_LIMITS = {
-    "unit/sight_height": {'max': Unit.CENTIMETER(30), 'min': Unit.CENTIMETER(0.1)},
+    "unit/sight_height": {'min': Unit.CENTIMETER(0.1), 'max': Unit.CENTIMETER(30)},
     "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(30)},
-    "unit/velocity": {'min': Unit.MPS(0), 'max': Unit.MPS(3000)},
+    "unit/velocity": {'min': Unit.MPS(10), 'max': Unit.MPS(3000)},
     "unit/distance": {'min': Unit.METER(0), 'max': Unit.METER(5000)},
     "unit/diameter": {'min': Unit.INCH(0.001), 'max': Unit.INCH(65.535)},
     "unit/length": {'min': Unit.INCH(0.1), 'max': Unit.INCH(10)},
     "unit/temperature": {'min': Unit.CELSIUS(-100), 'max': Unit.CELSIUS(100)},
     "unit/pressure": {'min': Unit.HP(875), 'max': Unit.HP(1050)},
     # "unit/pressure": {'min': Unit.MM_HG(640), 'max': Unit.MM_HG(770)},
-    "unit/weight": {'min': Unit.GRAIN(1), 'max': Unit.GRAIN(6553.5)},
+    "unit/weight": {'min': Unit.GRAIN(10), 'max': Unit.GRAIN(6553.5)},
     "unit/energy": {'min': Unit.POUND(0), 'max': Unit.POUND(INF)},
     "unit/drop": {'min': Unit.CM_PER_100M(0), 'max': Unit.CM_PER_100M(INF)},
     "unit/adjustment": {'min': Unit.DEGREE(0), 'max': Unit.DEGREE(359)},

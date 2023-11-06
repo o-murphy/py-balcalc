@@ -32,19 +32,14 @@ class ProfileConditions(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(self.z_pressure, 3, 1)
         self.gridLayout.addWidget(self.z_angle, 4, 1)
 
-        self.z_pressure.setMaximum(1100)
         self.z_pressure.setObjectName("z_pressure")
 
-        self.z_angle.setMaximum(359)
         self.z_angle.setObjectName("z_angle")
 
-        self.z_temp.setMinimum(-60)
         self.z_temp.setObjectName("z_temp")
 
-        self.z_humidity.setMaximum(100)
         self.z_humidity.setObjectName("z_humidity")
 
-        self.z_powder_temp.setMinimum(-60)
         self.z_powder_temp.setObjectName("z_powder_temp")
 
         self.gridLayout.addWidget(TLabel('Temperature:'), 0, 0, 1, 1)
