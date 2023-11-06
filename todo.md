@@ -1,3 +1,14 @@
+- [ ] Add CDM editor
+- [ ] Add calculator
+- [ ] Fix .a7p file overwriting without user's update
+- [ ] Add export/import data to .toml with app specific data
+- [ ] Add profiles gallery
+- [ ] Show tile help
+- [ ] Add setup.py that would prebuild resources.py from sources
+- [ ] refactor file dialogs
+- [ ] refactor bc-table loading
+- [ ] fix attribute error on empty CDM
+
 - [x] Add units fields auto min/max
 - [x] Add Settings for the calculator library
 - [x] Storing/restoring settings
@@ -5,20 +16,11 @@
 - [x] Wizard export
 - [x] Refactoring of widgets codestyle
 - [x] Check if fields not used
-- [ ] Add fields validation
+- [x] Add fields validation
 - [x] Add CDM support
-- [ ] Add CDM editor
-- [ ] Add calculator
 - [x] Update resources
 - [x] Update stylesheets
-- [ ] Fix .a7p file overwriting without user's update
 - [x] Add Ukrainian translation
-- [ ] Add export/import data to .toml with app specific data
-- [ ] Add profiles gallery
 - [x] Add a7p limits
 - [x] Add check if user dir exists
-- [ ] Show tile help
-- [ ] Add setup.py that would prebuild resources.py from sources
-- [ ] refactor file dialogs
-- [ ] refactor bc-table loading
 - [x] add a7p switches (internally)

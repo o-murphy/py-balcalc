@@ -51,7 +51,7 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.__post_init__()
 
     def __post_init__(self):
-        self.bulletName.setMaxLength(DEF_STRINGS_LIMITS['bullet_name'])
+        self.bullet_name.setMaxLength(DEF_STRINGS_LIMITS['bullet_name'])
         self.tileBot.setMaxLength(DEF_STRINGS_LIMITS['short_name_bot'])
 
         self.change_drag_model.clicked.connect(self.on_change_drag_model)
@@ -111,17 +111,17 @@ class ProfileBullet(QtWidgets.QGroupBox):
         self.tileBot.setMaxLength(8)
         self.tileBot.setObjectName("caliberShort")
 
-        self.bulletName = RegExpLineEdit(self, valid_regex=r'.+')
+        self.bullet_name = RegExpLineEdit(self, valid_regex=r'.+')
         self.weight = UnitSpinBox(self, Unit.GRAIN(175), 'unit/weight')
         self.diameter = UnitSpinBox(self, Unit.INCH(0.308), 'unit/diameter')
         self.length = UnitSpinBox(self, Unit.INCH(1.2), 'unit/length')
 
-        self.bulletName.setObjectName("bulletName")
+        self.bullet_name.setObjectName("bullet_name")
         self.weight.setObjectName("weight")
         self.diameter.setObjectName("diameter")
         self.length.setObjectName("length")
 
-        self.gridLayout.addWidget(self.bulletName, 0, 1, 1, 2)
+        self.gridLayout.addWidget(self.bullet_name, 0, 1, 1, 2)
         self.gridLayout.addWidget(self.weight, 1, 1, 1, 1)
         self.gridLayout.addWidget(self.diameter, 2, 1, 1, 1)
         self.gridLayout.addWidget(self.length, 3, 1, 1, 1)
@@ -150,6 +150,6 @@ class ProfileBullet(QtWidgets.QGroupBox):
     def tr_ui(self):
         self.setTitle(tr("bullet", "Bullet"))
         self.change_drag_model.setText(tr("bullet", "Change drag model"))
-        self.bulletName.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.bullet_name.setPlaceholderText(tr("root", "Field can't be empty"))
         self.tileBot.setPlaceholderText(tr("root", "Field can't be empty"))
 

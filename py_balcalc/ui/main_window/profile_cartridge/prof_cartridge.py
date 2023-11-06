@@ -15,7 +15,7 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.init_ui()
 
     def __post_init__(self):
-        self.cartridgeName.setMaxLength(DEF_STRINGS_LIMITS['cartridge_name'])
+        self.cartridge_name.setMaxLength(DEF_STRINGS_LIMITS['cartridge_name'])
         self.ts.setRange(*DEF_FLOAT_LIMITS['c_t_coeff'].values())
 
     def init_ui(self):
@@ -30,7 +30,7 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.gridLayout.addWidget(TLabel('Temperature:'), 2, 0)
         self.gridLayout.addWidget(TLabel('Temperature sensitivity:'), 3, 0)
 
-        self.cartridgeName = RegExpLineEdit(self, valid_regex=r'.+')
+        self.cartridge_name = RegExpLineEdit(self, valid_regex=r'.+')
 
         self.ts = QtWidgets.QDoubleSpinBox(self)
         self.temp = UnitSpinBox(self, Unit.CELSIUS(15), 'unit/temperature')
@@ -40,7 +40,7 @@ class ProfileCartridge(QtWidgets.QGroupBox):
         self.temp.setObjectName("temp")
         self.mv.setObjectName("muzzle_velocity")
 
-        self.gridLayout.addWidget(self.cartridgeName, 0, 1, 1, 2)
+        self.gridLayout.addWidget(self.cartridge_name, 0, 1, 1, 2)
         self.gridLayout.addWidget(self.mv, 1, 1)
         self.gridLayout.addWidget(self.temp, 2, 1)
         self.gridLayout.addWidget(self.ts, 3, 1)
@@ -54,4 +54,4 @@ class ProfileCartridge(QtWidgets.QGroupBox):
     def tr_ui(self):
         self.setTitle(tr("cartridge", "Cartridge"))
         self.ts.setSuffix(tr("cartridge", " %"))
-        self.cartridgeName.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.cartridge_name.setPlaceholderText(tr("root", "Field can't be empty"))

@@ -21,9 +21,9 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.__post_init__()
 
     def __post_init__(self):
-        self.rifleName.setMaxLength(DEF_STRINGS_LIMITS['profile_name'])
+        self.profile_name.setMaxLength(DEF_STRINGS_LIMITS['profile_name'])
         self.tileTop.setMaxLength(DEF_STRINGS_LIMITS['short_name_top'])
-        self.caliberName.setMaxLength(DEF_STRINGS_LIMITS['caliber'])
+        self.caliber.setMaxLength(DEF_STRINGS_LIMITS['caliber'])
 
         self.auto_tile_act.triggered.connect(self.auto_tile)
         self.tile_help.triggered.connect(self.show_tile_help)
@@ -35,12 +35,12 @@ class ProfileWeapon(QtWidgets.QGroupBox):
     def auto_tile(self):
         """changes current auto tile creation mode"""
         if self.auto_tile_mode == 1:
-            self.tileTop.setText(self.caliberName.text().replace(' ', '').strip()[:7])
+            self.tileTop.setText(self.caliber.text().replace(' ', '').strip()[:7])
             self.auto_tile_mode = 0
         else:
-            reg = search(r'\.+\d+', self.caliberName.text())
+            reg = search(r'\.+\d+', self.caliber.text())
             cal = reg.group() if reg else ''
-            tile = ''.join((list(filter(lambda char: char.isupper(), self.caliberName.text()))))
+            tile = ''.join((list(filter(lambda char: char.isupper(), self.caliber.text()))))
             # self.caliberShort.setText(f'{cal + tile}'[:7])
             self.tileTop.setText(f'{cal + tile}'[:7])
             self.auto_tile_mode = 1
@@ -68,7 +68,7 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.sh.setObjectName("zero_dist")
 
         self.rightTwist = QtWidgets.QRadioButton(self)
-        self.caliberName = QtWidgets.QLineEdit(self)
+        self.caliber = QtWidgets.QLineEdit(self)
         self.tileTop = RegExpLineEdit(self, valid_regex=r'.+')
 
         self.rightTwist.setEnabled(True)
@@ -76,17 +76,17 @@ class ProfileWeapon(QtWidgets.QGroupBox):
         self.rightTwist.setObjectName("rightTwist")
         self.leftTwist = QtWidgets.QRadioButton(self)
         self.leftTwist.setObjectName("leftTwist")
-        # self.caliberName.setMaxLength(20)
-        self.caliberName.setObjectName("caliberName")
+        # self.caliber.setMaxLength(20)
+        self.caliber.setObjectName("caliber")
         self.tileTop.setMinimumSize(QtCore.QSize(0, 0))
         self.tileTop.setMaxLength(8)
         self.tileTop.setObjectName("caliberShort")
 
-        self.rifleName = RegExpLineEdit(self, valid_regex=r'.+')
-        self.rifleName.setObjectName("rifleName")
+        self.profile_name = RegExpLineEdit(self, valid_regex=r'.+')
+        self.profile_name.setObjectName("profile_name")
 
-        self.gridLayout.addWidget(self.rifleName, 0, 1, 1, 4)
-        self.gridLayout.addWidget(self.caliberName, 1, 1, 1, 3)
+        self.gridLayout.addWidget(self.profile_name, 0, 1, 1, 4)
+        self.gridLayout.addWidget(self.caliber, 1, 1, 1, 3)
         self.gridLayout.addWidget(self.tileTop, 2, 1, 1, 1)
         self.gridLayout.addWidget(self.sh, 3, 1, 1, 1)
         self.gridLayout.addWidget(self.twist, 4, 1, 1, 1)
@@ -116,5 +116,5 @@ class ProfileWeapon(QtWidgets.QGroupBox):
 
         self.tileTop.setPlaceholderText(tr("weapon", 'Tile text:'))
 
-        self.rifleName.setPlaceholderText(tr("root", "Field can't be empty"))
+        self.profile_name.setPlaceholderText(tr("root", "Field can't be empty"))
         self.tileTop.setPlaceholderText(tr("root", "Field can't be empty"))

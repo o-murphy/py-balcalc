@@ -22,13 +22,13 @@ class DataWorker:
         enables/disables inner tabs if profile type is correct
         """
 
-        self.weapon.rifleName.setText(self._profile.profile_name)
-        self.weapon.caliberName.setText(self._profile.caliber)
+        self.weapon.profile_name.setText(self._profile.profile_name)
+        self.weapon.caliber.setText(self._profile.caliber)
         self.weapon.tileTop.setText(self._profile.short_name_top)
         self.weapon.rightTwist.setChecked(self._profile.twist_dir == 0)
 
-        self.cartridge.cartridgeName.setText(self._profile.cartridge_name)
-        self.bullet.bulletName.setText(self._profile.bullet_name)
+        self.cartridge.cartridge_name.setText(self._profile.cartridge_name)
+        self.bullet.bullet_name.setText(self._profile.bullet_name)
         self.bullet.tileBot.setText(self._profile.short_name_bot)
 
         if not self._profile.short_name_top:
@@ -86,19 +86,19 @@ class DataWorker:
 
     def export_a7p(self):
 
-        self._profile.profile_name = self.weapon.rifleName.text()
-        self._profile.cartridge_name = self.weapon.caliberName.text()
+        self._profile.profile_name = self.weapon.profile_name.text()
+        self._profile.cartridge_name = self.weapon.caliber.text()
         self._profile.short_name_top = self.weapon.tileTop.text()
         self._profile.short_name_bot = self.bullet.tileBot.text()
         self._profile.r_twist = int((self.weapon.twist.raw_value() >> Unit.INCH) * 100)
         self._profile.sc_height = int(self.weapon.sh.raw_value() >> Unit.MILLIMETER)
         self._profile.twist_dir = 1 if self.weapon.rightTwist.isChecked() else 0
 
-        self._profile.cartridge_name = self.cartridge.cartridgeName.text()
+        self._profile.cartridge_name = self.cartridge.cartridge_name.text()
         self._profile.c_muzzle_velocity = int((self.cartridge.mv.raw_value() >> Unit.MPS) * 10)
         self._profile.c_t_coeff = int((self.cartridge.ts.value()) * 1000)
 
-        self._profile.bullet_name = self.bullet.bulletName.text()
+        self._profile.bullet_name = self.bullet.bullet_name.text()
         self._profile.b_weight = int((self.bullet.weight.raw_value() >> Unit.GRAIN) * 10)
         self._profile.b_length = int((self.bullet.length.raw_value() >> Unit.INCH) * 1000)
         self._profile.b_diameter = int((self.bullet.diameter.raw_value() >> Unit.INCH) * 1000)
@@ -184,4 +184,4 @@ class DataWorker:
     def create_name(self):
         return f"{self.weapon.tileTop.text()}_" \
                f"{self.bullet.tileBot.text()}_" \
-               f"{self.bullet.bulletName.text()}.a7p".replace(" ", "_")
+               f"{self.bullet.bullet_name.text()}.a7p".replace(" ", "_")

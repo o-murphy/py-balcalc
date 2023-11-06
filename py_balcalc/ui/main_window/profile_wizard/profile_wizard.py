@@ -32,12 +32,12 @@ class ProfileWizard(QtWidgets.QDialog, DataWorker):
         enables/disables inner tabs if profile type is correct
         """
 
-        self.weapon.rifleName.setText(self._profile.profile_name)
-        self.weapon.caliberName.setText(self._profile.caliber)
+        self.weapon.profile_name.setText(self._profile.profile_name)
+        self.weapon.caliber.setText(self._profile.caliber)
         self.weapon.tileTop.setText(self._profile.short_name_top)
         self.weapon.rightTwist.setChecked(self._profile.twist_dir == 0)
-        self.cartridge.cartridgeName.setText(self._profile.cartridge_name)
-        self.bullet.bulletName.setText(self._profile.bullet_name)
+        self.cartridge.cartridge_name.setText(self._profile.cartridge_name)
+        self.bullet.bullet_name.setText(self._profile.bullet_name)
 
         if not self._profile.short_name_top:
             self.weapon.auto_tile()
