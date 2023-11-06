@@ -13,6 +13,7 @@ CalcSettings.Units.distance = Unit.METER
 # Fix of Unit.INCH accuracy
 UnitPropsDict[Unit.INCH] = UnitProps("inch", 3, "inch")
 UnitPropsDict[Unit.IN_HG] = UnitProps('inhg', 6, 'inhg')
+UnitPropsDict[Unit.GRAIN] = UnitProps('grain', 1, 'gr')
 
 DEFAULT_USER_DIR = os.path.join(os.path.expanduser("~"), 'archer_bc2_profiles')
 
@@ -41,10 +42,10 @@ INF = 99999
 DEF_UNITS_LIMITS = {
     "unit/sight_height": {'min': Unit.CENTIMETER(0.1), 'max': Unit.CENTIMETER(30)},
     "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(30)},
-    "unit/velocity": {'min': Unit.MPS(10), 'max': Unit.MPS(3000)},
+    "unit/velocity": {'min': Unit.MPS(0), 'max': Unit.MPS(3000)},
     "unit/distance": {'min': Unit.METER(0), 'max': Unit.METER(5000)},
     "unit/b_diameter": {'min': Unit.INCH(0.001), 'max': Unit.INCH(65.535)},
-    "unit/b_length": {'min': Unit.INCH(0.1), 'max': Unit.INCH(10)},
+    "unit/b_length": {'min': Unit.INCH(0.001), 'max': Unit.INCH(10)},
     "unit/temperature": {'min': Unit.CELSIUS(-100), 'max': Unit.CELSIUS(100)},
     "unit/pressure": {'min': Unit.HP(875), 'max': Unit.HP(1050)},
     # "unit/pressure": {'min': Unit.MM_HG(640), 'max': Unit.MM_HG(770)},

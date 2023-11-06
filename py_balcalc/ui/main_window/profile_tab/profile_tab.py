@@ -35,6 +35,17 @@ class ProfileTab(QtWidgets.QWidget, DataWorker):
             Unit.METER(self._profile.distances[self._profile.c_zero_distance_idx] / 100)
         )
 
+    def validate(self):
+        if not self.cartridge.c_muzzle_velocity.validate_value(min_=Unit.MPS(10)):
+            self.show_invalid_dlg()
+            self.cartridge.c_muzzle_velocity.set_valid(False)
+            self.cartridge.c_muzzle_velocity.setFocus()
+            return False
+        if not self.validate_widget(self):
+            self.show_invalid_dlg()
+            return False
+        return True
+
     def init_ui(self):
         self.setObjectName("profileTab")
 

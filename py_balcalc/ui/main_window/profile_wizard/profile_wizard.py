@@ -54,12 +54,15 @@ class ProfileWizard(QtWidgets.QDialog, DataWorker):
 
     def next_screen(self):
         index = self.stacked.currentIndex()
+
+        if not self.validate():
+            return
+
         if index == self.stacked.count() - 2:
             self.next_btn.setText("Accept")
         if index < self.stacked.count():
             self.stacked.setCurrentIndex(index + 1)
         if index == self.stacked.count() - 1:
-            # self.accept()
             self.onAccepted.emit()
 
     def prev_screen(self):
@@ -67,6 +70,19 @@ class ProfileWizard(QtWidgets.QDialog, DataWorker):
         if index > 0:
             self.stacked.setCurrentIndex(index - 1)
             self.next_btn.setText("Next")
+
+    def validate(self):
+        w = self.stacked.currentWidget()
+        if not self.validate_widget(w):
+            self.show_invalid_dlg()
+            return False
+        if isinstance(w, ProfileCartridge):
+            self.cartridge.c_muzzle_velocity.validate_value(min_=Unit.MPS(10))
+            if not self.cartridge.c_muzzle_velocity.valid():
+                self.show_invalid_dlg()
+                self.cartridge.c_muzzle_velocity.setFocus()
+                return False
+        return True
 
     def init_ui(self):
         self.setObjectName("ProfileWizard")

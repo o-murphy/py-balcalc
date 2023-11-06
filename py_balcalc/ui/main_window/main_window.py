@@ -10,7 +10,7 @@ from .footer import FooterWidget
 from .profile_tab import ProfileTab
 from .profiles_tools import ProfilesTools
 
-from py_balcalc.file import open_files, save_file
+from py_balcalc.file import open_files, save_file, save_file_stream
 from py_balcalc.settings import app_settings, get_user_dir
 from py_balcalc.translator import tr
 from ...signals_manager import appSignalMgr
@@ -54,12 +54,13 @@ class MainWindow(QtWidgets.QMainWindow):
     def open_wizard(self):
 
         def on_wizard_accept():
+            if not dlg.validate():
+                return
             data = a7p.A7PFile.dumps(dlg.export_a7p())
 
             file_name = self.save_file_dialog(dlg.create_name())
             if file_name:
-                with open(file_name, 'wb') as fp:
-                    fp.write(data)
+                save_file_stream(file_name, data)
                 dlg.accept()
                 self.open_files(file_name)
 

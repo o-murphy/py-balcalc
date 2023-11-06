@@ -102,7 +102,7 @@ class ModelCDM(QtWidgets.QTableView):
         appSignalMgr.translator_updated.connect(self.tr_ui)
 
     def load_data(self, data: list[a7p.CoefRow]):
-        rows = [[i.c_muzzle_velocity / 10000, i.bc_cd / 10000] for i in data]
+        rows = [[i.mv / 10000, i.bc_cd / 10000] for i in data]
         self.model = TableModel(rows)
         self.setModel(self.model)
         self.tr_ui()

@@ -1,3 +1,4 @@
+- [ ] Validate Drag Model
 - [ ] Add CDM editor
 - [ ] Add calculator
 - [ ] Fix .a7p file overwriting without user's update

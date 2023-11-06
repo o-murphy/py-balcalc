@@ -61,7 +61,7 @@ class DataWorker:
             for i, row in enumerate(self._profile.coef_rows):
                 v = self.bullet.drag_model.g1.cellWidget(i, 0)
                 c = self.bullet.drag_model.g1.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.c_muzzle_velocity / 10))
+                v.set_raw_value(Unit.MPS(row.mv / 10))
                 c.setValue(Unit.MPS(row.bc_cd / 10000))
         elif self._profile.bc_type == a7p.GType.G7:
             self.bullet.drag_model_label.setText("Drag model: G7")
@@ -69,7 +69,7 @@ class DataWorker:
             for i, row in enumerate(self._profile.coef_rows):
                 v = self.bullet.drag_model.g7.cellWidget(i, 0)
                 c = self.bullet.drag_model.g7.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.c_muzzle_velocity / 10))
+                v.set_raw_value(Unit.MPS(row.mv / 10))
                 c.setValue(Unit.MPS(row.bc_cd / 10000))
 
         elif self._profile.bc_type == a7p.GType.CUSTOM:
@@ -130,7 +130,6 @@ class DataWorker:
             coef_rows = self.bullet.drag_model.cdm.dump_data()
 
         # TODO: add CDM
-
         self._profile.user_note = self.a7p_meta.user_note.toPlainText()[:250]
         self._profile.zero_x = int(self.a7p_meta.zero_x.value() / -1000)
         self._profile.zero_y = int(self.a7p_meta.zero_y.value() / 1000)
@@ -173,20 +172,26 @@ class DataWorker:
         if not self.bullet.tileBot.text():
             self.bullet.auto_tile()
 
-    def validate(self):
-        childs = [ch for ch in self.findChildren(QtWidgets.QWidget) if hasattr(ch, 'valid')]
+    def validate_widget(self, widget: QtWidgets.QWidget):
+        childs = [ch for ch in widget.findChildren(QtWidgets.QWidget) if hasattr(ch, 'valid')]
         try:
             for ch in childs:
                 assert ch.valid()
             return True
         except AssertionError:
-            QtWidgets.QMessageBox.warning(
-                self,
-                "Warning!",
-                "Invalid profile data!",
-                QtWidgets.QMessageBox.StandardButton.Ok
-            )
+            self.show_invalid_dlg()
         return False
+
+    def show_invalid_dlg(self):
+        QtWidgets.QMessageBox.warning(
+            self,
+            "Warning!",
+            "Invalid profile data!",
+            QtWidgets.QMessageBox.StandardButton.Ok
+        )
+
+    def validate(self):
+        return
 
     def create_name(self):
         return f"{self.weapon.tileTop.text()}_" \

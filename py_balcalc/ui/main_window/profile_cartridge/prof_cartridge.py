@@ -13,6 +13,7 @@ class ProfileCartridge(QtWidgets.QGroupBox):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.init_ui()
+        self.__post_init__()
 
     def __post_init__(self):
         self.cartridge_name.setMaxLength(DEF_STRINGS_LIMITS['cartridge_name'])
