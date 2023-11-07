@@ -1,5 +1,5 @@
 import a7p
-from PySide6 import QtWidgets, QtGui
+from PySide6 import QtWidgets, QtGui, QtCore
 from py_ballisticcalc import Unit
 
 from py_balcalc.signals_manager import appSignalMgr
@@ -7,6 +7,8 @@ from .profile_weapon import ProfileWeapon
 from .profile_cartridge import ProfileCartridge
 from .profile_bullet import ProfileBullet
 from .profile_a7p_meta import ProfileA7PMeta
+from ..message_handler import qt_message_handler
+from ...translator import tr
 
 
 class DataWorker:
@@ -129,7 +131,14 @@ class DataWorker:
             self._profile.bc_type = a7p.GType.CUSTOM
             coef_rows = self.bullet.drag_model.cdm.dump_data()
 
-        # TODO: add CDM
+        if len(coef_rows) < 1:
+            qt_message_handler(
+                QtCore.QtMsgType.QtWarningMsg,
+                None,
+                tr("root", "Must have at least 1 valid coefficient row")
+            )
+            raise ValueError
+
         self._profile.user_note = self.a7p_meta.user_note.toPlainText()[:250]
         self._profile.zero_x = int(self.a7p_meta.zero_x.value() / -1000)
         self._profile.zero_y = int(self.a7p_meta.zero_y.value() / 1000)
@@ -141,7 +150,7 @@ class DataWorker:
         if not zero_dist in proto_dist_list:
             proto_dist_list.append(zero_dist)
         proto_dist_list.sort()
-
+        proto_dist_list = proto_dist_list[:200]
         self._profile.c_zero_distance_idx = proto_dist_list.index(zero_dist)
         del self._profile.distances[:]
         self._profile.distances.extend(proto_dist_list)
@@ -183,12 +192,7 @@ class DataWorker:
         return False
 
     def show_invalid_dlg(self):
-        QtWidgets.QMessageBox.warning(
-            self,
-            "Warning!",
-            "Invalid profile data!",
-            QtWidgets.QMessageBox.StandardButton.Ok
-        )
+        qt_message_handler(QtCore.QtMsgType.QtWarningMsg, None, "Invalid profile data!")
 
     def validate(self):
         return

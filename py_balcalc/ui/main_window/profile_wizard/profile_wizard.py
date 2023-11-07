@@ -74,7 +74,6 @@ class ProfileWizard(QtWidgets.QDialog, DataWorker):
     def validate(self):
         w = self.stacked.currentWidget()
         if not self.validate_widget(w):
-            self.show_invalid_dlg()
             return False
         if isinstance(w, ProfileCartridge):
             self.cartridge.c_muzzle_velocity.validate_value(min_=Unit.MPS(10))

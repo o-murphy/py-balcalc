@@ -174,7 +174,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 if result == QtWidgets.QMessageBox.StandardButton.Save.value:
                     if not tab.validate():
                         return False
-                    save_file(tab.file_name, data)
+                    if not save_file(tab.file_name, data):
+                        return False
                     return True
                 elif result == QtWidgets.QMessageBox.StandardButton.Discard.value:
                     return True
@@ -198,7 +199,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         tab_data = tab.export_a7p()
         try:
-            filename, file_data = open_files(tab.file_name)[0]
+            filename, file_data = open_files(tab.file_name, validate=False)[0]
 
             # for field_descriptor, field_value in file_data.profile.ListFields():
             #     v = tab_data.profile.__getattribute__(field_descriptor.name)

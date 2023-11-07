@@ -43,7 +43,6 @@ class ProfileTab(QtWidgets.QWidget, DataWorker):
             self.cartridge.c_muzzle_velocity.setFocus()
             return False
         if not self.validate_widget(self):
-            self.show_invalid_dlg()
             return False
         return True
 
