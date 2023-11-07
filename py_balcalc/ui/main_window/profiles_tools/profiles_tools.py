@@ -34,7 +34,7 @@ class ProfilesTools(QtWidgets.QWidget):
 
     def open_app_settings(self):
         """opens AppSettings dialog and updates app settings if it changed"""
-        AppSettings().exec_()
+        AppSettings(self).exec()
 
     def init_ui(self):
         self.setObjectName("profiles_tools")

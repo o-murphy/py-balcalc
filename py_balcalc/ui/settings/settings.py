@@ -24,8 +24,8 @@ WeightUnits = get_units_list(Weight)
 class AppSettings(QtWidgets.QDialog):
     """loads, writes and sets app preferences from settings.ini file"""
 
-    def __init__(self):
-        super(AppSettings, self).__init__()
+    def __init__(self, parent=None):
+        super(AppSettings, self).__init__(parent)
         self.init_ui()
 
         self.init_general_tab()
@@ -34,8 +34,11 @@ class AppSettings(QtWidgets.QDialog):
         self.__post_init__()
 
     def __post_init__(self):
-        appSignalMgr.translator_updated.connect(self.tr_ui)
-        # appSignalMgr.translator_updated.connect(self.tr_units)  # TODO:
+        appSignalMgr.translator_updated.connect(self.on_locale_change)
+
+    def on_locale_change(self):
+        self.close()
+        self.parent().open_app_settings()
 
     def init_general_tab(self):
         # Todo load list of languages
@@ -89,18 +92,6 @@ class AppSettings(QtWidgets.QDialog):
 
         init_one_combo(self.units_tab.pathUnits, AngularUnits, 'unit/adjustment')
         init_one_combo(self.units_tab.angleUnits, AngularUnits, 'unit/angular')
-
-    def tr_units(self):
-
-        def tr_one(combo_box: QtWidgets.QComboBox):
-            for i in range(combo_box.count()):
-                data = combo_box.currentData(i)
-                combo_box.setItemText(i, tr('settings', data.key))
-                combo_box.setItemData(data)
-
-        for ch in self.units_tab.findChildren(QtWidgets.QComboBox):
-            tr_one(ch)
-
 
     def init_ui(self):
         self.setObjectName("AppSettings")

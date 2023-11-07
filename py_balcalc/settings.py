@@ -40,15 +40,14 @@ DEFAULT_SETTINGS = {
 
 INF = 99999
 DEF_UNITS_LIMITS = {
-    "unit/sight_height": {'min': Unit.CENTIMETER(0.1), 'max': Unit.CENTIMETER(30)},
-    "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(30)},
+    "unit/distance": {'min': Unit.METER(1), 'max': Unit.METER(3000)},
+    "unit/sight_height": {'min': Unit.MILLIMETER(-5000), 'max': Unit.MILLIMETER(5000)},
+    "unit/twist": {'min': Unit.INCH(0), 'max': Unit.INCH(100)},
     "unit/velocity": {'min': Unit.MPS(0), 'max': Unit.MPS(3000)},
-    "unit/distance": {'min': Unit.METER(0), 'max': Unit.METER(5000)},
-    "unit/b_diameter": {'min': Unit.INCH(0.001), 'max': Unit.INCH(65.535)},
-    "unit/b_length": {'min': Unit.INCH(0.001), 'max': Unit.INCH(10)},
     "unit/temperature": {'min': Unit.CELSIUS(-100), 'max': Unit.CELSIUS(100)},
-    "unit/pressure": {'min': Unit.HP(875), 'max': Unit.HP(1050)},
-    # "unit/pressure": {'min': Unit.MM_HG(640), 'max': Unit.MM_HG(770)},
+    "unit/pressure": {'min': Unit.HP(300), 'max': Unit.HP(1500)},
+    "unit/b_diameter": {'min': Unit.INCH(0.001), 'max': Unit.INCH(65.535)},
+    "unit/b_length": {'min': Unit.INCH(0.01), 'max': Unit.INCH(200)},
     "unit/b_weight": {'min': Unit.GRAIN(10), 'max': Unit.GRAIN(6553.5)},
     "unit/energy": {'min': Unit.POUND(0), 'max': Unit.POUND(INF)},
     "unit/drop": {'min': Unit.CM_PER_100M(0), 'max': Unit.CM_PER_100M(INF)},
@@ -65,7 +64,7 @@ DEF_STRINGS_LIMITS = {
     "bullet_name": 50,
     "short_name_top": 8,
     "short_name_bot": 8,
-    "user_note": 250,
+    "user_note": 1024,
     "caliber": 50,
     "device_uuid": 50,
 }
@@ -75,8 +74,8 @@ DEF_COEFFICIENTS_LIST_SIZE = 200
 DEF_SWITCH_LIST_SIZE = 4
 
 DEF_FLOAT_LIMITS = {
-    "zero_x": {"min": -600, "max": 600},
-    "zero_y": {"min": -600, "max": 600},
+    "zero_x": {"min": -200, "max": 200},
+    "zero_y": {"min": -200, "max": 200},
     "c_t_coeff": {"min": 0.002, "max": 3},
     "c_zero_air_humidity": {"min": 0, "max": 100},
 

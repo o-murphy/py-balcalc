@@ -167,7 +167,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 dlg = QtWidgets.QMessageBox(
                     QtWidgets.QMessageBox.Icon.Warning,
                     "Warning",
-                    f"File updated, are you want to save changes?\n{tab.file_name}",
+                    tr("root", f"File updated, are you want to save changes?\n{tab.file_name}"),
                     buttons
                 )
                 result = dlg.exec()
