@@ -37,6 +37,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.profile_tools.saveAsButton.clicked.connect(self.save_file_as)
         self.profile_tools.saveButton.clicked.connect(self.on_save_button)
 
+        self.profile_tools.calculator.clicked.connect(self.open_calculator)
+
         self.filesDropped.connect(lambda file_names: self.open_files(*file_names))
 
     #     self.setAcceptDrops(True)
@@ -50,6 +52,10 @@ class MainWindow(QtWidgets.QMainWindow):
     #     if self.profilesTabs.count() > 0:
     #         self.stacked.setCurrentIndex(1)
     #     super(MainWindow, self).dragLeaveEvent(event)
+
+    def open_calculator(self):
+        from py_balcalc.ui.calculator import CalculatorDialog
+        CalculatorDialog(self, self.profilesTabs.currentWidget()).exec()
 
     def open_wizard(self):
 

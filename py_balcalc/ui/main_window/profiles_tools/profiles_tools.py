@@ -75,6 +75,12 @@ class ProfilesTools(QtWidgets.QWidget):
         self.saveAsButton.setIconSize(QtCore.QSize(24, 24))
         self.saveAsButton.setObjectName("saveAsButton")
 
+        self.calculator = QtWidgets.QToolButton(self)
+        self.calculator.setMinimumSize(QtCore.QSize(30, 30))
+        self.calculator.setIcon(qta.icon('mdi6.calculator', color='white'))
+        self.calculator.setIconSize(QtCore.QSize(24, 24))
+        self.calculator.setObjectName("Calculator")
+
         self.preferences = QtWidgets.QToolButton(self)
         self.preferences.setMinimumSize(QtCore.QSize(30, 30))
         self.preferences.setIcon(qta.icon('mdi6.cog', color='white'))
@@ -85,6 +91,7 @@ class ProfilesTools(QtWidgets.QWidget):
         self._layout.addWidget(self.saveButton)
         self._layout.addWidget(self.saveAsButton)
         self._layout.addWidget(self.newProfileButton)
+        self._layout.addWidget(self.calculator)
         self._layout.addWidget(self.loadBookMark)
         self._layout.addWidget(self.preferences, alignment=QtCore.Qt.AlignRight)
 
@@ -103,4 +110,5 @@ class ProfilesTools(QtWidgets.QWidget):
         self.saveButton.setToolTip(tr("profiles_tools", "Save File (CTRL+S)"))
         self.openFile.setToolTip(tr("profiles_tools", "Open File (CTRL+O)"))
         self.saveAsButton.setToolTip(tr("profiles_tools", "Save as File (CTRL+SHIFT+S)"))
+        self.calculator.setToolTip(tr("profiles_tools", "Calculator"))
         self.preferences.setToolTip(tr("profiles_tools", "Settings"))
