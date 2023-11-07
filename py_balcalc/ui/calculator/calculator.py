@@ -8,6 +8,7 @@ from py_ballisticcalc import *
 import pyqtgraph as pg
 
 from py_balcalc.settings import app_settings
+from .table import TrajectoryTable
 
 
 class CalculatorDialog(QtWidgets.QDialog):
@@ -22,9 +23,17 @@ class CalculatorDialog(QtWidgets.QDialog):
         self.zero_atmo = None
         self.calc = None
 
+        self.drop_plot = None
+        self.drag_plot = None
+
         self.init_calculator()
 
         self.calculate()
+
+        self.__post_init__()
+
+    def __post_init__(self):
+        self.fire_button.clicked.connect(self.calculate)
 
     def init_calculator(self):
         self.weapon = Weapon(
@@ -34,6 +43,7 @@ class CalculatorDialog(QtWidgets.QDialog):
             # TODO: zero_look_angle
         )
         _drag_model = self.tab.bullet.drag_model.model()
+        print(_drag_model)
         if _drag_model in [TableG1, TableG7]:
             mbc = MultiBC(
                 _drag_model,
@@ -41,6 +51,7 @@ class CalculatorDialog(QtWidgets.QDialog):
                 self.tab.bullet.b_weight.raw_value(),
                 self.tab.bullet.drag_model.data()
             )
+            print(self.tab.bullet.drag_model.data())
             self.dm = DragModel.from_mbc(mbc)
         else:
             self.dm = DragModel(
@@ -65,6 +76,11 @@ class CalculatorDialog(QtWidgets.QDialog):
         self.calc = Calculator(self.weapon, self.ammo, self.zero_atmo)
 
     def calculate(self):
+        if self.drop_plot:
+            self.drop_plot.clear()
+        if self.drag_plot:
+            self.drag_plot.clear()
+
         shot_atmo = Atmo(
             0,
             self.conditions.c_zero_air_pressure.raw_value(),
@@ -83,7 +99,14 @@ class CalculatorDialog(QtWidgets.QDialog):
         distances = [p.distance >> app_settings.value('unit/distance') for p in hit.trajectory]
         drop = [p.drop >> app_settings.value('unit/drop') for p in hit.trajectory]
 
-        self.drop_plot_widget.plot(distances, drop, pen=pg.mkPen('orange', width=1))
+        cdm = self.calc.cdm
+        cd_list = [item['CD'] for item in cdm]
+        mach_list = [item['Mach'] for item in cdm]
+
+        self.drop_plot = self.drop_plot_widget.plot(distances, drop, pen=pg.mkPen('orange', width=1))
+        self.drag_plot = self.drag_plot_widget.plot(mach_list, cd_list, pen=pg.mkPen('orange', width=1))
+
+        self.trajectory_table.load_data(hit)
 
     def init_ui(self):
         self.setObjectName("CalculatorDialog")
@@ -98,6 +121,7 @@ class CalculatorDialog(QtWidgets.QDialog):
 
         self.drop_plot_widget = pg.PlotWidget(self)
         self.drag_plot_widget = pg.PlotWidget(self)
+        self.trajectory_table = TrajectoryTable(self)
 
         self.conditions = CalcConditions(self)
         self.fire_button = QtWidgets.QPushButton("")
@@ -106,8 +130,9 @@ class CalculatorDialog(QtWidgets.QDialog):
         lt.addWidget(self.conditions)
         lt.addWidget(self.fire_button)
 
-        self.view_tabs.addTab(self.drop_plot_widget, tr("calculator", "Trajectory"))
+        self.view_tabs.addTab(self.drop_plot_widget, tr("calculator", "Drop"))
         self.view_tabs.addTab(self.drag_plot_widget, tr("calculator", "Drag model"))
+        self.view_tabs.addTab(self.trajectory_table, tr("calculator", "Table"))
 
         self.layout_.insertLayout(0, lt)
         self.layout_.addWidget(self.view_tabs)
