@@ -1,10 +1,10 @@
 # py-balcalc
 desktop gui for py-ballisticcalc library
 
-* [Installation](#installation)
-* [Profiles galery](#profiles-gallery)
-* [Screenshots](#screenshots)
-* [Todo](todo.md)
+* **[Installation](#installation)**
+* **Profiles gallery [jsDelivr](https://cdn.jsdelivr.net/gh/o-murphy/a7p/gallery/) or [on GitHub](https://github.com/o-murphy/a7p/tree/master/gallery)**
+* **[Screenshots](#screenshots)**
+* **[Todo](todo.md)**
 
 ## Installation
 
@@ -25,8 +25,6 @@ pip install py-balcalc
 # run
 py_balcalc
 ```
-
-## Profiles gallery
 
 ## Screenshots
 
