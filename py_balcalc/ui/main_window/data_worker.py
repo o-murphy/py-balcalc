@@ -60,31 +60,23 @@ class DataWorker:
         if self._profile.bc_type == a7p.GType.G1:
             self.bullet.drag_model_label.setText("Drag model: G1")
             self.bullet.drag_model.setCurrentIndex(0)
-            for i, row in enumerate(self._profile.coef_rows):
-                v = self.bullet.drag_model.g1.cellWidget(i, 0)
-                c = self.bullet.drag_model.g1.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.mv / 10))
-                c.setValue(Unit.MPS(row.bc_cd / 10000))
+
         elif self._profile.bc_type == a7p.GType.G7:
             self.bullet.drag_model_label.setText("Drag model: G7")
             self.bullet.drag_model.setCurrentIndex(1)
-            for i, row in enumerate(self._profile.coef_rows):
-                v = self.bullet.drag_model.g7.cellWidget(i, 0)
-                c = self.bullet.drag_model.g7.cellWidget(i, 1)
-                v.set_raw_value(Unit.MPS(row.mv / 10))
-                c.setValue(Unit.MPS(row.bc_cd / 10000))
 
         elif self._profile.bc_type == a7p.GType.CUSTOM:
             self.bullet.drag_model_label.setText("CDM")
             self.bullet.drag_model.setCurrentIndex(2)
-            self.bullet.drag_model.cdm.load_data(self._profile.coef_rows)
+
+        self.bullet.drag_model.load_data(self._profile.coef_rows)
 
         if hasattr(self, 'conditions'):
-            self.conditions.z_pressure.set_raw_value(Unit.HP(self._profile.c_zero_air_pressure / 10))
-            self.conditions.z_temp.set_raw_value(Unit.CELSIUS(self._profile.c_zero_temperature))
+            self.conditions.c_zero_air_pressure.set_raw_value(Unit.HP(self._profile.c_zero_air_pressure / 10))
+            self.conditions.c_zero_temperature.set_raw_value(Unit.CELSIUS(self._profile.c_zero_temperature))
             self.conditions.z_powder_temp.set_raw_value(Unit.CELSIUS(self._profile.c_zero_p_temperature))
             self.conditions.z_angle.set_raw_value(Unit.DEGREE(self._profile.c_zero_w_pitch))
-            self.conditions.z_humidity.setValue(self._profile.c_zero_air_humidity)
+            self.conditions.c_zero_air_humidity.setValue(self._profile.c_zero_air_humidity)
 
     def export_a7p(self):
         self.auto_tile()
