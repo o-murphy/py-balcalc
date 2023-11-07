@@ -1,6 +1,11 @@
 # py-balcalc
 desktop gui for py-ballisticcalc library
 
+* [Installation](#installation)
+* [Profiles galery](#profiles-gallery)
+* [Screenshots](#screenshots)
+* [Todo](todo.md)
+
 ## Installation
 
 Clone from GitHub
@@ -21,4 +26,11 @@ pip install py-balcalc
 py_balcalc
 ```
 
-### [Todo](todo.md)
+## Profiles gallery
+
+## Screenshots
+
+[//]: # (<img alt="" src="doc/1.png"/>)
+<img alt="" src="doc/2.png"/>
+<img alt="" src="doc/3.png"/>
+<img alt="" src="doc/4.png"/>

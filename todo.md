@@ -1,6 +1,8 @@
+- [ ] Add calculator
+- [ ] Support all py-ballisticcalc features
+- [ ] Update to latest py-ballisticcalc
 - [ ] Validate Drag Model
 - [ ] Add CDM editor
-- [ ] Add calculator
 - [ ] Fix .a7p file overwriting without user's update
 - [ ] Add export/import data to .toml with app specific data
 - [ ] Add profiles gallery
